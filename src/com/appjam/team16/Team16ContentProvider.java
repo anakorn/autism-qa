@@ -51,9 +51,11 @@ public class Team16ContentProvider extends ContentProvider
 
 	private static class MySQLiteOpenHelper extends SQLiteOpenHelper
 	{
-		public static final Uri CONTENT_URI = Uri.parse("content://com.appjam.team16");
+		private static final String PROVIDER = "com.appjam.team16";
+		public static final Uri QUESTIONS_URI = Uri.parse("content://" + PROVIDER + "/questions");
+		public static final Uri QUIZZES_URI = Uri.parse("content://" + PROVIDER + "/quizzes");
 		
-
+		
 		public MySQLiteOpenHelper(Context context, String name,
 				CursorFactory factory, int version) {
 			super(context, name, factory, version);
@@ -73,6 +75,4 @@ public class Team16ContentProvider extends ContentProvider
 		
 		
 	}
-	
-	
 }

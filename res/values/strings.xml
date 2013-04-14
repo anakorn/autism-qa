@@ -13,5 +13,7 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_view_quizzes">ViewQuizzesActivity</string>
+    <string name="title">Title</string>
+    <string name="question">Question</string>
 
 </resources>

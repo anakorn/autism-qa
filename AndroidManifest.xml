@@ -18,15 +18,16 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_answer_question"
             android:theme="@style/FullscreenTheme" >
+            
+        </activity>
+        <activity
+            android:name="com.appjam.team16.ViewQuestionsActivity"
+            android:label="@string/title_activity_view_questions" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name="com.appjam.team16.ViewQuestionsActivity"
-            android:label="@string/title_activity_view_questions" >
         </activity>
         <activity
             android:name="com.appjam.team16.ViewQuizzesActivity"
