@@ -7,15 +7,49 @@
     <EditText
         android:id="@+id/questionTitle"
         android:layout_width="match_parent"
-        android:inputType="text"
+        android:layout_height="wrap_content"
         android:hint="@string/title"
-        android:layout_height="wrap_content" />
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/questionQuestion"
         android:layout_width="match_parent"
-        android:inputType="text"
+        android:layout_height="wrap_content"
         android:hint="@string/question"
-        android:layout_height="wrap_content" />
+        android:inputType="text" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/recordAudioButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/playback" />
+
+        <Button
+            android:id="@+id/playbackAudioButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/playback" />
+
+        <Button
+            android:id="@+id/deleteAudioButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/deleteAudio" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/submitQuestion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:text="@string/addQuestion" />
 
 </LinearLayout>

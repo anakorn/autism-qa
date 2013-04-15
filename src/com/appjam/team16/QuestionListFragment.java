@@ -1,36 +1,59 @@
 package com.appjam.team16;
 
 import android.app.Activity;
+import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class QuestionListFragment extends ListFragment {
+import com.appjam.team16.db.QuizTable;
+
+public class QuestionListFragment extends ListFragment implements LoaderCallbacks<Cursor>{
 
 	private OnQuestionSelectedListener mCallback;
 	
 	public interface OnQuestionSelectedListener {
 		public void onQuestionSelected(long id);
 	}
+	
+	private SimpleCursorAdapter mAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+	}
 
+	
+	
+	@Override
+	public void onActivityCreated (Bundle savedInstanceState)
+	{
+		super.onActivityCreated(savedInstanceState);
 		// We need to use a different list item layout for devices older than
 		// Honeycomb
 		int layout = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ? 
 				android.R.layout.simple_list_item_activated_1
 				: android.R.layout.simple_list_item_1;
-
-		String[] strings = new String [] {"Hello", "Goodbye"};
-		// array
 		
+		mAdapter = new SimpleCursorAdapter(getActivity(),
+				layout, null, 
+				new String [] {QuizTable.COLUMN_TITLE},
+				new int [] {android.R.id.text1});
+		setListAdapter(mAdapter);
 		
-		setListAdapter(new ArrayAdapter<String>(getActivity(), layout, strings));
+		getLoaderManager().initLoader(0, null, this);
+		refreshQuizzes();
+	}
+	
+	public void refreshQuizzes()
+	{
+		getLoaderManager().restartLoader(0, null, this);
 	}
 
 	@Override
@@ -67,6 +90,26 @@ public class QuestionListFragment extends ListFragment {
 
 		// Set the item as checked to be highlighted when in two-pane layout
 		getListView().setItemChecked(position, true);
+	}
+
+	@Override
+	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
+		String[] projection = new String [] { QuizTable.COLUMN_ID,
+				QuizTable.COLUMN_TITLE};
+		CursorLoader loader = new CursorLoader(getActivity(), 
+				Team16ContentProvider.QUIZZES_URI, projection, null, null,
+				null);
+		return loader;
+	}
+
+	@Override
+	public void onLoadFinished(Loader<Cursor> arg0, Cursor arg1) {
+		mAdapter.swapCursor(arg1);
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> arg0) {
+		mAdapter.swapCursor(null);
 	}
 
 }

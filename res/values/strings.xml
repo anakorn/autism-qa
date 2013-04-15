@@ -15,5 +15,8 @@
     <string name="title_activity_view_quizzes">ViewQuizzesActivity</string>
     <string name="title">Title</string>
     <string name="question">Question</string>
+    <string name="record">Record</string>
+    <string name="playback">Playback</string>
+    <string name="deleteAudio">Remove</string>
 
 </resources>
