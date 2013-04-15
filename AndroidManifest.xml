@@ -4,6 +4,18 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
+    <!-- This app will require at least a fake touchscreen. -->
+    <uses-feature
+        android:name="android.hardware.faketouch"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
+    <!-- This app recommends use of a mic. -->
+    <uses-feature
+        android:name="android.hardware.microphone"
+        android:required="false" />
+
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="17" />
@@ -18,7 +30,6 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_answer_question"
             android:theme="@style/FullscreenTheme" >
-            
         </activity>
         <activity
             android:name="com.appjam.team16.ViewQuestionsActivity"
