@@ -10,13 +10,15 @@ public class AnswerTable {
 	public static final String COLUMN_RESPONSE_TIME	= "response_time";
 	public static final String COLUMN_ANSWER_VALUE		= "answer_value";
 	
-	// TODO: Need column types + constraints
 	public static final String TABLE_CREATE_STATEMENT =
 		"CREATE TABLE " + TABLE_NAME + "(" + 
-		COLUMN_ID 				+ " " +
-		COLUMN_QUESTION_ID 		+ " " +
-		COLUMN_CREATE_TIMESTAMP + " " +
-		COLUMN_RESPONSE_TIME 	+ " " +
-		COLUMN_ANSWER_VALUE 	+ " " +
+		COLUMN_ID 				+ " INTEGER AUTOINCREMENT NOT NULL " +
+		COLUMN_QUESTION_ID 		+ " TEXT NOT NULL " +
+		COLUMN_CREATE_TIMESTAMP + " TEXT NOT NULL " +
+		COLUMN_RESPONSE_TIME 	+ " REAL NOT NULL " +
+		COLUMN_ANSWER_VALUE 	+ " INT NOT NULL " +
+		"FOREIGN KEY (" + COLUMN_QUESTION_ID + ") REFERENCES " + 
+			QuestionTable.TABLE_NAME + "(" + QuestionTable.COLUMN_ID + ") " +
+		"PRIMARY KEY (" + COLUMN_ID + ", " + COLUMN_QUESTION_ID + ")" +
 		");";
 }
