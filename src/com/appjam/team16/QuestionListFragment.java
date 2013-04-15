@@ -12,6 +12,7 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
 import android.widget.ListView;
 
+import com.appjam.team16.db.QuestionTable;
 import com.appjam.team16.db.QuizTable;
 
 public class QuestionListFragment extends ListFragment implements LoaderCallbacks<Cursor>{
@@ -48,10 +49,10 @@ public class QuestionListFragment extends ListFragment implements LoaderCallback
 		setListAdapter(mAdapter);
 		
 		getLoaderManager().initLoader(0, null, this);
-		refreshQuizzes();
+		refreshQuestions();
 	}
 	
-	public void refreshQuizzes()
+	public void refreshQuestions()
 	{
 		getLoaderManager().restartLoader(0, null, this);
 	}
@@ -94,10 +95,10 @@ public class QuestionListFragment extends ListFragment implements LoaderCallback
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-		String[] projection = new String [] { QuizTable.COLUMN_ID,
-				QuizTable.COLUMN_TITLE};
+		String[] projection = new String [] { QuestionTable.COLUMN_ID,
+				QuestionTable.COLUMN_TITLE};
 		CursorLoader loader = new CursorLoader(getActivity(), 
-				Team16ContentProvider.QUIZZES_URI, projection, null, null,
+				Team16ContentProvider.QUESTION_URI, projection, null, null,
 				null);
 		return loader;
 	}

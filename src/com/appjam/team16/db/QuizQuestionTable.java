@@ -10,13 +10,13 @@ public class QuizQuestionTable {
 	
 	public static final String TABLE_CREATE_STATEMENT =
 		"CREATE TABLE " + TABLE_NAME + "(" + 
-		COLUMN_ID 			+ " INTEGER NOT NULL " +
-		COLUMN_QUESTION_ID 		+ " INTEGER NOT NULL " +
-		COLUMN_QUIZ_POSITION + " INTEGER NOT NULL " +
+		COLUMN_ID 			+ " INTEGER NOT NULL, " +
+		COLUMN_QUESTION_ID 		+ " INTEGER NOT NULL, " +
+		COLUMN_QUIZ_POSITION + " INTEGER NOT NULL, " +
 		"FOREIGN KEY (" + COLUMN_ID + ") REFERENCES " + 
-			QuizTable.TABLE_NAME + "(" + QuizTable.COLUMN_ID + ") " +
+			QuizTable.TABLE_NAME + "(" + QuizTable.COLUMN_ID + "), " +
 		"FOREIGN KEY (" + COLUMN_QUESTION_ID + ") REFERENCES " +
-			QuestionTable.TABLE_NAME + "(" + QuestionTable.COLUMN_ID + ") " +
+			QuestionTable.TABLE_NAME + "(" + QuestionTable.COLUMN_ID + "), " +
 		"PRIMARY KEY (" + COLUMN_ID + ", " + COLUMN_QUESTION_ID + ")" +
 		");";
 }

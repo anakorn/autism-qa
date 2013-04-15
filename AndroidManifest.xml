@@ -44,7 +44,8 @@
             android:name="com.appjam.team16.ViewQuizzesActivity"
             android:label="@string/title_activity_view_quizzes" >
         </activity>
-        <provider
+
+        <provider
             android:name=".Team16ContentProvider"
             android:authorities="com.appjam.team16.team16contentprovider" >
         </provider>

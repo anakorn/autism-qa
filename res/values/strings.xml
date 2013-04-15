@@ -25,5 +25,9 @@
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="record_question">Record Question</string>
+    <string name="playback">Playback</string>
+    <string name="deleteAudio">Delete</string>
+    <string name="record">Record</string>
+    <string name="submitQuestion">Add</string>
 
 </resources>

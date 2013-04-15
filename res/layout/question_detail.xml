@@ -50,6 +50,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:text="@string/addQuestion" />
+        android:text="@string/submitQuestion" />
 
 </LinearLayout>
