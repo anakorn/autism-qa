@@ -2,7 +2,6 @@ package com.appjam.team16.fragments;
 
 import android.app.Activity;
 import android.database.Cursor;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -11,7 +10,11 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.actionbarsherlock.view.ActionMode;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.appjam.team16.R;
 import com.appjam.team16.Team16ContentProvider;
 import com.appjam.team16.db.QuestionTable;
@@ -37,14 +40,14 @@ public class QuestionListFragment extends ListFragment implements
 		super.onActivityCreated(savedInstanceState);
 		// We need to use a different list item layout for devices older than
 		// Honeycomb
-		int layout = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ? android.R.layout.simple_list_item_activated_1
-				: android.R.layout.simple_list_item_1;
+//		int layout = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ? android.R.layout.simple_list_item_activated_1
+//				: android.R.layout.simple_list_item_1;
 
-//		int layout = R.layout.action_list_item;
+		int layout = R.layout.action_list_item;
 		
 		mAdapter = new SimpleCursorAdapter(getActivity(), layout, null,
 				new String[] { QuizTable.COLUMN_TITLE },
-				new int[] { android.R.id.text1 });
+				new int[] { R.id.action_list_text });
 		setListAdapter(mAdapter);
 
 		getLoaderManager().initLoader(0, null, this);
@@ -109,5 +112,35 @@ public class QuestionListFragment extends ListFragment implements
 	public void onLoaderReset(Loader<Cursor> arg0) {
 		mAdapter.swapCursor(null);
 	}
+	
+	 private final class EditQuestionAction implements ActionMode.Callback {
+	        @Override
+	        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+	            //Used to put dark icons on light action bar
+
+	            menu.add("New Quiz")
+	            	.setIcon(android.R.drawable.ic_menu_add)
+	            	.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+	            menu.add("Delete Selected Quizzes")
+	            	.setIcon(android.R.drawable.ic_men_delete)
+	            	.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+	            return true;
+	        }
+
+	        @Override
+	        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+	            return false;
+	        }
+
+	        @Override
+	        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+	            Toast.makeText(getActivity(), "Got click: " + item, Toast.LENGTH_SHORT).show();
+	            return true;
+	        }
+
+	        @Override
+	        public void onDestroyActionMode(ActionMode mode) {
+	        }
+	    }
 
 }

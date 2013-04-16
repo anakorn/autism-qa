@@ -18,7 +18,6 @@ public class CreateQuestionActivity extends SherlockFragmentActivity implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getSupportActionBar().setHomeButtonEnabled(true);
-		getSupportActionBar().setDisplayShowTitleEnabled(false);
 		setContentView(R.layout.activity_create_question);
 		QuestionDetailFragment questionDetailFragment = new QuestionDetailFragment();
 		FragmentTransaction transcation = getSupportFragmentManager()
@@ -55,6 +54,7 @@ public class CreateQuestionActivity extends SherlockFragmentActivity implements
 		case R.id.create_quiz_item:
 			intent = new Intent(this, CreateQuizActivity.class);
 			startActivity(intent);
+			finish();
 			break;
 		case R.id.view_quizzes_item:
 			intent = new Intent(this, ViewQuizzesActivity.class);
