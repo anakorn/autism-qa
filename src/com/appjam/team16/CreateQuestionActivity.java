@@ -1,18 +1,30 @@
 package com.appjam.team16;
 
-import android.app.Activity;
+import com.appjam.team16.fragments.QuestionDetailFragment;
+import com.appjam.team16.fragments.QuestionDetailFragment.QuestionCreatedListener;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-public class AnswerQuestionActivity extends Activity  {
+public class CreateQuestionActivity extends FragmentActivity implements QuestionCreatedListener {
 
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_answer_question);
+		setContentView(R.layout.activity_create_question);
+		QuestionDetailFragment questionDetailFragment = new QuestionDetailFragment();
+		FragmentTransaction transcation = getSupportFragmentManager()
+				.beginTransaction();
+		transcation.add(R.id.createQuestionFragmentContainer,
+				questionDetailFragment);
+		transcation.commit();
 	}
+	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -53,4 +65,9 @@ public class AnswerQuestionActivity extends Activity  {
 
 	}
 
+	@Override
+	public void questionCreated() {
+		// TODO Auto-generated method stub
+		
+	}
 }

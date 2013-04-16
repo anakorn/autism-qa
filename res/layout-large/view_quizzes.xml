@@ -7,14 +7,14 @@
 
     <fragment
         android:id="@+id/quizListFragment"
-        android:name="com.appjam.team16.QuizListFragment"
+        android:name="com.appjam.team16.fragments.QuizListFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1" />
 
     <fragment
         android:id="@+id/quizDetailFragment"
-        android:name="com.appjam.team16.QuizDetailFragment"
+        android:name="com.appjam.team16.fragments.QuizDetailFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="2" />

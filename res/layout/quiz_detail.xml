@@ -4,9 +4,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/quizName"
+        android:inputType="text" />
+
     <ListView
         android:id="@+id/quizQuestionList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
 </LinearLayout>

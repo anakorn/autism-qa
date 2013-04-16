@@ -2,17 +2,11 @@ package com.appjam.team16;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-public class AnswerQuestionActivity extends Activity  {
-
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_answer_question);
-	}
+public class CreateQuizActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -52,5 +46,4 @@ public class AnswerQuestionActivity extends Activity  {
 		return false;
 
 	}
-
 }

@@ -30,10 +30,6 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_answer_question"
             android:theme="@style/FullscreenTheme" >
-        </activity>
-        <activity
-            android:name="com.appjam.team16.ListViewCheckboxesActivity"
-            android:label="Questions" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,8 +37,24 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.appjam.team16.ListViewCheckboxesActivity"
+            android:label="Questions" >
+        </activity>
+        <activity
             android:name="com.appjam.team16.ViewQuizzesActivity"
             android:label="@string/title_activity_view_quizzes" >
+        </activity>
+        <activity
+            android:name="com.appjam.team16.CreateQuizActivity"
+            android:label="@string/title_activity_create_quiz" >
+        </activity>
+        <activity
+            android:name="com.appjam.team16.ViewQuestionsActivity"
+            android:label="@string/title_activity_view_questions" >
+        </activity>
+        <activity
+            android:name="com.appjam.team16.CreateQuestionActivity"
+            android:label="@string/title_activity_create_question" >
         </activity>
 
         <provider

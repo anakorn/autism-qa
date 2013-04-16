@@ -1,4 +1,4 @@
-package com.appjam.team16;
+package com.appjam.team16.fragments;
 
 import android.app.Activity;
 import android.database.Cursor;
@@ -9,28 +9,29 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.appjam.team16.db.QuestionTable;
+import com.appjam.team16.R;
+import com.appjam.team16.Team16ContentProvider;
 import com.appjam.team16.db.QuizTable;
 
-public class QuestionListFragment extends ListFragment implements LoaderCallbacks<Cursor>{
-
-	private OnQuestionSelectedListener mCallback;
-	
-	public interface OnQuestionSelectedListener {
-		public void onQuestionSelected(long id);
+public class QuizListFragment extends ListFragment implements LoaderCallbacks<Cursor>
+{
+	public interface OnQuizSelectedListener
+	{
+		public void onQuizSelected (long id);
 	}
 	
+	private OnQuizSelectedListener mCallback;
 	private SimpleCursorAdapter mAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 	}
-
-	
 	
 	@Override
 	public void onActivityCreated (Bundle savedInstanceState)
@@ -49,7 +50,6 @@ public class QuestionListFragment extends ListFragment implements LoaderCallback
 		setListAdapter(mAdapter);
 		
 		getLoaderManager().initLoader(0, null, this);
-		refreshQuestions();
 	}
 	
 	public void refreshQuestions()
@@ -77,17 +77,17 @@ public class QuestionListFragment extends ListFragment implements LoaderCallback
 		// This makes sure that the container activity has implemented
 		// the callback interface. If not, it throws an exception.
 		try {
-			mCallback = (OnQuestionSelectedListener) activity;
+			mCallback = (OnQuizSelectedListener) activity;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
-					+ " must implement OnHeadlineSelectedListener");
+					+ " must implement OnQuizSelectedListener");
 		}
 	}
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		// Notify the parent activity of selected item
-		mCallback.onQuestionSelected(id);
+		mCallback.onQuizSelected(id);
 
 		// Set the item as checked to be highlighted when in two-pane layout
 		getListView().setItemChecked(position, true);
@@ -95,10 +95,10 @@ public class QuestionListFragment extends ListFragment implements LoaderCallback
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-		String[] projection = new String [] { QuestionTable.COLUMN_ID,
-				QuestionTable.COLUMN_TITLE};
+		String[] projection = new String [] { QuizTable.COLUMN_ID,
+				QuizTable.COLUMN_TITLE};
 		CursorLoader loader = new CursorLoader(getActivity(), 
-				Team16ContentProvider.QUESTION_URI, projection, null, null,
+				Team16ContentProvider.QUIZZES_URI, projection, null, null,
 				null);
 		return loader;
 	}
@@ -112,5 +112,4 @@ public class QuestionListFragment extends ListFragment implements LoaderCallback
 	public void onLoaderReset(Loader<Cursor> arg0) {
 		mAdapter.swapCursor(null);
 	}
-
 }

@@ -2,19 +2,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 	
     <item
-        android:id="@+id/home"
+        android:id="@+id/home_item"
         android:title="@string/home"/>
     
-    <item 
-        android:id="@+id/view_questions"
+    <item
+        android:id="@+id/create_question_item"
+        android:title="@string/create_question" />
+    
+    <item
+        android:id="@+id/view_questions_item"
         android:title="@string/view_questions" />
     
     <item
-        android:id="@+id/view_quizes"
-        android:title="@string/view_quizzes" />
+        android:id="@+id/create_quiz_item"
+        android:title="@string/create_quiz" />
     
     <item
-        android:id="@+id/create_question"
-        android:title="@string/create_question" />
+        android:id="@+id/view_quizzes_item"
+        android:title="@string/view_quizzes" />
+    
 
 </menu>

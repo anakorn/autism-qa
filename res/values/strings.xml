@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Team16</string>
+    <string name="app_name">Team 16</string>
     <string name="title_activity_answer_question">AnswerQuestion</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
@@ -9,10 +9,10 @@
     <string name="view_questions">View Questions</string>
     <string name="view_quizzes">View Quizzes</string>
     <string name="create_question">Create A Question</string>
-    <string name="title_activity_view_questions">ViewQuestionsActivity</string>
+    <string name="create_quiz">Create A Quiz</string>
+    <string name="title_activity_view_questions">View Questions</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="title_activity_view_quizzes">ViewQuizzesActivity</string>
+    <string name="title_activity_view_quizzes">View Quizzes</string>
     <string name="title">Title</string>
     <string name="question">Question</string>
     <string name="optional">Optional</string>
@@ -29,5 +29,7 @@
     <string name="deleteAudio">Delete</string>
     <string name="record">Record</string>
     <string name="submitQuestion">Add</string>
-
+    <string name="title_activity_create_question">Create Question</string>
+    <string name="title_activity_create_quiz">Create Quiz</string>
+	<string name="quizName">Quiz Name</string>
 </resources>
