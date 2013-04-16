@@ -16,15 +16,16 @@
         android:id="@+id/seekBar1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:thumbOffset="16dp" />
 
     <Button
         android:id="@+id/submitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_gravity="center_horizontal|bottom"
         android:text="@string/submitQuestion"
-        android:textSize="@dimen/textLarge"
-        android:textColor="#000000" />
+        android:textColor="#000000"
+        android:textSize="@dimen/textLarge" />
 
 </FrameLayout>

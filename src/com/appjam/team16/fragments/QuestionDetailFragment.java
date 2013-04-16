@@ -39,7 +39,7 @@ public class QuestionDetailFragment extends Fragment implements
 	private Button recordAudioButton;
 	private Button removeAudioButton;
 	private Button playbackAudioButton;
-	
+
 	private boolean editingQuestion;
 
 	@Override
@@ -76,15 +76,13 @@ public class QuestionDetailFragment extends Fragment implements
 		// the callback interface. If not, it throws an exception.
 		try {
 			mCallback = (QuestionCreatedListener) activity;
-		} catch (ClassCastException e) 
-		{
+		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
 					+ " must implement QuestionCreatedListener");
 		}
 		Log.d("com.team16.appjam", "onAttach");
 		if (getArguments() != null
-				&& getArguments().containsKey(QuestionTable.COLUMN_ID))
-		{
+				&& getArguments().containsKey(QuestionTable.COLUMN_ID)) {
 			displayQuestion(getArguments().getLong(QuestionTable.COLUMN_ID));
 		}
 	}
@@ -94,8 +92,7 @@ public class QuestionDetailFragment extends Fragment implements
 		Context context = getActivity();
 		switch (v.getId()) {
 		case R.id.save_question_bttn:
-			if (editingQuestion)
-			{
+			if (editingQuestion) {
 				Toast.makeText(context, "Editing!", Toast.LENGTH_SHORT).show();
 				break;
 			}

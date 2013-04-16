@@ -9,9 +9,7 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.appjam.team16.R;
@@ -19,13 +17,13 @@ import com.appjam.team16.Team16ContentProvider;
 import com.appjam.team16.db.QuestionTable;
 import com.appjam.team16.db.QuizTable;
 
-public class QuestionListFragment extends ListFragment implements LoaderCallbacks<Cursor>{
+public class QuestionListFragment extends ListFragment implements
+		LoaderCallbacks<Cursor> {
 
-	
 	public interface OnQuestionSelectedListener {
 		public void onQuestionSelected(long id);
 	}
-	
+
 	private OnQuestionSelectedListener mCallback;
 	private SimpleCursorAdapter mAdapter;
 
@@ -33,29 +31,24 @@ public class QuestionListFragment extends ListFragment implements LoaderCallback
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 	}
-	
-	
+
 	@Override
-	public void onActivityCreated (Bundle savedInstanceState)
-	{
+	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		// We need to use a different list item layout for devices older than
 		// Honeycomb
-		int layout = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ? 
-				android.R.layout.simple_list_item_activated_1
+		int layout = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ? android.R.layout.simple_list_item_activated_1
 				: android.R.layout.simple_list_item_1;
-		
-		mAdapter = new SimpleCursorAdapter(getActivity(),
-				layout, null, 
-				new String [] {QuizTable.COLUMN_TITLE},
-				new int [] {android.R.id.text1});
+
+		mAdapter = new SimpleCursorAdapter(getActivity(), layout, null,
+				new String[] { QuizTable.COLUMN_TITLE },
+				new int[] { android.R.id.text1 });
 		setListAdapter(mAdapter);
-		
+
 		getLoaderManager().initLoader(0, null, this);
 	}
-	
-	public void refreshQuestions()
-	{
+
+	public void refreshQuestions() {
 		getLoaderManager().restartLoader(0, null, this);
 	}
 
@@ -97,9 +90,9 @@ public class QuestionListFragment extends ListFragment implements LoaderCallback
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-		String[] projection = new String [] { QuestionTable.COLUMN_ID,
-				QuestionTable.COLUMN_TITLE};
-		CursorLoader loader = new CursorLoader(getActivity(), 
+		String[] projection = new String[] { QuestionTable.COLUMN_ID,
+				QuestionTable.COLUMN_TITLE };
+		CursorLoader loader = new CursorLoader(getActivity(),
 				Team16ContentProvider.QUESTION_URI, projection, null, null,
 				null);
 		return loader;

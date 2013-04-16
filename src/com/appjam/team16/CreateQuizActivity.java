@@ -1,12 +1,29 @@
 package com.appjam.team16;
 
+import com.appjam.team16.fragments.QuestionDetailFragment;
+import com.appjam.team16.fragments.QuizDetailFragment;
+
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-public class CreateQuizActivity extends Activity {
+public class CreateQuizActivity extends FragmentActivity {
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_create_quiz);
+		QuizDetailFragment quizDetailFragment = new QuizDetailFragment();
+		FragmentTransaction transcation = getSupportFragmentManager()
+				.beginTransaction();
+		transcation.add(R.id.createQuizFragmentContainer, quizDetailFragment);
+		transcation.commit();
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

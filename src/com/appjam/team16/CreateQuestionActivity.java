@@ -11,7 +11,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-public class CreateQuestionActivity extends FragmentActivity implements QuestionCreatedListener {
+public class CreateQuestionActivity extends FragmentActivity implements
+		QuestionCreatedListener {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -24,7 +25,6 @@ public class CreateQuestionActivity extends FragmentActivity implements Question
 				questionDetailFragment);
 		transcation.commit();
 	}
-	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -68,6 +68,6 @@ public class CreateQuestionActivity extends FragmentActivity implements Question
 	@Override
 	public void questionCreated() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

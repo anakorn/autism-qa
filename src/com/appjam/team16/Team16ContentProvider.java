@@ -205,7 +205,7 @@ public class Team16ContentProvider extends ContentProvider {
 					+ DB_NAME + " from version " + oldVersionNum
 					+ "to version " + newVersionNum
 					+ ". All existing data will be erased.");
-			
+
 			db.execSQL("DROP TABLE IF EXISTS " + QuizTable.TABLE_NAME);
 			db.execSQL("DROP TABLE IF EXISTS " + QuestionTable.TABLE_NAME);
 			db.execSQL("DROP TABLE IF EXISTS " + AnswerTable.TABLE_NAME);
