@@ -2,18 +2,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0099cc"
+    android:background="#FFFFFF"
     tools:context=".AnswerQuestionActivity" >
+    
+    
 
-    <TextView
-        android:id="@+id/fullscreen_content"
+    <ToggleButton
+     	android:layout_width="wrap_content"
+     	android:layout_height="wrap_content"
+     	android:textOff="Yes/No Button OFF"
+     	android:textOn="Yes/No Button ON"
+     	android:layout_gravity="center_horizontal"
+     	/>
+    
+    <SeekBar
+        android:id="@+id/seekBar1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:keepScreenOn="true"
-        android:text="@string/dummy_content"
-        android:textColor="#33b5e5"
-        android:textSize="50sp"
-        android:textStyle="bold" />
+        android:layout_height="wrap_content" 
+        android:layout_marginTop="350dp"
+        android:	/>
+
+    <Button
+        android:id="@=id/yesButton"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:text="Yes"
+        android:textColor="#000000"
+        android:text_size="20dp" />
+    
 
 </FrameLayout>
