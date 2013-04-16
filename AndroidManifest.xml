@@ -33,7 +33,7 @@
         </activity>
         <activity
             android:name="com.appjam.team16.ListViewCheckboxesActivity"
-            android:label="@string/title_activity_view_questions" >
+            android:label="Questions" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -62,7 +62,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/yes_no" />
-
     </LinearLayout>
 
     <TextView
@@ -134,7 +133,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/cancel" />
-
     </LinearLayout>
 
 </LinearLayout>
