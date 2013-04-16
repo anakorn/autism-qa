@@ -2,37 +2,26 @@ package com.appjam.team16;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.appjam.team16.fragments.QuestionDetailFragment;
-import com.appjam.team16.fragments.QuestionDetailFragment.QuestionCreatedListener;
 
-public class CreateQuestionActivity extends SherlockFragmentActivity implements
-		QuestionCreatedListener {
+public class HomeActivity extends SherlockActivity {
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_home);
+
 		getSupportActionBar().setHomeButtonEnabled(true);
 		getSupportActionBar().setDisplayShowTitleEnabled(false);
-		setContentView(R.layout.activity_create_question);
-		QuestionDetailFragment questionDetailFragment = new QuestionDetailFragment();
-		FragmentTransaction transcation = getSupportFragmentManager()
-				.beginTransaction();
-		transcation.add(R.id.createQuestionFragmentContainer,
-				questionDetailFragment);
-		transcation.commit();
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		MenuInflater inflater = getSupportMenuInflater();
-		inflater.inflate(R.menu.main_menu, menu);
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getSupportMenuInflater().inflate(R.menu.main_menu, menu);
 		return true;
 	}
 
@@ -67,11 +56,4 @@ public class CreateQuestionActivity extends SherlockFragmentActivity implements
 		return false;
 	}
 
-	@Override
-	public void questionCreated() {
-		Intent viewQuestions = new Intent (this, ViewQuestionsActivity.class);
-		startActivity(viewQuestions);
-		finish();
-		
-	}
 }

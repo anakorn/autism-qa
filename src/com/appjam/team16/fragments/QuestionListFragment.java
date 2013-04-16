@@ -40,6 +40,8 @@ public class QuestionListFragment extends ListFragment implements
 		int layout = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ? android.R.layout.simple_list_item_activated_1
 				: android.R.layout.simple_list_item_1;
 
+//		int layout = R.layout.action_list_item;
+		
 		mAdapter = new SimpleCursorAdapter(getActivity(), layout, null,
 				new String[] { QuizTable.COLUMN_TITLE },
 				new int[] { android.R.id.text1 });

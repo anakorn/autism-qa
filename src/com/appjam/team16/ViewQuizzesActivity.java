@@ -2,16 +2,16 @@ package com.appjam.team16;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.appjam.team16.fragments.QuizDetailFragment.QuizCreatedListener;
 import com.appjam.team16.fragments.QuizListFragment;
 import com.appjam.team16.fragments.QuizListFragment.OnQuizSelectedListener;
 
-public class ViewQuizzesActivity extends FragmentActivity implements
+public class ViewQuizzesActivity extends SherlockFragmentActivity implements
 		OnQuizSelectedListener, QuizCreatedListener {
 
 	public QuizListFragment quizList;
@@ -48,7 +48,7 @@ public class ViewQuizzesActivity extends FragmentActivity implements
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
+		MenuInflater inflater = getSupportMenuInflater();
 		inflater.inflate(R.menu.main_menu, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -57,6 +57,10 @@ public class ViewQuizzesActivity extends FragmentActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent = null;
 		switch (item.getItemId()) {
+		case android.R.id.home:
+			intent = new Intent(this, HomeActivity.class);
+			startActivity(intent);
+			break;
 		case R.id.create_question_item:
 			intent = new Intent(this, CreateQuestionActivity.class);
 			startActivity(intent);
@@ -73,16 +77,11 @@ public class ViewQuizzesActivity extends FragmentActivity implements
 			intent = new Intent(this, ViewQuizzesActivity.class);
 			startActivity(intent);
 			break;
-		case R.id.home_item:
-			intent = new Intent(this, AnswerQuestionActivity.class);
-			startActivity(intent);
-			break;
 		default:
 			break;
 
 		}
 		return false;
-
 	}
 
 	@Override

@@ -31,6 +31,9 @@
     <string name="submitQuestion">Add</string>
     <string name="title_activity_create_question">Create Question</string>
     <string name="title_activity_create_quiz">Create Quiz</string>
-	<string name="quizName">Quiz Name</string>
-	<string name="done">Done</string>
+    <string name="quizName">Quiz Name</string>
+    <string name="done">Done</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="hello_world">Hello world!</string>
+
 </resources>

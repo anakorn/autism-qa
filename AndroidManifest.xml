@@ -30,11 +30,6 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_answer_question"
             android:theme="@style/FullscreenTheme" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.appjam.team16.ListViewCheckboxesActivity"
@@ -58,9 +53,19 @@
         </activity>
 
         <provider
-            android:name=".Team16ContentProvider"
+            android:name="com.appjam.team16.Team16ContentProvider"
             android:authorities="com.appjam.team16.team16contentprovider" >
         </provider>
+
+        <activity
+            android:name="com.appjam.team16.HomeActivity"
+            android:label="@string/title_activity_home" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

@@ -2,20 +2,19 @@ package com.appjam.team16;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.widget.Toast;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.appjam.team16.db.QuestionTable;
 import com.appjam.team16.fragments.QuestionDetailFragment;
-import com.appjam.team16.fragments.QuestionListFragment;
 import com.appjam.team16.fragments.QuestionDetailFragment.QuestionCreatedListener;
+import com.appjam.team16.fragments.QuestionListFragment;
 import com.appjam.team16.fragments.QuestionListFragment.OnQuestionSelectedListener;
 
-public class ViewQuestionsActivity extends FragmentActivity implements
+public class ViewQuestionsActivity extends SherlockFragmentActivity implements
 		OnQuestionSelectedListener, QuestionCreatedListener {
 
 	public QuestionListFragment questionList;
@@ -24,7 +23,8 @@ public class ViewQuestionsActivity extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.view_questions);
-
+		getSupportActionBar().setHomeButtonEnabled(true);
+		getSupportActionBar().setDisplayShowTitleEnabled(false);
 		// we're in single pane view
 		if (findViewById(R.id.questionFragmentContainer) != null) {
 			// However, if we're being restored from a previous state,
@@ -52,7 +52,7 @@ public class ViewQuestionsActivity extends FragmentActivity implements
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
+		MenuInflater inflater = getSupportMenuInflater();
 		inflater.inflate(R.menu.main_menu, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -61,6 +61,10 @@ public class ViewQuestionsActivity extends FragmentActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent = null;
 		switch (item.getItemId()) {
+		case android.R.id.home:
+			intent = new Intent(this, HomeActivity.class);
+			startActivity(intent);
+			break;
 		case R.id.create_question_item:
 			intent = new Intent(this, CreateQuestionActivity.class);
 			startActivity(intent);
@@ -75,10 +79,6 @@ public class ViewQuestionsActivity extends FragmentActivity implements
 			break;
 		case R.id.view_quizzes_item:
 			intent = new Intent(this, ViewQuizzesActivity.class);
-			startActivity(intent);
-			break;
-		case R.id.home_item:
-			intent = new Intent(this, AnswerQuestionActivity.class);
 			startActivity(intent);
 			break;
 		default:

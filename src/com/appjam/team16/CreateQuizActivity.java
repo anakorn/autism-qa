@@ -2,16 +2,16 @@ package com.appjam.team16;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.appjam.team16.fragments.QuizDetailFragment;
 import com.appjam.team16.fragments.SelectQuestionsDialogFragment.QuestionsSelectedListener;
 
-public class CreateQuizActivity extends FragmentActivity implements
+public class CreateQuizActivity extends SherlockFragmentActivity implements
 		QuestionsSelectedListener {
 
 	private QuizDetailFragment quizDetailFragment;
@@ -20,6 +20,8 @@ public class CreateQuizActivity extends FragmentActivity implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_quiz);
+		getSupportActionBar().setDisplayShowTitleEnabled(false);
+		getSupportActionBar().setHomeButtonEnabled(true);
 		quizDetailFragment = new QuizDetailFragment();
 		FragmentTransaction transcation = getSupportFragmentManager()
 				.beginTransaction();
@@ -29,7 +31,7 @@ public class CreateQuizActivity extends FragmentActivity implements
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
+		MenuInflater inflater = getSupportMenuInflater();
 		inflater.inflate(R.menu.main_menu, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -38,6 +40,10 @@ public class CreateQuizActivity extends FragmentActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent = null;
 		switch (item.getItemId()) {
+		case android.R.id.home:
+			intent = new Intent(this, HomeActivity.class);
+			startActivity(intent);
+			break;
 		case R.id.create_question_item:
 			intent = new Intent(this, CreateQuestionActivity.class);
 			startActivity(intent);
@@ -54,21 +60,16 @@ public class CreateQuizActivity extends FragmentActivity implements
 			intent = new Intent(this, ViewQuizzesActivity.class);
 			startActivity(intent);
 			break;
-		case R.id.home_item:
-			intent = new Intent(this, AnswerQuestionActivity.class);
-			startActivity(intent);
-			break;
 		default:
 			break;
 
 		}
 		return false;
-
 	}
 
 	@Override
-	public void questionsSelected(long[] ids) {
-		// TODO Auto-generated method stub
-
+	public void questionsSelected(long[] ids) 
+	{
+		quizDetailFragment.addQuestions(ids);
 	}
 }

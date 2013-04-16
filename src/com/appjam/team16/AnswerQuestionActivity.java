@@ -34,6 +34,10 @@ public class AnswerQuestionActivity extends SherlockActivity implements OnSeekBa
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent = null;
 		switch (item.getItemId()) {
+		case android.R.id.home:
+			intent = new Intent(this, HomeActivity.class);
+			startActivity(intent);
+			break;
 		case R.id.create_question_item:
 			intent = new Intent(this, CreateQuestionActivity.class);
 			startActivity(intent);
@@ -50,16 +54,11 @@ public class AnswerQuestionActivity extends SherlockActivity implements OnSeekBa
 			intent = new Intent(this, ViewQuizzesActivity.class);
 			startActivity(intent);
 			break;
-		case R.id.home_item:
-			intent = new Intent(this, AnswerQuestionActivity.class);
-			startActivity(intent);
-			break;
 		default:
 			break;
 
 		}
 		return false;
-
 	}
 
 	@Override

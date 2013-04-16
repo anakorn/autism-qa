@@ -4,4 +4,6 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 	<dimen name="textLarge">20dp</dimen>
+	<dimen name="default_listitem_button">30dp</dimen>
+	<dimen name="default_button_padding">8dp</dimen>
 </resources>
