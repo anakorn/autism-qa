@@ -32,7 +32,7 @@
             android:theme="@style/FullscreenTheme" >
         </activity>
         <activity
-            android:name="com.appjam.team16.ViewQuestionsActivity"
+            android:name="com.appjam.team16.ListViewCheckboxesActivity"
             android:label="@string/title_activity_view_questions" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
