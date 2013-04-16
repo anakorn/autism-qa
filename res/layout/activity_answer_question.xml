@@ -16,8 +16,6 @@
         android:id="@+id/seekBar1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:progressDrawable="@drawable/slider_scale"
-        android:indeterminateDrawable="@drawable/slider_scale"
         android:layout_gravity="center"
         android:thumbOffset="16dp" />
 

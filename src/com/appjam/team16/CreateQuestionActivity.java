@@ -17,6 +17,8 @@ public class CreateQuestionActivity extends SherlockFragmentActivity implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getSupportActionBar().setHomeButtonEnabled(true);
+		getSupportActionBar().setDisplayShowTitleEnabled(false);
 		setContentView(R.layout.activity_create_question);
 		QuestionDetailFragment questionDetailFragment = new QuestionDetailFragment();
 		FragmentTransaction transcation = getSupportFragmentManager()
@@ -28,9 +30,10 @@ public class CreateQuestionActivity extends SherlockFragmentActivity implements
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
 		MenuInflater inflater = getSupportMenuInflater();
 		inflater.inflate(R.menu.main_menu, menu);
-		return super.onCreateOptionsMenu(menu);
+		return true;
 	}
 
 	@Override

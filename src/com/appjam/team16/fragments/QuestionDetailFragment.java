@@ -47,7 +47,6 @@ public class QuestionDetailFragment extends Fragment implements
 			Bundle savedInstanceState) {
 		View questionView = inflater.inflate(R.layout.question_detail,
 				container, false);
-
 		questionName = (EditText) questionView
 				.findViewById(R.id.question_title);
 		questionQuestion = (EditText) questionView
