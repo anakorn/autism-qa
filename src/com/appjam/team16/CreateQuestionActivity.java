@@ -1,17 +1,17 @@
 package com.appjam.team16;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
+
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.appjam.team16.fragments.QuestionDetailFragment;
 import com.appjam.team16.fragments.QuestionDetailFragment.QuestionCreatedListener;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-
-public class CreateQuestionActivity extends FragmentActivity implements
+public class CreateQuestionActivity extends SherlockFragmentActivity implements
 		QuestionCreatedListener {
 
 	@Override
@@ -28,7 +28,7 @@ public class CreateQuestionActivity extends FragmentActivity implements
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
+		MenuInflater inflater = getSupportMenuInflater();
 		inflater.inflate(R.menu.main_menu, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -67,7 +67,9 @@ public class CreateQuestionActivity extends FragmentActivity implements
 
 	@Override
 	public void questionCreated() {
-		// TODO Auto-generated method stub
-
+		Intent viewQuestions = new Intent (this, ViewQuestionsActivity.class);
+		startActivity(viewQuestions);
+		finish();
+		
 	}
 }

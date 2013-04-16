@@ -1,9 +1,5 @@
 package com.appjam.team16;
 
-import com.appjam.team16.fragments.QuestionDetailFragment;
-import com.appjam.team16.fragments.QuizDetailFragment;
-
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -12,13 +8,19 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-public class CreateQuizActivity extends FragmentActivity {
+import com.appjam.team16.fragments.QuizDetailFragment;
+import com.appjam.team16.fragments.SelectQuestionsDialogFragment.QuestionsSelectedListener;
+
+public class CreateQuizActivity extends FragmentActivity implements
+		QuestionsSelectedListener {
+
+	private QuizDetailFragment quizDetailFragment;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_quiz);
-		QuizDetailFragment quizDetailFragment = new QuizDetailFragment();
+		quizDetailFragment = new QuizDetailFragment();
 		FragmentTransaction transcation = getSupportFragmentManager()
 				.beginTransaction();
 		transcation.add(R.id.createQuizFragmentContainer, quizDetailFragment);
@@ -61,6 +63,12 @@ public class CreateQuizActivity extends FragmentActivity {
 
 		}
 		return false;
+
+	}
+
+	@Override
+	public void questionsSelected(long[] ids) {
+		// TODO Auto-generated method stub
 
 	}
 }

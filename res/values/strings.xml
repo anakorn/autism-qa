@@ -32,4 +32,5 @@
     <string name="title_activity_create_question">Create Question</string>
     <string name="title_activity_create_quiz">Create Quiz</string>
 	<string name="quizName">Quiz Name</string>
+	<string name="done">Done</string>
 </resources>

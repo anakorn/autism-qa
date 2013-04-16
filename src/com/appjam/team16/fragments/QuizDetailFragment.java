@@ -22,6 +22,7 @@ public class QuizDetailFragment extends Fragment implements
 	public interface QuizCreatedListener {
 		public void onQuizCreated();
 	}
+	
 
 	private ListView questionsList;
 	private EditText title;
@@ -67,7 +68,8 @@ public class QuizDetailFragment extends Fragment implements
 	
 	private void addQuestion()
 	{
-		
+		SelectQuestionsDialogFragment select = SelectQuestionsDialogFragment.newInstance(new long[]{1l});
+		select.show(getFragmentManager(), "dialog");
 	}
 
 	@Override
