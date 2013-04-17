@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.appjam.team16.db.AnswerTable;
@@ -36,7 +37,7 @@ public class Team16ContentProvider extends ContentProvider {
 	private static final int QUIZ_ID = 4;
 	private static final int QUESTION_QUIZZES = 5;
 	private static final int QUESTION_QUIZ_ID = 6;
-	private static final int ANSWERS = 7;
+	private static final int ANSWER_ID = 7;
 
 	private static final UriMatcher uriMatcher;
 
@@ -48,7 +49,7 @@ public class Team16ContentProvider extends ContentProvider {
 		uriMatcher.addURI(AUTHORITY, "quizzes/#", QUIZ_ID);
 		uriMatcher.addURI(AUTHORITY, "questionQuiz", QUESTION_QUIZZES);
 		uriMatcher.addURI(AUTHORITY, "questionQuiz/#", QUESTION_QUIZ_ID);
-		uriMatcher.addURI(AUTHORITY, "answers/#", ANSWERS);
+		uriMatcher.addURI(AUTHORITY, "answers/#", ANSWER_ID);
 
 	}
 
@@ -78,7 +79,7 @@ public class Team16ContentProvider extends ContentProvider {
 			return "vnd.android.cursor.item/vnd.team16.questions";
 		case QUESTION_QUIZ_ID:
 			return "vnd.android.cursor.dir/vnd.team16.questions";
-		case ANSWERS:
+		case ANSWER_ID:
 			return "vnd.android.cursor.dir/vnd.team16.answer";
 		default:
 			throw new IllegalArgumentException("Unsupported URI: " + uri);
@@ -122,7 +123,7 @@ public class Team16ContentProvider extends ContentProvider {
 		case QUESTION_QUIZZES:
 			queryBuilder.setTables(QuizQuestionTable.TABLE_NAME);
 			break;
-		case ANSWERS:
+		case ANSWER_ID:
 			queryBuilder.setTables(AnswerTable.TABLE_NAME);
 			String questionForiegnKey = uri.getPathSegments().get(1);
 			queryBuilder.appendWhereEscapeString(AnswerTable.COLUMN_QUESTION_ID
@@ -154,7 +155,7 @@ public class Team16ContentProvider extends ContentProvider {
 		case QUESTION_QUIZZES:
 			tableName = QuizQuestionTable.TABLE_NAME;
 			tableUri = QUESTION_QUIZZES_URI;
-		case ANSWERS:
+		case ANSWER_ID:
 			tableName = AnswerTable.TABLE_NAME;
 			tableUri = ANSWERS_URI;
 		}
@@ -170,8 +171,53 @@ public class Team16ContentProvider extends ContentProvider {
 	}
 
 	@Override
-	public int delete(Uri url, String where, String[] whereArgs) {
-		return 0;
+	public int delete(Uri uri, String where, String[] whereArgs) {
+
+		SQLiteDatabase db = myOpenHelper.getWritableDatabase();
+		String tableName = "";
+		String query = "";
+
+		switch (uriMatcher.match(uri)) {
+		case QUESTION_ID:
+			tableName = QuestionTable.TABLE_NAME;
+			String questionId = uri.getPathSegments().get(1);
+			query = QuestionTable.COLUMN_ID + "=" + questionId;
+			break;
+		case QUESTIONS:
+			tableName = QuestionTable.TABLE_NAME;
+			query = "1=1";
+			break;
+		case QUIZ_ID:
+			tableName = QuizTable.TABLE_NAME;
+			String quizId = uri.getPathSegments().get(1);
+			query = QuizTable.COLUMN_ID + "=" + quizId;
+			break;
+		case QUIZZES:
+			tableName = QuizTable.TABLE_NAME;
+			query = "1=1";
+			break;
+		case QUESTION_QUIZ_ID:
+			tableName = QuizQuestionTable.TABLE_NAME;
+			String questionForiegnKey = uri.getPathSegments().get(1);
+			query = QuestionTable.COLUMN_ID + "=" + questionForiegnKey;
+			break;
+		case QUESTION_QUIZZES:
+			tableName = QuizQuestionTable.TABLE_NAME;
+			query = "1=1";
+			break;
+		case ANSWER_ID:
+			tableName = AnswerTable.TABLE_NAME;
+			String questionForiegnKey2 = uri.getPathSegments().get(1);
+			query = AnswerTable.COLUMN_QUESTION_ID + "=" + questionForiegnKey2;
+		default:
+			break;
+		}
+
+		int count = db.delete(tableName, query
+				+ (!TextUtils.isEmpty(where) ? " AND (" + where + ')' : ""),
+				whereArgs);
+		getContext().getContentResolver().notifyChange(uri, null);
+		return count;
 	}
 
 	@Override

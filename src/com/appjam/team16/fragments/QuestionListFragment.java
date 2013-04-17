@@ -4,17 +4,18 @@ import java.util.HashSet;
 import java.util.Set;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.ActionMode;
@@ -35,9 +36,9 @@ public class QuestionListFragment extends ListFragment implements
 	}
 
 	private OnQuestionSelectedListener mCallback;
-	private SimpleCursorAdapter mAdapter;
+	private ActionListCursorAdapter mAdapter;
 	private Set<Long> selectedIds;
-	private ActionMode mode;
+	private ActionMode mMode;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -95,15 +96,6 @@ public class QuestionListFragment extends ListFragment implements
 	}
 
 	@Override
-	public void onListItemClick(ListView l, View v, int position, long id) {
-		// Notify the parent activity of selected item
-		mCallback.onQuestionSelected(id);
-
-		// Set the item as checked to be highlighted when in two-pane layout
-		getListView().setItemChecked(position, true);
-	}
-
-	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
 		String[] projection = new String[] { QuestionTable.COLUMN_ID,
 				QuestionTable.COLUMN_TITLE };
@@ -115,6 +107,13 @@ public class QuestionListFragment extends ListFragment implements
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> arg0, Cursor arg1) {
+		Log.d("com.team16.appjam", "Loader done " + arg1.getCount());
+		while (arg1.moveToNext()) {
+			Log.d("com.team16.appjam",
+					""
+							+ arg1.getLong(arg1
+									.getColumnIndexOrThrow(QuestionTable.COLUMN_ID)));
+		}
 		mAdapter.swapCursor(arg1);
 	}
 
@@ -143,37 +142,80 @@ public class QuestionListFragment extends ListFragment implements
 
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-			Toast.makeText(getActivity(), "Got click: " + item,
-					Toast.LENGTH_SHORT).show();
+			if (item.getTitle().equals("New Quiz")) {
+				createQuiz();
+			} else {
+				deleteQuestions();
+			}
 			return true;
 		}
 
 		@Override
 		public void onDestroyActionMode(ActionMode mode) {
+			Log.d("com.team16.appjam", "Delete");
+			int childCount = getListView().getChildCount();
+			for (int i = 0; i < childCount; i++) {
+				View v = getListView().getChildAt(i);
+				CheckBox box = (CheckBox) v
+						.findViewById(R.id.action_list_checkbox);
+				box.setChecked(false);
+			}
+			mMode = null;
+			selectedIds.clear();
+		}
+	}
+
+	private void createQuiz() {
+
+	}
+
+	private void deleteQuestions() {
+		Uri uri = Team16ContentProvider.QUESTION_URI;
+		ContentResolver cr = getActivity().getContentResolver();
+		String selection = QuestionTable.COLUMN_ID + " in (";
+		String[] selectionArgs = new String[selectedIds.size()];
+		int counter = 0;
+		for (Long l : selectedIds) {
+			selection += "?, ";
+			selectionArgs[counter++] = "" + l;
+		}
+		selection = selection.substring(0, selection.length() - 2);
+		selection += ")";
+		Log.d("com.team16.appjam",
+				"" + cr.delete(uri, selection, selectionArgs));
+		getLoaderManager().restartLoader(0, null, this);
+		if (mMode != null) {
+			mMode.finish();
+			mMode = null;
 		}
 	}
 
 	@Override
 	public void editButtonClicked(long id) {
 		Log.d("com.team16.appjam", "Edit button clicked");
+		if (mMode != null) {
+			mMode.finish();
+			mMode = null;
+		}
+		mCallback.onQuestionSelected(id);
 	}
 
 	@Override
 	public void checkboxChecked(long id) {
+		Log.d("com.team16.appjam", "checked - " + id);
 		selectedIds.add(id);
-		if (mode == null)
-		{
+		if (mMode == null) {
 			SherlockFragmentActivity activity = (SherlockFragmentActivity) getActivity();
-			mode = activity.startActionMode(new EditQuestionActionMode());
+			mMode = activity.startActionMode(new EditQuestionActionMode());
 		}
 	}
 
 	@Override
 	public void checkboxUnchecked(long id) {
 		selectedIds.remove(id);
-		if (selectedIds.isEmpty() && mode != null) {
-			mode.finish();
-			mode = null;
+		if (selectedIds.isEmpty() && mMode != null) {
+			mMode.finish();
+			mMode = null;
 		}
 	}
 

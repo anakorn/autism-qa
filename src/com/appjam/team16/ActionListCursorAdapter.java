@@ -3,6 +3,7 @@ package com.appjam.team16;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +41,10 @@ public class ActionListCursorAdapter extends SimpleCursorAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		long t_id = -1;
 		String t_title = "";
+		Log.d("com.team16.appjam", "Moving to cursor position " + position);
+		mCursor.moveToFirst();
 		if (mCursor.move(position)) {
+			Log.d("com.team16.appjam", "Moving to");
 			t_id = mCursor.getLong(mCursor
 					.getColumnIndexOrThrow(QuestionTable.COLUMN_ID));
 			t_title = mCursor.getString(mCursor
@@ -92,5 +96,5 @@ public class ActionListCursorAdapter extends SimpleCursorAdapter {
 		holder.text.setText(title);
 		return convertView;
 	}
-
+	
 }

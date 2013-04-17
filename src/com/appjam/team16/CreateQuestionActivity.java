@@ -69,9 +69,9 @@ public class CreateQuestionActivity extends SherlockFragmentActivity implements
 
 	@Override
 	public void questionCreated() {
-		Intent viewQuestions = new Intent (this, ViewQuestionsActivity.class);
+		Intent viewQuestions = new Intent(this, ViewQuestionsActivity.class);
 		startActivity(viewQuestions);
 		finish();
-		
+
 	}
 }

@@ -108,7 +108,8 @@ public class QuestionDetailFragment extends Fragment implements
 					System.currentTimeMillis());
 			values.put(QuestionTable.COLUMN_MODIFY_TIMESTAMP,
 					System.currentTimeMillis());
-			cr.insert(Team16ContentProvider.QUESTION_URI, values);
+			Uri uri = cr.insert(Team16ContentProvider.QUESTION_URI, values);
+			Log.d("com.team16.appjam", uri.toString());
 			mCallback.questionCreated();
 			break;
 

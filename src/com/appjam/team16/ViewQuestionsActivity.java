@@ -53,7 +53,7 @@ public class ViewQuestionsActivity extends SherlockFragmentActivity implements
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getSupportMenuInflater();
-		inflater.inflate(R.menu.main_menu, menu);
+		inflater.inflate(R.menu.view_questions_menu, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 

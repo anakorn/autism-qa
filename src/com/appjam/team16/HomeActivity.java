@@ -17,7 +17,7 @@ public class HomeActivity extends SherlockActivity implements OnSeekBarChangeLis
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_answer_question);
+		setContentView(R.layout.activity_home);
 		seekBar = (SeekBar) findViewById (R.id.seekBar1);
 		seekBar.setOnSeekBarChangeListener(this);
 		seekBar.setMax(SEEKBAR_MAX);
