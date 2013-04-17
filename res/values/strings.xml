@@ -35,5 +35,7 @@
     <string name="done">Done</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="add_question_to_quiz">Add Question</string>
+    <string name="save_quiz">Save Quiz</string>
 
 </resources>

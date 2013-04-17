@@ -9,10 +9,11 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.appjam.team16.fragments.QuizDetailFragment;
+import com.appjam.team16.fragments.QuizDetailFragment.OnQuizCreatedListener;
 import com.appjam.team16.fragments.SelectQuestionsDialogFragment.QuestionsSelectedListener;
 
 public class CreateQuizActivity extends SherlockFragmentActivity implements
-		QuestionsSelectedListener {
+		QuestionsSelectedListener, OnQuizCreatedListener {
 
 	private QuizDetailFragment quizDetailFragment;
 
@@ -71,5 +72,13 @@ public class CreateQuizActivity extends SherlockFragmentActivity implements
 	public void questionsSelected(long[] ids) 
 	{
 		quizDetailFragment.addQuestions(ids);
+	}
+
+	@Override
+	public void onQuizCreated() {
+		Intent intent = new Intent(this, ViewQuizzesActivity.class);
+		startActivity(intent);
+		finish();
+		
 	}
 }

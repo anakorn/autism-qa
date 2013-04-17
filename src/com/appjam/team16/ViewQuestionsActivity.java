@@ -20,7 +20,7 @@ public class ViewQuestionsActivity extends SherlockFragmentActivity implements
 	public QuestionListFragment questionList;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.view_questions);
 		getSupportActionBar().setHomeButtonEnabled(true);

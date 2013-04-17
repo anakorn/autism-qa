@@ -12,7 +12,6 @@ import android.content.DialogInterface;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -26,11 +25,12 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.SherlockFragment;
 import com.appjam.team16.R;
 import com.appjam.team16.Team16ContentProvider;
 import com.appjam.team16.db.QuestionTable;
 
-public class QuestionDetailFragment extends Fragment implements
+public class QuestionDetailFragment extends SherlockFragment implements
 		View.OnClickListener, LoaderCallbacks<Cursor> {
 
 	public interface QuestionCreatedListener {

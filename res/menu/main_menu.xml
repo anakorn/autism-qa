@@ -1,25 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
-	
-    <item
+<menu xmlns:android="http://schemas.android.com/apk/res/android" ><item
         android:id="@+id/create_question_item"
         android:showAsAction="never"
-        android:title="@string/create_question" />
-    
+        android:title="@string/create_question"/>
     <item
         android:id="@+id/view_questions_item"
         android:showAsAction="never"
-        android:title="@string/view_questions" />
-    
+        android:title="@string/view_questions"/>
     <item
         android:id="@+id/create_quiz_item"
         android:showAsAction="never"
-        android:title="@string/create_quiz" />
-    
+        android:title="@string/create_quiz"/>
     <item
         android:id="@+id/view_quizzes_item"
         android:showAsAction="never"
-        android:title="@string/view_quizzes" />
-    
+        android:title="@string/view_quizzes"/>
 
 </menu>

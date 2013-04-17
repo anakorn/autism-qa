@@ -8,7 +8,6 @@ import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -18,6 +17,7 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -28,7 +28,7 @@ import com.appjam.team16.Team16ContentProvider;
 import com.appjam.team16.db.QuestionTable;
 import com.appjam.team16.db.QuizTable;
 
-public class QuestionListFragment extends ListFragment implements
+public class QuestionListFragment extends SherlockListFragment implements
 		LoaderCallbacks<Cursor>, CursorAdapterListener {
 
 	public interface OnQuestionSelectedListener {
