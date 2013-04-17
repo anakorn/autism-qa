@@ -6,4 +6,5 @@
 	<dimen name="textLarge">20dp</dimen>
 	<dimen name="default_listitem_button">30dp</dimen>
 	<dimen name="default_button_padding">8dp</dimen>
+	<dimen name="default_touch_height">48dp</dimen>
 </resources>
