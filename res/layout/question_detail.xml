@@ -9,7 +9,9 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin" >
 
         <TextView
             android:id="@+id/title_label"
@@ -96,36 +98,12 @@
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/activity_vertical_margin"
             android:text="@string/question_in" />
-
-        <TableLayout
-            android:id="@+id/quiz_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <TableRow
-                android:id="@+id/tableRow1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-            </TableRow>
-
-            <TableRow
-                android:id="@+id/tableRow2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-            </TableRow>
-
-            <TableRow
-                android:id="@+id/tableRow3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-            </TableRow>
-
-            <TableRow
-                android:id="@+id/tableRow4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-            </TableRow>
-        </TableLayout>
+        <ListView
+            android:id="@+id/list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:text="@string/question_in" />
 
         <Button
             android:id="@+id/add_to_quiz_button"
