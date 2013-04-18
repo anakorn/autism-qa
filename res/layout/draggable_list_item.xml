@@ -16,13 +16,12 @@
 
     <ImageView
         android:id="@+id/draggable_list_item_grip"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/default_listitem_button"
+        android:layout_width="@dimen/default_listitem_button"
+        android:layout_height="fill_parent"
         android:layout_gravity="center_vertical"
         android:layout_weight="0"
         android:background="@drawable/grip"
         android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:padding="@dimen/default_button_padding" />
+        android:focusableInTouchMode="false" />
 
 </LinearLayout>
