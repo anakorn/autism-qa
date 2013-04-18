@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import android.app.Activity;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
@@ -15,7 +16,6 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,8 +29,8 @@ import com.actionbarsherlock.view.MenuItem;
 import com.appjam.team16.R;
 import com.appjam.team16.Team16ContentProvider;
 import com.appjam.team16.db.QuestionTable;
+import com.appjam.team16.db.QuizQuestionTable;
 import com.appjam.team16.db.QuizTable;
-import com.appjam.team16.fragments.QuizListFragment.OnQuizSelectedListener;
 
 public class QuizDetailFragment extends SherlockFragment implements
 		LoaderCallbacks<Cursor> {
@@ -66,32 +66,6 @@ public class QuizDetailFragment extends SherlockFragment implements
 		questionsList = (ListView) quizView.findViewById(R.id.quizQuestionList);
 		title = (EditText) quizView.findViewById(R.id.quizTitle);
 
-		View headerView = inflater.inflate(R.layout.quiz_list_header, null);
-		View footerView = inflater.inflate(R.layout.quiz_list_footer, null);
-
-		submitQuizButton = (Button) footerView
-				.findViewById(R.id.quizFooterButton);
-		submitQuizButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				saveQuiz();
-			}
-		});
-		addQuestionButton = (Button) headerView
-				.findViewById(R.id.quizHeaderButton);
-
-		addQuestionButton.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				addQuestion();
-			}
-		});
-
-		questionsList.addHeaderView(headerView, null, false);
-		questionsList.addFooterView(footerView, null, false);
-
 		String[] from = new String[] { QuestionTable.COLUMN_TITLE };
 		int[] to = new int[] { android.R.id.text1 };
 
@@ -114,10 +88,14 @@ public class QuizDetailFragment extends SherlockFragment implements
 			throw new ClassCastException(activity.toString()
 					+ " must implement OnQuizCreatedListener");
 		}
+		if (getArguments() != null
+				&& getArguments().containsKey(QuizTable.COLUMN_ID))
+			displayQuiz(getArguments().getLong(QuizTable.COLUMN_ID));
 	}
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		menu.clear();
 		inflater.inflate(R.menu.create_quiz_menu, menu);
 		super.onCreateOptionsMenu(menu, inflater);
 	}
@@ -126,17 +104,25 @@ public class QuizDetailFragment extends SherlockFragment implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.add_question_to_quiz:
-			return true;
+			addQuestionToQuiz();
+			return false;
 		case R.id.save_quiz:
+			saveQuiz();
 			return true;
 		default:
 			return false;
 		}
 	}
 
-	private void addQuestion() {
+	private void addQuestionToQuiz() {
+		long[] selectedIds = new long[ids.size()];
+		int counter = 0;
+		for (Long l : ids) {
+			selectedIds[counter++] = l;
+		}
+
 		SelectQuestionsDialogFragment select = SelectQuestionsDialogFragment
-				.newInstance(new long[] { 1l });
+				.newInstance(selectedIds);
 		select.show(getFragmentManager(), "dialog");
 	}
 
@@ -152,7 +138,25 @@ public class QuizDetailFragment extends SherlockFragment implements
 			cv.put(QuizTable.COLUMN_MODIFY_TIMESTAMP,
 					System.currentTimeMillis());
 			Uri row = getActivity().getContentResolver().insert(uri, cv);
-			int id = Integer.parseInt(row.getPathSegments().get(1));
+			int quiz_id = Integer.parseInt(row.getPathSegments().get(1));
+			Log.d("com.team16.appjam", "Added quiz with id of " + quiz_id);
+			
+			uri = Team16ContentProvider.QUESTION_QUIZZES_URI;
+			cv = new ContentValues();
+			int counter = 0;
+			for (long id : ids) {
+				counter++;
+				cv = new ContentValues();
+				cv.put(QuizQuestionTable.COLUMN_ID, quiz_id);
+				cv.put(QuizQuestionTable.COLUMN_QUESTION_ID, id);
+				cv.put(QuizQuestionTable.COLUMN_QUIZ_POSITION, counter);
+				Uri newRow = getActivity().getContentResolver().insert(uri, cv);
+				if (newRow == null)
+					Log.d("com.team16.appjam", "Dead");
+			}
+			Log.d("com.team16.appjam", "Added " + counter + " questions to quiz");
+			ids.clear();
+
 			callback.onQuizCreated();
 		} else
 			Toast.makeText(getActivity(), "Editing", Toast.LENGTH_SHORT);
@@ -181,13 +185,25 @@ public class QuizDetailFragment extends SherlockFragment implements
 			return new CursorLoader(getActivity(), uri, projection, selection,
 					selectionArgs, null);
 		} else {
-			return null;
+			String[] projection = new String[] { QuizTable.COLUMN_ID, QuizTable.COLUMN_TITLE,
+					QuizQuestionTable.COLUMN_QUESTION_ID };
+			Uri uri = ContentUris.withAppendedId(
+					Team16ContentProvider.QUESTION_QUIZZES_URI, id);
+			return new CursorLoader(getActivity(), uri, projection, null, null,
+					null);
 		}
 	}
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> arg0, Cursor data) {
+		Log.d("com.team16.appjam", "Load finished with data cursor size of " + data.getCount());
 		adapter.swapCursor(data);
+		if (data.moveToFirst())
+			if (data.getColumnIndex(QuizTable.COLUMN_TITLE) != -1) {
+				data.moveToFirst();
+				title.setText(data.getString(data
+						.getColumnIndex(QuizTable.COLUMN_TITLE)));
+			}
 	}
 
 	@Override
@@ -196,18 +212,21 @@ public class QuizDetailFragment extends SherlockFragment implements
 	}
 
 	public void addQuestions(long[] newIds) {
-		for (long newId : newIds)
-			ids.add(newId);
-		long[] idsArray = new long[ids.size()];
-		int counter = 0;
-		for (long id : ids)
-			idsArray[counter++] = id;
-		Bundle selectIds = new Bundle();
-		selectIds.putLongArray(IDS_KEY, idsArray);
-		getLoaderManager().restartLoader(0, selectIds, this);
+		if (newIds.length > 0) {
+			for (long newId : newIds)
+				ids.add(newId);
+			long[] idsArray = new long[ids.size()];
+			int counter = 0;
+			for (long id : ids)
+				idsArray[counter++] = id;
+			Bundle selectIds = new Bundle();
+			selectIds.putLongArray(IDS_KEY, idsArray);
+			getLoaderManager().restartLoader(0, selectIds, this);
+		}
 	}
 
 	public void displayQuiz(long id) {
+		Log.d("com.team16.appjam", "Display quiz of id " + id);
 		editingQuiz = true;
 		getLoaderManager().initLoader((int) id, null, this);
 	}

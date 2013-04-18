@@ -7,11 +7,9 @@
     tools:context=".NewQuestionActivity" >
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin" >
+        android:orientation="vertical" >
 
         <TextView
             android:id="@+id/title_label"
@@ -98,20 +96,20 @@
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/activity_vertical_margin"
             android:text="@string/question_in" />
+
         <ListView
             android:id="@+id/list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:text="@string/question_in" />
+            android:paddingTop="@dimen/activity_vertical_margin" />
 
         <Button
             android:id="@+id/add_to_quiz_button"
-            android:layout_width="218dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:text="@string/add_to_quiz" />
+            android:text="@string/add_to_quizzes" />
 
         <LinearLayout
             android:layout_width="match_parent"

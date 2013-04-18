@@ -12,4 +12,25 @@
         android:layout_gravity="center"
         android:thumbOffset="16dp" />
 
+    <LinearLayout
+        android:id="@+id/yesNoLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/yesButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/yes" />
+
+        <Button
+            android:id="@+id/noButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no" >
+        </Button>
+    </LinearLayout>
+
 </FrameLayout>

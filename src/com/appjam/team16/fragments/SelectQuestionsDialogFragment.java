@@ -6,6 +6,7 @@ import java.util.Set;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.database.Cursor;
@@ -15,19 +16,22 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.appjam.team16.R;
 import com.appjam.team16.Team16ContentProvider;
 import com.appjam.team16.db.QuestionTable;
 
-public class SelectQuestionsDialogFragment extends SherlockDialogFragment implements
-		LoaderCallbacks<Cursor>, OnItemClickListener {
+public class SelectQuestionsDialogFragment extends SherlockDialogFragment
+		implements LoaderCallbacks<Cursor>, OnItemClickListener {
 
 	public interface QuestionsSelectedListener {
 		public void questionsSelected(long[] ids);
@@ -52,19 +56,23 @@ public class SelectQuestionsDialogFragment extends SherlockDialogFragment implem
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		super.onCreateDialog(savedInstanceState);
-		
+
 		ids = new HashSet<Long>();
-		
 		String[] from = new String[] { QuestionTable.COLUMN_TITLE };
 		int[] to = new int[] { R.id.selectable_text };
-		adapter = new SimpleCursorAdapter(getActivity(),
+		adapter = new CustomCursorAdapter(getActivity(),
 				R.layout.selectable_list_item, null, from, to);
 		getLoaderManager().initLoader(0, null, this);
 
-		ListView myView = (ListView) getActivity().getLayoutInflater()
-				.inflate(R.layout.simple_listview, null);
+		ListView myView = (ListView) getActivity().getLayoutInflater().inflate(
+				R.layout.simple_listview, null);
 		myView.setOnItemClickListener(this);
 		myView.setAdapter(adapter);
+		
+		//Add the ids we've already selected
+		if (getArguments() != null) 
+			for (long l : getArguments().getLongArray(ADDED_KEYS)) 
+				ids.add(l);
 
 		return new AlertDialog.Builder(getActivity()).setCancelable(true)
 				.setTitle(FRAGMENT_TITLE)
@@ -80,16 +88,15 @@ public class SelectQuestionsDialogFragment extends SherlockDialogFragment implem
 					public void onClick(DialogInterface dialog, int which) {
 						negativeButtonClicked();
 					}
-				})
-				.setView(myView)
-				.create();
+				}).setView(myView).create();
 	}
 
 	private void positiveButtonClicked() {
 		int counter = 0;
 		long[] ids = new long[this.ids.size()];
-		for (Long l: this.ids)
+		for (Long l : this.ids)
 			ids[counter++] = l;
+		Log.d("com.team16.appjam", this.ids.toString());
 		callback.questionsSelected(ids);
 	}
 
@@ -141,6 +148,60 @@ public class SelectQuestionsDialogFragment extends SherlockDialogFragment implem
 		else
 			ids.add(arg3);
 		box.setChecked(!alreadyChecked);
+	}
+
+	private class CustomCursorAdapter extends SimpleCursorAdapter {
+
+		public CustomCursorAdapter(Context context, int layout, Cursor c,
+				String[] from, int[] to) {
+			super(context, layout, c, from, to);
+		}
+
+		class ViewHolder {
+			CheckBox box;
+			TextView text;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			long t_id = -1;
+			String t_title = "";
+			mCursor.moveToFirst();
+			if (mCursor.move(position)) {
+				t_id = mCursor.getLong(mCursor
+						.getColumnIndexOrThrow(QuestionTable.COLUMN_ID));
+				t_title = mCursor.getString(mCursor
+						.getColumnIndex(QuestionTable.COLUMN_TITLE));
+			}
+			final long id = t_id;
+			final String title = t_title;
+
+			ViewHolder holder = null;
+			if (convertView == null) {
+				LayoutInflater vi = (LayoutInflater) mContext
+						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				convertView = vi.inflate(R.layout.selectable_list_item, null);
+
+				holder = new ViewHolder();
+
+				final CheckBox box = (CheckBox) convertView
+						.findViewById(R.id.selectable_checkbox);
+
+				holder.box = box;
+				holder.text = (TextView) convertView
+						.findViewById(R.id.selectable_text);
+				if (ids.contains(t_id)) {
+					holder.box.setChecked(true);	
+				}
+				convertView.setTag(holder);
+			} else {
+				holder = (ViewHolder) convertView.getTag();
+			}
+
+			holder.text.setText(title);
+			return convertView;
+		}
+
 	}
 
 }

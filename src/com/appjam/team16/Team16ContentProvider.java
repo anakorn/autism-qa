@@ -115,13 +115,16 @@ public class Team16ContentProvider extends ContentProvider {
 			queryBuilder.setTables(QuizTable.TABLE_NAME);
 			break;
 		case QUESTION_QUIZ_ID:
-			queryBuilder.setTables(QuizQuestionTable.TABLE_NAME);
+			Log.d("com.team16.appjam", "In QUESTION_QUIZ_ID");
+			queryBuilder.setTables(QuizQuestionTable.TABLE_NAME + " natural join "
+					+ QuizTable.TABLE_NAME);
 			String quizForiegnKey = uri.getPathSegments().get(1);
 			queryBuilder.appendWhere(QuizQuestionTable.COLUMN_ID + "="
 					+ quizForiegnKey);
 			break;
 		case QUESTION_QUIZZES:
-			queryBuilder.setTables(QuizQuestionTable.TABLE_NAME);
+			queryBuilder.setTables(QuizQuestionTable.TABLE_NAME + " natural join "
+					+ QuizTable.TABLE_NAME);
 			break;
 		case ANSWER_ID:
 			queryBuilder.setTables(AnswerTable.TABLE_NAME);
@@ -153,14 +156,19 @@ public class Team16ContentProvider extends ContentProvider {
 			tableUri = QUIZZES_URI;
 			break;
 		case QUESTION_QUIZZES:
+			Log.d("com.team16.appjam", "Fell into question quizzes");
 			tableName = QuizQuestionTable.TABLE_NAME;
 			tableUri = QUESTION_QUIZZES_URI;
+			break;
 		case ANSWER_ID:
 			tableName = AnswerTable.TABLE_NAME;
 			tableUri = ANSWERS_URI;
+			break;
 		}
 
+		Log.d("com.team16.appjam", "Inserting into table " + tableName);
 		long id = db.insert(tableName, nullColumnHack, contentValues);
+		Log.d("com.appjam.team16", ""+id);
 		if (id > -1) {
 			Uri insertedId = ContentUris.withAppendedId(tableUri, id);
 			getContext().getContentResolver().notifyChange(tableUri, null);
@@ -197,7 +205,8 @@ public class Team16ContentProvider extends ContentProvider {
 			query = "1=1";
 			break;
 		case QUESTION_QUIZ_ID:
-			tableName = QuizQuestionTable.TABLE_NAME;
+			tableName = QuizQuestionTable.TABLE_NAME + ", "
+					+ QuizTable.TABLE_NAME;
 			String questionForiegnKey = uri.getPathSegments().get(1);
 			query = QuestionTable.COLUMN_ID + "=" + questionForiegnKey;
 			break;

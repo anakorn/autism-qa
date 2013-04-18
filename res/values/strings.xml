@@ -21,7 +21,7 @@
     <string name="scale">Scale</string>
     <string name="yes_no">Yes/No</string>
     <string name="question_in">This Question is in</string>
-    <string name="add_to_quiz">Add To Quiz</string>
+    <string name="add_to_quizzes">Add To Quiz(es)</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="record_question">Record Question</string>
@@ -37,5 +37,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="add_question_to_quiz">Add Question</string>
     <string name="save_quiz">Save Quiz</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
 </resources>

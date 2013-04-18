@@ -166,7 +166,7 @@ public class QuestionListFragment extends SherlockListFragment implements
 	}
 
 	private void createQuiz() {
-
+		
 	}
 
 	private void deleteQuestions() {

@@ -101,10 +101,10 @@ public class ViewQuizzesActivity extends SherlockFragmentActivity implements
 
 	@Override
 	public void onQuizSelected(long id) {
+		Log.d("com.team16.appjam", "onQuizSelected");
 		// Capture the article fragment from the activity layout
 		QuizDetailFragment detailFrag = (QuizDetailFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.quizDetailFragment);
-
 		if (detailFrag != null) {
 			// If article frag is available, we're in two-pane layout...
 
@@ -121,7 +121,7 @@ public class ViewQuizzesActivity extends SherlockFragmentActivity implements
 
 			FragmentTransaction transaction = getSupportFragmentManager()
 					.beginTransaction();
-			transaction.replace(R.id.quizDetailFragment, detailFragment);
+			transaction.replace(R.id.quizFragmentContainer, detailFragment);
 			transaction.addToBackStack(null);
 
 			transaction.commit();
@@ -130,8 +130,7 @@ public class ViewQuizzesActivity extends SherlockFragmentActivity implements
 
 	@Override
 	public void questionsSelected(long[] ids) {
-		// TODO Auto-generated method stub
-
+		//TODO: Set this up for tablet layouts
 	}
 
 }
