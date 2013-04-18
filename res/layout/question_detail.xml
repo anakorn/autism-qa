@@ -22,7 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="@string/optional" >
+            android:hint="@string/optional"
+            android:inputType="text" >
 
             <requestFocus />
         </EditText>

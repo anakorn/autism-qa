@@ -128,6 +128,11 @@ public class QuizDetailFragment extends SherlockFragment implements
 
 	private void saveQuiz() {
 		if (!editingQuiz) {
+			if (ids.size() == 0)
+			{
+				Toast.makeText(getActivity(), "Must Add At Least 1 Questions", Toast.LENGTH_SHORT).show();
+				return ;
+			}
 			Log.d("com.team16.appjam", "saveQuiz!");
 			Uri uri = Team16ContentProvider.QUIZZES_URI;
 			ContentValues cv = new ContentValues();
@@ -140,7 +145,7 @@ public class QuizDetailFragment extends SherlockFragment implements
 			Uri row = getActivity().getContentResolver().insert(uri, cv);
 			int quiz_id = Integer.parseInt(row.getPathSegments().get(1));
 			Log.d("com.team16.appjam", "Added quiz with id of " + quiz_id);
-			
+
 			uri = Team16ContentProvider.QUESTION_QUIZZES_URI;
 			cv = new ContentValues();
 			int counter = 0;
@@ -154,12 +159,13 @@ public class QuizDetailFragment extends SherlockFragment implements
 				if (newRow == null)
 					Log.d("com.team16.appjam", "Dead");
 			}
-			Log.d("com.team16.appjam", "Added " + counter + " questions to quiz");
+			Log.d("com.team16.appjam", "Added " + counter
+					+ " questions to quiz");
 			ids.clear();
 
 			callback.onQuizCreated();
 		} else
-			Toast.makeText(getActivity(), "Editing", Toast.LENGTH_SHORT);
+			Toast.makeText(getActivity(), "Editing", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
@@ -185,7 +191,8 @@ public class QuizDetailFragment extends SherlockFragment implements
 			return new CursorLoader(getActivity(), uri, projection, selection,
 					selectionArgs, null);
 		} else {
-			String[] projection = new String[] { QuizTable.COLUMN_ID, QuizTable.COLUMN_TITLE,
+			String[] projection = new String[] { QuizTable.COLUMN_ID,
+					QuizTable.COLUMN_TITLE,
 					QuizQuestionTable.COLUMN_QUESTION_ID };
 			Uri uri = ContentUris.withAppendedId(
 					Team16ContentProvider.QUESTION_QUIZZES_URI, id);
@@ -196,14 +203,16 @@ public class QuizDetailFragment extends SherlockFragment implements
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> arg0, Cursor data) {
-		Log.d("com.team16.appjam", "Load finished with data cursor size of " + data.getCount());
+		Log.d("com.team16.appjam", "Load finished with data cursor size of "
+				+ data.getCount());
 		adapter.swapCursor(data);
-		if (data.moveToFirst())
-			if (data.getColumnIndex(QuizTable.COLUMN_TITLE) != -1) {
-				data.moveToFirst();
-				title.setText(data.getString(data
-						.getColumnIndex(QuizTable.COLUMN_TITLE)));
-			}
+		// if (data.moveToFirst())
+		// if (data.getColumnIndex(QuizTable.COLUMN_TITLE) != -1) {
+		// Log.d("com.team16.appjam", "Contains column title o.o");
+		// data.moveToFirst();
+		// title.setText(data.getString(data
+		// .getColumnIndex(QuizTable.COLUMN_TITLE)));
+		// }
 	}
 
 	@Override
@@ -222,7 +231,11 @@ public class QuizDetailFragment extends SherlockFragment implements
 			Bundle selectIds = new Bundle();
 			selectIds.putLongArray(IDS_KEY, idsArray);
 			getLoaderManager().restartLoader(0, selectIds, this);
+		} else {
+			ids.clear();
+			onLoaderReset(null);
 		}
+
 	}
 
 	public void displayQuiz(long id) {

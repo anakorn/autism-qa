@@ -10,20 +10,22 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.appjam.team16.fragments.QuestionDetailFragment;
 import com.appjam.team16.fragments.QuestionDetailFragment.QuestionCreatedListener;
+import com.appjam.team16.fragments.SelectQuizzesDialogFragment.QuizzesSelectedListener;
 
 public class CreateQuestionActivity extends SherlockFragmentActivity implements
-		QuestionCreatedListener {
+		QuestionCreatedListener, QuizzesSelectedListener {
+
+	QuestionDetailFragment questionFragment;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getSupportActionBar().setHomeButtonEnabled(true);
 		setContentView(R.layout.activity_create_question);
-		QuestionDetailFragment questionDetailFragment = new QuestionDetailFragment();
+		questionFragment = new QuestionDetailFragment();
 		FragmentTransaction transcation = getSupportFragmentManager()
 				.beginTransaction();
-		transcation.add(R.id.createQuestionFragmentContainer,
-				questionDetailFragment);
+		transcation.add(R.id.createQuestionFragmentContainer, questionFragment);
 		transcation.commit();
 	}
 
@@ -73,5 +75,10 @@ public class CreateQuestionActivity extends SherlockFragmentActivity implements
 		startActivity(viewQuestions);
 		finish();
 
+	}
+
+	@Override
+	public void quizzesSelected(long[] ids) {
+		questionFragment.addQuizzes(ids);
 	}
 }
