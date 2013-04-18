@@ -70,13 +70,14 @@ public class QuizDetailFragment extends SherlockFragment implements
 
 		DragSortController dragController = new DragSortController(questionsList);
 		dragController.setBackgroundColor(Color.argb(64, 0, 0, 0));
-		dragController.setDragInitMode(DragSortController.ON_LONG_PRESS);
+		dragController.setDragInitMode(DragSortController.ON_DOWN);
+		dragController.setDragHandleId(R.id.draggable_list_item_grip);
 		
 		String[] from = new String[] { QuestionTable.COLUMN_TITLE };
-		int[] to = new int[] { android.R.id.text1 };
+		int[] to = new int[] { R.id.draggable_list_item_text };
 
 		adapter = new SimpleDragSortCursorAdapter(getActivity(),
-				android.R.layout.simple_list_item_1, null, from, to);
+				R.layout.draggable_list_item, null, from, to);
 		questionsList.setAdapter(adapter);
 		questionsList.setFloatViewManager(dragController);
 		questionsList.setOnTouchListener(dragController);
