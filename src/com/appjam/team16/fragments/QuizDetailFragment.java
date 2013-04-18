@@ -7,19 +7,18 @@ import android.app.Activity;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -31,6 +30,9 @@ import com.appjam.team16.Team16ContentProvider;
 import com.appjam.team16.db.QuestionTable;
 import com.appjam.team16.db.QuizQuestionTable;
 import com.appjam.team16.db.QuizTable;
+import com.mobeta.android.dslv.DragSortController;
+import com.mobeta.android.dslv.DragSortListView;
+import com.mobeta.android.dslv.SimpleDragSortCursorAdapter;
 
 public class QuizDetailFragment extends SherlockFragment implements
 		LoaderCallbacks<Cursor> {
@@ -42,9 +44,9 @@ public class QuizDetailFragment extends SherlockFragment implements
 	}
 
 	private OnQuizCreatedListener callback;
-	private ListView questionsList;
+	private DragSortListView questionsList;
 	private EditText title;
-	private SimpleCursorAdapter adapter;
+	private SimpleDragSortCursorAdapter adapter;
 	private Button submitQuizButton;
 	private Button addQuestionButton;
 	private Set<Long> ids;
@@ -63,15 +65,22 @@ public class QuizDetailFragment extends SherlockFragment implements
 		View quizView = inflater
 				.inflate(R.layout.quiz_detail, container, false);
 
-		questionsList = (ListView) quizView.findViewById(R.id.quizQuestionList);
+		questionsList = (DragSortListView) quizView.findViewById(R.id.quizQuestionList);
 		title = (EditText) quizView.findViewById(R.id.quizTitle);
 
+		DragSortController dragController = new DragSortController(questionsList);
+		dragController.setBackgroundColor(Color.argb(64, 0, 0, 0));
+		dragController.setDragInitMode(DragSortController.ON_LONG_PRESS);
+		
 		String[] from = new String[] { QuestionTable.COLUMN_TITLE };
 		int[] to = new int[] { android.R.id.text1 };
 
-		adapter = new SimpleCursorAdapter(getActivity(),
+		adapter = new SimpleDragSortCursorAdapter(getActivity(),
 				android.R.layout.simple_list_item_1, null, from, to);
 		questionsList.setAdapter(adapter);
+		questionsList.setFloatViewManager(dragController);
+		questionsList.setOnTouchListener(dragController);
+		questionsList.setDragEnabled(true);
 
 		return quizView;
 	}
