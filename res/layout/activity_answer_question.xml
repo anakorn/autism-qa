@@ -39,8 +39,8 @@
 
         <Button
             android:id="@+id/yesButton"
-            android:layout_width="70dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/buttonWidth"
+            android:layout_height="@dimen/buttonHeight"
             android:background="@drawable/green_button"
             android:text="@string/capitalized_yes"
             android:textAlignment="center"
@@ -49,8 +49,8 @@
 
         <Button
             android:id="@+id/noButton"
-            android:layout_width="70dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/buttonWidth"
+            android:layout_height="@dimen/buttonHeight"
             android:background="@drawable/red_button"
             android:text="@string/capitalized_no"
             android:textAlignment="center"

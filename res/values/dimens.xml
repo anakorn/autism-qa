@@ -9,4 +9,6 @@
 	<dimen name="default_touch_height">48dp</dimen>
 	<dimen name="standardTextSize">16dp</dimen>
 	<dimen name="standardPadding">8dp</dimen>
+	<dimen name="buttonWidth">144dp</dimen>
+	<dimen name="buttonHeight">96dp</dimen>
 </resources>
