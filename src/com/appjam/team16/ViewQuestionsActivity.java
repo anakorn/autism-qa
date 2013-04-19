@@ -80,6 +80,10 @@ public class ViewQuestionsActivity extends SherlockFragmentActivity implements
 			intent = new Intent(this, ViewQuizzesActivity.class);
 			startActivity(intent);
 			break;
+		case R.id.see_answers_item:
+			intent = new Intent(this, SeeAnswersActivity.class);
+			startActivity(intent);
+			break;
 		default:
 			break;
 
