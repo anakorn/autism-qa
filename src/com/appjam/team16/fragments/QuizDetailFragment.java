@@ -14,6 +14,7 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -202,8 +203,6 @@ public class QuizDetailFragment extends SherlockFragment implements
 			ContentValues cv = new ContentValues();
 			cv.put(QuizTable.COLUMN_TITLE, title.getText().toString());
 			cv.put(QuizTable.COLUMN_DESCRIPTION, title.getText().toString());
-			cv.put(QuizTable.COLUMN_CREATE_TIMESTAMP,
-					System.currentTimeMillis());
 			cv.put(QuizTable.COLUMN_MODIFY_TIMESTAMP,
 					System.currentTimeMillis());
 			getActivity().getContentResolver().update(uri, cv, "", null);

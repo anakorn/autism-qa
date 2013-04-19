@@ -1,7 +1,7 @@
 package com.appjam.team16.fragments;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+import java.util.LinkedList;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -39,7 +39,7 @@ public class SelectQuestionsDialogFragment extends SherlockDialogFragment
 
 	private SimpleCursorAdapter adapter;
 	private QuestionsSelectedListener callback;
-	private Set<Long> ids;
+	private List<Long> ids;
 
 	private static String ADDED_KEYS = "added";
 	private static final String FRAGMENT_TITLE = "Choose Questions";
@@ -57,7 +57,7 @@ public class SelectQuestionsDialogFragment extends SherlockDialogFragment
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		super.onCreateDialog(savedInstanceState);
 
-		ids = new HashSet<Long>();
+		ids = new LinkedList<Long>();
 		String[] from = new String[] { QuestionTable.COLUMN_TITLE };
 		int[] to = new int[] { R.id.selectable_text };
 		adapter = new CustomCursorAdapter(getActivity(),
