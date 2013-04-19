@@ -43,5 +43,7 @@
     <string name="capitalized_yes">YES</string>
     <string name="next_button_text">Next&gt;</string>
     <string name="back_button_text">&lt;Back</string>
+    <string name="stop">Stop</string>
+    <string name="play">Play</string>
 
 </resources>

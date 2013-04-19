@@ -1,5 +1,6 @@
 package com.appjam.team16.fragments;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,8 +10,11 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -21,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.appjam.team16.R;
@@ -29,7 +34,7 @@ import com.appjam.team16.db.QuestionTable;
 
 public class QuestionDetailFragment extends SherlockFragment implements
 		View.OnClickListener, LoaderCallbacks<Cursor> {
-
+	
 	public interface QuestionCreatedListener {
 		public void questionCreated();
 	}
@@ -44,11 +49,18 @@ public class QuestionDetailFragment extends SherlockFragment implements
 	private Button recordAudioButton;
 	private Button removeAudioButton;
 	private Button playbackAudioButton;
-
+	private String fileName= "";
 	private boolean editingQuestion;
 
 	private Set<Long> ids;
-
+	
+	private MediaPlayer play;
+	private MediaRecorder record;
+	
+	private ToggleButton btnRecord;
+	private ToggleButton btnPlay;
+	
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -66,18 +78,25 @@ public class QuestionDetailFragment extends SherlockFragment implements
 			}
 		});
 
+		btnRecord = (ToggleButton) questionView.findViewById(R.id.trecord);
+		btnPlay= (ToggleButton) questionView.findViewById(R.id.tplay);
+		btnRecord.setOnClickListener(new onToggleClicked());
+		btnPlay.setOnClickListener(new onToggleClicked());
+
+		
+		
 		questionName = (EditText) questionView
 				.findViewById(R.id.question_title);
 		questionQuestion = (EditText) questionView
 				.findViewById(R.id.question_question);
 		addQuestionButton = (Button) questionView
 				.findViewById(R.id.save_question_bttn);
-		recordAudioButton = (Button) questionView
-				.findViewById(R.id.recordAudioButton);
+//		recordAudioButton = (Button) questionView
+//				.findViewById(R.id.recordAudioButton);
 		removeAudioButton = (Button) questionView
 				.findViewById(R.id.deleteAudioButton);
-		playbackAudioButton = (Button) questionView
-				.findViewById(R.id.playbackAudioButton);
+//		playbackAudioButton = (Button) questionView
+//				.findViewById(R.id.playbackAudioButton);
 
 		addQuestionButton.setOnClickListener(this);
 		recordAudioButton.setOnClickListener(this);
@@ -132,19 +151,19 @@ public class QuestionDetailFragment extends SherlockFragment implements
 			mCallback.questionCreated();
 			break;
 
-		case R.id.recordAudioButton:
-			Toast.makeText(context, "Record", Toast.LENGTH_SHORT).show();
-			break;
-
-		case R.id.deleteAudioButton:
-			Toast.makeText(context, "Delete", Toast.LENGTH_SHORT).show();
-			break;
-
-		case R.id.playbackAudioButton:
-			Toast.makeText(context, "Playback", Toast.LENGTH_SHORT).show();
-			break;
-		default:
-			break;
+//		case R.id.recordAudioButton:
+//			Toast.makeText(context, "Record", Toast.LENGTH_SHORT).show();
+//			break;
+//
+//		case R.id.deleteAudioButton:
+//			Toast.makeText(context, "Delete", Toast.LENGTH_SHORT).show();
+//			break;
+//
+//		case R.id.playbackAudioButton:
+//			Toast.makeText(context, "Playback", Toast.LENGTH_SHORT).show();
+//			break;
+//		default:
+//			break;
 		}
 	}
 
@@ -198,5 +217,121 @@ public class QuestionDetailFragment extends SherlockFragment implements
 		for (long l: ids)
 			this.ids.add(l);
 	}
+	
+// Event for record, play
+class onToggleClicked implements View.OnClickListener{
+		
+		@Override
+		public void onClick(View v) {
+			switch(v.getId()){
+			case R.id.trecord:
+				try{
+					if(((ToggleButton) v).isChecked()){
+						beginRecording();
+					}else{
+						stopRecording();
+					}
+						
+					
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+				break;
+			case R.id.tplay:
+				try{
+					if(((ToggleButton) v).isChecked()){
+						playRecording();
+					}else{
+						stopPlayback();
+					}
+						
+					
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+				break;
+				
+
+				
+			}
+
+		}
+	}
+	private String getFilePath() {
+		 String filePath = Environment.getExternalStorageDirectory().getPath();
+		
+		
+		File file = new File(filePath, "MediaRecorderSample");
+		
+		if(!file.exists())
+			file.mkdirs();
+		
+		return (file.getAbsolutePath() + "/" +System.currentTimeMillis() + ".3gpp" );
+	}
+	public void stopPlayback() {
+		if(play != null)
+			play.stop();
+		
+	}
+
+	public void playRecording() throws Exception{
+		releaseMediaPlayer();
+		play = new MediaPlayer();
+		play.setDataSource(fileName);
+		play.prepare();
+		play.start();
+		
+	}
+
+	public void releaseMediaPlayer() {
+		if(play != null)
+		{
+			try{
+				play.release();
+			}catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		
+	}
+
+	public void stopRecording() throws IllegalStateException{
+		if(record != null){
+			record.stop();
+		
+		}
+		
+		
+	}
+
+	public void beginRecording() throws Exception{
+		releaseRecorder();
+		File outFile = new File(fileName);
+		if(outFile.exists())
+			outFile.delete();
+//		String state = Environment.getExternalStorageState();
+//		if(Environment.MEDIA_MOUNTED.equals(state))
+//		    mediaRecorder.setOutputFile(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/video.mp4");
+//		else
+//		    mediaRecorder.setOutputFile(getFilesDir().getAbsolutePath() + "/video.mp4");
+		record = new MediaRecorder();
+		record.setAudioSource(MediaRecorder.AudioSource.MIC);
+		record.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+		record.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+		fileName = getFilePath();
+		record.setOutputFile(fileName);
+		record.prepare();
+		record.start();
+		
+	}
+
+	public void releaseRecorder() {
+		if(record != null){
+			record.release();
+		}
+		
+	}
+			
 
 }

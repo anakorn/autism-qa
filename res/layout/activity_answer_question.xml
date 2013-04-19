@@ -54,10 +54,18 @@
     </LinearLayout>
 
     <SeekBar
-        android:id="@+id/slider"
+        android:id="@+id/seekBar1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:indeterminate="false"
+        android:maxHeight="40dp"
+        android:minHeight="40dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:progressDrawable="@drawable/styled_progress"
+        android:thumb="@drawable/zthumb" />
 
     <Button
         android:id="@+id/backButton"

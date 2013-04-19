@@ -69,23 +69,29 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
-            <Button
-                android:id="@+id/recordAudioButton"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
+           <ToggleButton
+                android:id="@+id/trecord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/record" />
+                android:onClick="onToggleClicked"
+                android:text="@string/record"
+                android:textOff="@string/record"
+                android:textOn="@string/stop" />
 
-            <Button
-                android:id="@+id/playbackAudioButton"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
+            <ToggleButton
+                android:id="@+id/tplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/playback" />
+                android:onClick="onToggleClicked"
+                android:text="@string/play"
+                android:textOff="@string/play"
+                android:textOn="@string/stop" />
 
             <Button
                 android:id="@+id/deleteAudioButton"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="@string/deleteAudio" />
