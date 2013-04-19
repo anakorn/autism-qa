@@ -10,8 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:thumbOffset="16dp"
-        android:max="7" />
+        android:max="7"
+        android:thumbOffset="16dp" />
 
     <LinearLayout
         android:id="@+id/yesNoLayout"
@@ -22,15 +22,25 @@
 
         <Button
             android:id="@+id/yesButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/yes" />
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:background="@drawable/green_button"
+            android:text="@string/capitalized_yes"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="@dimen/textLarge" />
 
         <Button
             android:id="@+id/noButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/no" >
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:background="@drawable/red_button"
+            android:text="@string/capitalized_no"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="@dimen/textLarge" />
+
+        <Button>
         </Button>
     </LinearLayout>
 

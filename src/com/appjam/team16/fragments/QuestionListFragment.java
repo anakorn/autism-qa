@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.app.SherlockListFragment;
@@ -24,6 +25,8 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.appjam.team16.ActionListCursorAdapter;
 import com.appjam.team16.ActionListCursorAdapter.CursorAdapterListener;
+import com.appjam.team16.AnswerQuestionActivity;
+import com.appjam.team16.AnswerSingleQuestionActivity;
 import com.appjam.team16.CreateQuizActivity;
 import com.appjam.team16.R;
 import com.appjam.team16.Team16ContentProvider;
@@ -59,7 +62,8 @@ public class QuestionListFragment extends SherlockListFragment implements
 		int layout = R.layout.action_list_item;
 		mAdapter = new ActionListCursorAdapter(getActivity(), layout, null,
 				new String[] { QuestionTable.COLUMN_TITLE },
-				new int[] { R.id.action_list_text }, this);
+				new int[] { R.id.action_list_text }, this,
+				QuestionTable.COLUMN_TITLE);
 		setListAdapter(mAdapter);
 
 		getLoaderManager().initLoader(0, null, this);
@@ -77,9 +81,9 @@ public class QuestionListFragment extends SherlockListFragment implements
 		// list item
 		// (We do this during onStart because at the point the listview is
 		// available.)
-		if (getFragmentManager().findFragmentById(R.id.questionDetailFragment) != null) {
-			getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-		}
+//		if (getFragmentManager().findFragmentById(R.id.questionDetailFragment) != null) {
+//			getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+//		}
 	}
 
 	@Override
@@ -122,9 +126,10 @@ public class QuestionListFragment extends SherlockListFragment implements
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			// Used to put dark icons on light action bar
 
-			menu.add("New Quiz").setIcon(android.R.drawable.ic_menu_add)
+			menu.add("New Quiz From Questions")
+					.setIcon(android.R.drawable.ic_menu_add)
 					.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-			menu.add("Delete Selected Quizzes")
+			menu.add("Delete Selected Questions")
 					.setIcon(android.R.drawable.ic_menu_delete)
 					.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 			return true;
@@ -137,7 +142,7 @@ public class QuestionListFragment extends SherlockListFragment implements
 
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-			if (item.getTitle().equals("New Quiz")) {
+			if (item.getTitle().equals("New Quiz From Questions")) {
 				createQuiz();
 			} else {
 				deleteQuestions();
@@ -161,9 +166,10 @@ public class QuestionListFragment extends SherlockListFragment implements
 	}
 
 	private void createQuiz() {
-		long [] longIds = new long[selectedIds.size()];
+		Log.d("com.team16.appjam", "Creating quiz");
+		long[] longIds = new long[selectedIds.size()];
 		int counter = 0;
-		for (Long l: selectedIds)
+		for (Long l : selectedIds)
 			longIds[counter++] = l;
 		Intent intent = new Intent(getActivity(), CreateQuizActivity.class);
 		Bundle extras = new Bundle();
@@ -171,7 +177,7 @@ public class QuestionListFragment extends SherlockListFragment implements
 		intent.putExtras(extras);
 		startActivity(intent);
 		getActivity().finish();
-		
+
 	}
 
 	private void deleteQuestions() {
@@ -193,6 +199,7 @@ public class QuestionListFragment extends SherlockListFragment implements
 			mMode.finish();
 			mMode = null;
 		}
+		Toast.makeText(getActivity(), "Deleted", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
@@ -222,6 +229,15 @@ public class QuestionListFragment extends SherlockListFragment implements
 			mMode.finish();
 			mMode = null;
 		}
+	}
+
+	@Override
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		Intent i = new Intent(getActivity(), AnswerSingleQuestionActivity.class);
+		Bundle extras = new Bundle();
+		extras.putLong(AnswerSingleQuestionActivity.QUESTION_ID, id);
+		i.putExtras(extras);
+		getActivity().startActivity(i);
 	}
 
 }

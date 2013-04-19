@@ -2,6 +2,7 @@ package com.appjam.team16;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,11 +17,13 @@ import com.appjam.team16.db.QuestionTable;
 public class ActionListCursorAdapter extends SimpleCursorAdapter {
 
 	private CursorAdapterListener listener;
-
+	private final String title;
+	
 	public ActionListCursorAdapter(Context context, int layout, Cursor c,
-			String[] from, int[] to, CursorAdapterListener listener) {
+			String[] from, int[] to, CursorAdapterListener listener, String title) {
 		super(context, layout, c, from, to);
 		this.listener = listener;
+		this.title = title;
 	}
 
 	public interface CursorAdapterListener {
@@ -48,7 +51,7 @@ public class ActionListCursorAdapter extends SimpleCursorAdapter {
 			t_id = mCursor.getLong(mCursor
 					.getColumnIndexOrThrow(QuestionTable.COLUMN_ID));
 			t_title = mCursor.getString(mCursor
-					.getColumnIndex(QuestionTable.COLUMN_TITLE));
+					.getColumnIndexOrThrow(title));
 		}
 		final long id = t_id;
 		final String title = t_title;

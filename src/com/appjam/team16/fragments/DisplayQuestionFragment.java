@@ -32,6 +32,9 @@ public class DisplayQuestionFragment extends SherlockFragment implements LoaderC
 	private QuestionButtonListener mCallback;
 	private Button nextButton;
 	private Button prevButton;
+	private Button yesButton;
+	private Button noButton;
+	private View buttonContainer;
 	private TextView questionTitle;
 	private SeekBar seekBar;
 	private long questionId;
@@ -41,6 +44,13 @@ public class DisplayQuestionFragment extends SherlockFragment implements LoaderC
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View myView = inflater.inflate(R.layout.activity_answer_question, container, false);
+		nextButton = (Button) myView.findViewById(R.id.nextButton);
+		prevButton = (Button) myView.findViewById(R.id.backButton);
+		yesButton = (Button) myView.findViewById(R.id.yesButton);
+		noButton = (Button) myView.findViewById (R.id.noButton);
+		buttonContainer = myView.findViewById (R.id.buttonContainer);
+		seekBar = (SeekBar) myView.findViewById (R.id.seekBar1);
+		questionTitle = (TextView) myView.findViewById (R.id.questionDisplay);
 		
 		return myView;
 	}
@@ -60,22 +70,36 @@ public class DisplayQuestionFragment extends SherlockFragment implements LoaderC
 	public void displayQuestion (int questionId) {
 		getLoaderManager().initLoader(questionId, null, this);
 	}
-
+	
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-		Uri uri = ContentUris.withAppendedId(Team16ContentProvider.QUESTION_URI, arg0);
-		String [] projection = new String [] {
-			QuestionTable.COLUMN_TITLE,
-			QuestionTable.COLUMN_ANSWER_TYPE,
-			QuestionTable.COLUMN_QUESTION_AUDIBLE,
-			QuestionTable.COLUMN_QUESTION_TEXT
-		};
+		Uri uri = ContentUris.withAppendedId(
+				Team16ContentProvider.QUESTION_URI, arg0);
+		String[] projection = { QuestionTable.COLUMN_TITLE,
+				QuestionTable.COLUMN_QUESTION_TEXT,
+				QuestionTable.COLUMN_QUESTION_AUDIBLE,
+				QuestionTable.COLUMN_ANSWER_TYPE };
 		return new CursorLoader(getActivity(), uri, projection, null, null, null);
 	}
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> arg0, Cursor arg1) {
-		
+		if (arg1.moveToFirst()) {
+			String title = arg1.getString(arg1
+					.getColumnIndexOrThrow(QuestionTable.COLUMN_TITLE));
+			String question = arg1.getString(arg1
+					.getColumnIndexOrThrow(QuestionTable.COLUMN_QUESTION_TEXT));
+			int answerType = arg1.getInt(arg1
+					.getColumnIndexOrThrow(QuestionTable.COLUMN_ANSWER_TYPE));
+			getActivity().setTitle(title);
+			questionTitle.setText(question);
+			if (answerType == 0) {
+				seekBar.setVisibility(View.VISIBLE);
+			} else {
+				buttonContainer.setVisibility(View.VISIBLE);
+			}
+
+		}
 	}
 
 	@Override

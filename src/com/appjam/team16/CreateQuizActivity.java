@@ -3,6 +3,7 @@ package com.appjam.team16;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -71,6 +72,7 @@ public class CreateQuizActivity extends SherlockFragmentActivity implements
 
 	@Override
 	public void onQuizCreated() {
+		Log.d("com.team16.appjam", "Got to quizCreated callback");
 		Intent intent = new Intent(this, ViewQuizzesActivity.class);
 		startActivity(intent);
 		finish();

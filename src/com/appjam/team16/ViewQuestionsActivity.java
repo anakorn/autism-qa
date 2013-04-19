@@ -27,7 +27,7 @@ public class ViewQuestionsActivity extends SherlockFragmentActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.view_questions);
 		getSupportActionBar().setHomeButtonEnabled(true);
-		getSupportActionBar().setDisplayShowTitleEnabled(false);
+		getSupportActionBar().setDisplayShowTitleEnabled(true);
 		// we're in single pane view
 		if (findViewById(R.id.questionFragmentContainer) != null) {
 			// However, if we're being restored from a previous state,
@@ -48,8 +48,8 @@ public class ViewQuestionsActivity extends SherlockFragmentActivity implements
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.questionFragmentContainer, listFragment).commit();
 		} else {
-			questionList = (QuestionListFragment) getSupportFragmentManager()
-					.findFragmentById(R.id.questionListFragment);
+//			questionList = (QuestionListFragment) getSupportFragmentManager()
+//					.findFragmentById(R.id.questionListFragment);
 		}
 	}
 
@@ -90,8 +90,9 @@ public class ViewQuestionsActivity extends SherlockFragmentActivity implements
 	public void onQuestionSelected(long id) {
 
 		// Capture the article fragment from the activity layout
-		QuestionDetailFragment detailFrag = (QuestionDetailFragment) getSupportFragmentManager()
-				.findFragmentById(R.id.questionDetailFragment);
+		QuestionDetailFragment detailFrag = null;
+//				(QuestionDetailFragment) getSupportFragmentManager()
+//				.findFragmentById(R.id.questionDetailFragment);
 
 		if (detailFrag != null) {
 			// If article frag is available, we're in two-pane layout...

@@ -29,6 +29,8 @@ public class ViewQuizzesActivity extends SherlockFragmentActivity implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.view_quizzes);
+		getSupportActionBar().setHomeButtonEnabled(true);
+		getSupportActionBar().setDisplayShowTitleEnabled(true);
 		Log.d("com.team16.appjam", "onCreate()!");
 		// we're in single pane view
 		if (findViewById(R.id.quizFragmentContainer) != null) {
@@ -50,8 +52,8 @@ public class ViewQuizzesActivity extends SherlockFragmentActivity implements
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.quizFragmentContainer, listFragment).commit();
 		} else {
-			quizList = (QuizListFragment) getSupportFragmentManager()
-					.findFragmentById(R.id.quizListFragment);
+//			quizList = (QuizListFragment) getSupportFragmentManager()
+//					.findFragmentById(R.id.quizListFragment);
 		}
 	}
 
@@ -74,11 +76,11 @@ public class ViewQuizzesActivity extends SherlockFragmentActivity implements
 			intent = new Intent(this, CreateQuizActivity.class);
 			startActivity(intent);
 			break;
-		case R.id.create_question_item:
+		case R.id.create_question:
 			intent = new Intent(this, CreateQuestionActivity.class);
 			startActivity(intent);
 			break;
-		case R.id.view_questions_item:
+		case R.id.view_questions:
 			intent = new Intent(this, ViewQuestionsActivity.class);
 			startActivity(intent);
 			break;
@@ -100,8 +102,9 @@ public class ViewQuizzesActivity extends SherlockFragmentActivity implements
 	public void onQuizSelected(long id) {
 		Log.d("com.team16.appjam", "onQuizSelected");
 		// Capture the article fragment from the activity layout
-		QuizDetailFragment detailFrag = (QuizDetailFragment) getSupportFragmentManager()
-				.findFragmentById(R.id.quizDetailFragment);
+		QuizDetailFragment detailFrag = null;
+//				(QuizDetailFragment) getSupportFragmentManager()
+//				.findFragmentById(R.id.quizDetailFragment);
 		if (detailFrag != null) {
 			// If article frag is available, we're in two-pane layout...
 

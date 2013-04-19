@@ -1,30 +1,47 @@
 package com.appjam.team16.fragments;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.app.SherlockListFragment;
+import com.actionbarsherlock.view.ActionMode;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.appjam.team16.ActionListCursorAdapter;
+import com.appjam.team16.ActionListCursorAdapter.CursorAdapterListener;
+import com.appjam.team16.AnswerQuestionActivity;
+import com.appjam.team16.AnswerSingleQuestionActivity;
 import com.appjam.team16.R;
 import com.appjam.team16.Team16ContentProvider;
 import com.appjam.team16.db.QuizTable;
 
 public class QuizListFragment extends SherlockListFragment implements
-		LoaderCallbacks<Cursor> {
+		LoaderCallbacks<Cursor>, CursorAdapterListener {
 	public interface OnQuizSelectedListener {
 		public void onQuizSelected(long id);
 	}
 
 	private OnQuizSelectedListener mCallback;
-	private SimpleCursorAdapter mAdapter;
+	private ActionMode mMode;
+	private Set<Long> selectedIds;
+	private ActionListCursorAdapter mAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -40,9 +57,10 @@ public class QuizListFragment extends SherlockListFragment implements
 		int layout = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ? android.R.layout.simple_list_item_activated_1
 				: android.R.layout.simple_list_item_1;
 
-		mAdapter = new SimpleCursorAdapter(getActivity(), layout, null,
+		mAdapter = new ActionListCursorAdapter(getActivity(), layout, null,
 				new String[] { QuizTable.COLUMN_TITLE },
-				new int[] { android.R.id.text1 });
+				new int[] { R.id.action_list_text }, this,
+				QuizTable.COLUMN_TITLE);
 		setListAdapter(mAdapter);
 	}
 
@@ -58,9 +76,9 @@ public class QuizListFragment extends SherlockListFragment implements
 		// list item
 		// (We do this during onStart because at the point the listview is
 		// available.)
-		if (getFragmentManager().findFragmentById(R.id.questionDetailFragment) != null) {
-			getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-		}
+//		if (getFragmentManager().findFragmentById(R.id.questionDetailFragment) != null) {
+//			getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+//		}
 		getLoaderManager().initLoader(0, null, this);
 	}
 
@@ -76,15 +94,69 @@ public class QuizListFragment extends SherlockListFragment implements
 			throw new ClassCastException(activity.toString()
 					+ " must implement OnQuizSelectedListener");
 		}
+		selectedIds = new HashSet<Long>();
 	}
-	
-	@Override
-	public void onListItemClick(ListView l, View v, int position, long id) {
-		// Notify the parent activity of selected item
-		mCallback.onQuizSelected(id);
 
-		// Set the item as checked to be highlighted when in two-pane layout
-		getListView().setItemChecked(position, true);
+	private final class EditQuizActionMode implements ActionMode.Callback {
+		@Override
+		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+			// Used to put dark icons on light action bar
+
+			menu.add("Delete Selected Quizzes")
+					.setIcon(android.R.drawable.ic_menu_delete)
+					.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+			return true;
+		}
+
+		@Override
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+			return false;
+		}
+
+		@Override
+		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+			if (item.getTitle().equals("Delete Selected Quizzes")) {
+				deleteQuizzes();
+				return true;
+			}
+			return false;
+		}
+
+		@Override
+		public void onDestroyActionMode(ActionMode mode) {
+			Log.d("com.team16.appjam", "Delete");
+			int childCount = getListView().getChildCount();
+			for (int i = 0; i < childCount; i++) {
+				View v = getListView().getChildAt(i);
+				CheckBox box = (CheckBox) v
+						.findViewById(R.id.action_list_checkbox);
+				box.setChecked(false);
+			}
+			mMode = null;
+			selectedIds.clear();
+		}
+	}
+
+	private void deleteQuizzes() {
+		Uri uri = Team16ContentProvider.QUIZZES_URI;
+		ContentResolver cr = getActivity().getContentResolver();
+		String selection = QuizTable.COLUMN_ID + " in (";
+		String[] selectionArgs = new String[selectedIds.size()];
+		int counter = 0;
+		for (Long l : selectedIds) {
+			selection += "?, ";
+			selectionArgs[counter++] = "" + l;
+		}
+		selection = selection.substring(0, selection.length() - 2);
+		selection += ")";
+		Log.d("com.team16.appjam",
+				"" + cr.delete(uri, selection, selectionArgs));
+		getLoaderManager().restartLoader(0, null, this);
+		if (mMode != null) {
+			mMode.finish();
+			mMode = null;
+		}
+		Toast.makeText(getActivity(), "Deleted", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
@@ -105,5 +177,39 @@ public class QuizListFragment extends SherlockListFragment implements
 	@Override
 	public void onLoaderReset(Loader<Cursor> arg0) {
 		mAdapter.swapCursor(null);
+	}
+
+	@Override
+	public void editButtonClicked(long id) {
+		// Notify the parent activity of selected item
+		mCallback.onQuizSelected(id);
+	}
+
+	@Override
+	public void checkboxChecked(long id) {
+		Log.d("com.team16.appjam", "checked - " + id);
+		selectedIds.add(id);
+		if (mMode == null) {
+			SherlockFragmentActivity activity = (SherlockFragmentActivity) getSherlockActivity();
+			mMode = activity.startActionMode(new EditQuizActionMode());
+		}
+	}
+
+	@Override
+	public void checkboxUnchecked(long id) {
+		selectedIds.remove(id);
+		if (selectedIds.isEmpty() && mMode != null) {
+			mMode.finish();
+			mMode = null;
+		}
+	}
+	
+	@Override
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		Intent i = new Intent(getActivity(), AnswerQuestionActivity.class);
+		Bundle extras = new Bundle();
+		extras.putLong(AnswerQuestionActivity.DISPLAY_QUIZ_ID, id);
+		i.putExtras(extras);
+		getActivity().startActivity(i);
 	}
 }

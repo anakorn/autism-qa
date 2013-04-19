@@ -119,7 +119,7 @@ public class QuizDetailFragment extends SherlockFragment implements
 		switch (item.getItemId()) {
 		case R.id.add_question_to_quiz:
 			addQuestionToQuiz();
-			return false;
+			return true;
 		case R.id.save_quiz:
 			saveQuiz();
 			return true;
@@ -147,9 +147,11 @@ public class QuizDetailFragment extends SherlockFragment implements
 						Toast.LENGTH_SHORT).show();
 				return;
 			}
-			if (title.getText().toString() == null || title.getText().toString().trim().equals("")) {
+			if (title.getText().toString() == null
+					|| title.getText().toString().trim().equals("")) {
 				Toast.makeText(getActivity(), "Must Specify Title",
 						Toast.LENGTH_SHORT).show();
+				return;
 			}
 			Log.d("com.team16.appjam", "saveQuiz!");
 			Uri uri = Team16ContentProvider.QUIZZES_URI;
@@ -180,9 +182,21 @@ public class QuizDetailFragment extends SherlockFragment implements
 			Log.d("com.team16.appjam", "Added " + counter
 					+ " questions to quiz");
 			ids.clear();
+			Toast.makeText(getActivity(), "Created", Toast.LENGTH_SHORT).show();
 
 			callback.onQuizCreated();
 		} else {
+			if (ids.size() == 0) {
+				Toast.makeText(getActivity(), "Must Add At Least 1 Question",
+						Toast.LENGTH_SHORT).show();
+				return;
+			}
+			if (title.getText().toString() == null
+					|| title.getText().toString().trim().equals("")) {
+				Toast.makeText(getActivity(), "Must Specify Title",
+						Toast.LENGTH_SHORT).show();
+				return;
+			}
 			Uri uri = ContentUris.withAppendedId(
 					Team16ContentProvider.QUIZZES_URI, this.quizId);
 			ContentValues cv = new ContentValues();
@@ -212,6 +226,7 @@ public class QuizDetailFragment extends SherlockFragment implements
 			Log.d("com.team16.appjam", "Added " + counter
 					+ " questions to quiz");
 			ids.clear();
+			Toast.makeText(getActivity(), "Saved", Toast.LENGTH_SHORT).show();
 			callback.onQuizCreated();
 		}
 	}
@@ -242,7 +257,7 @@ public class QuizDetailFragment extends SherlockFragment implements
 			String[] projection = new String[] { QuizTable.COLUMN_TITLE,
 					QuizQuestionTable.COLUMN_QUESTION_ID + " as _id",
 					QuestionTable.COLUMN_TITLE,
-					QuizQuestionTable.COLUMN_QUIZ_POSITION};
+					QuizQuestionTable.COLUMN_QUIZ_POSITION };
 			Uri uri = ContentUris.withAppendedId(
 					Team16ContentProvider.QUESTION_QUIZZES_URI, id);
 			return new CursorLoader(getActivity(), uri, projection, null, null,
@@ -255,13 +270,16 @@ public class QuizDetailFragment extends SherlockFragment implements
 		Log.d("com.team16.appjam", "Load finished with data cursor size of "
 				+ data.getCount());
 		adapter.swapCursor(data);
-		if (data.moveToFirst())
-			title.setText(data.getString(data
-					.getColumnIndex(QuizTable.COLUMN_TITLE)));
-		for (int i = 0; i < data.getCount(); i++) {
-			data.moveToPosition(i);
-			ids.add(data.getLong(data
-					.getColumnIndexOrThrow(QuestionTable.COLUMN_ID)));
+		if (data.moveToFirst()) {
+			if (data.getColumnIndex(QuizTable.COLUMN_TITLE) != -1) {
+				title.setText(data.getString(data
+						.getColumnIndex(QuizTable.COLUMN_TITLE)));
+				for (int i = 0; i < data.getCount(); i++) {
+					data.moveToPosition(i);
+					ids.add(data.getLong(data
+							.getColumnIndexOrThrow(QuestionTable.COLUMN_ID)));
+				}
+			}
 		}
 	}
 

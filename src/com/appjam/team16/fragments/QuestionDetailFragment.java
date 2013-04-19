@@ -28,13 +28,15 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 import com.appjam.team16.R;
 import com.appjam.team16.Team16ContentProvider;
 import com.appjam.team16.db.QuestionTable;
 
 public class QuestionDetailFragment extends SherlockFragment implements
 		View.OnClickListener, LoaderCallbacks<Cursor> {
-	
+
 	public interface QuestionCreatedListener {
 		public void questionCreated();
 	}
@@ -45,26 +47,27 @@ public class QuestionDetailFragment extends SherlockFragment implements
 
 	private EditText questionName;
 	private EditText questionQuestion;
+	private ToggleButton questionType;
 	private Button addQuestionButton;
 	private Button recordAudioButton;
 	private Button removeAudioButton;
 	private Button playbackAudioButton;
-	private String fileName= "";
+	private String fileName = "";
 	private boolean editingQuestion;
 	private long id;
 
 	private Set<Long> ids;
-	
+
 	private MediaPlayer play;
 	private MediaRecorder record;
-	
+
 	private ToggleButton btnRecord;
 	private ToggleButton btnPlay;
-	
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		setHasOptionsMenu(true);
 		ids = new HashSet<Long>();
 		View questionView = inflater.inflate(R.layout.question_detail,
 				container, false);
@@ -79,31 +82,39 @@ public class QuestionDetailFragment extends SherlockFragment implements
 			}
 		});
 
+		questionType = (ToggleButton) questionView
+				.findViewById(R.id.questionType);
+
 		btnRecord = (ToggleButton) questionView.findViewById(R.id.trecord);
-		btnPlay= (ToggleButton) questionView.findViewById(R.id.tplay);
+		btnPlay = (ToggleButton) questionView.findViewById(R.id.tplay);
 		btnRecord.setOnClickListener(new onToggleClicked());
 		btnPlay.setOnClickListener(new onToggleClicked());
 
-		
-		
 		questionName = (EditText) questionView
 				.findViewById(R.id.question_title);
 		questionQuestion = (EditText) questionView
 				.findViewById(R.id.question_question);
 		addQuestionButton = (Button) questionView
 				.findViewById(R.id.save_question_bttn);
-//		recordAudioButton = (Button) questionView
-//				.findViewById(R.id.recordAudioButton);
+		// recordAudioButton = (Button) questionView
+		// .findViewById(R.id.recordAudioButton);
 		removeAudioButton = (Button) questionView
 				.findViewById(R.id.deleteAudioButton);
-//		playbackAudioButton = (Button) questionView
-//				.findViewById(R.id.playbackAudioButton);
+		// playbackAudioButton = (Button) questionView
+		// .findViewById(R.id.playbackAudioButton);
 
 		addQuestionButton.setOnClickListener(this);
-//		recordAudioButton.setOnClickListener(this);
+		// recordAudioButton.setOnClickListener(this);
 		removeAudioButton.setOnClickListener(this);
-//		playbackAudioButton.setOnClickListener(this);
+		// playbackAudioButton.setOnClickListener(this);
 		return questionView;
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		menu.clear();
+		inflater.inflate(R.menu.create_question_menu, menu);
+		super.onCreateOptionsMenu(menu, inflater);
 	}
 
 	@Override
@@ -130,6 +141,7 @@ public class QuestionDetailFragment extends SherlockFragment implements
 		Context context = getActivity();
 		switch (v.getId()) {
 		case R.id.save_question_bttn:
+			int questionTypeInt = questionType.isChecked() ? 0 : 1;
 			if (editingQuestion) {
 				Uri uri = ContentUris.withAppendedId(
 						Team16ContentProvider.QUESTION_URI, this.id);
@@ -139,7 +151,7 @@ public class QuestionDetailFragment extends SherlockFragment implements
 						.toString());
 				values.put(QuestionTable.COLUMN_QUESTION_TEXT, questionQuestion
 						.getText().toString());
-				values.put(QuestionTable.COLUMN_ANSWER_TYPE, 0);
+				values.put(QuestionTable.COLUMN_ANSWER_TYPE, questionTypeInt);
 				values.put(QuestionTable.COLUMN_MODIFY_TIMESTAMP,
 						System.currentTimeMillis());
 				cr.update(uri, values, "", null);
@@ -154,7 +166,7 @@ public class QuestionDetailFragment extends SherlockFragment implements
 						.toString());
 				values.put(QuestionTable.COLUMN_QUESTION_TEXT, questionQuestion
 						.getText().toString());
-				values.put(QuestionTable.COLUMN_ANSWER_TYPE, 0);
+				values.put(QuestionTable.COLUMN_ANSWER_TYPE, questionTypeInt);
 				values.put(QuestionTable.COLUMN_CREATE_TIMESTAMP,
 						System.currentTimeMillis());
 				values.put(QuestionTable.COLUMN_MODIFY_TIMESTAMP,
@@ -165,19 +177,19 @@ public class QuestionDetailFragment extends SherlockFragment implements
 			}
 			break;
 
-//		case R.id.recordAudioButton:
-//			Toast.makeText(context, "Record", Toast.LENGTH_SHORT).show();
-//			break;
-//
-//		case R.id.deleteAudioButton:
-//			Toast.makeText(context, "Delete", Toast.LENGTH_SHORT).show();
-//			break;
-//
-//		case R.id.playbackAudioButton:
-//			Toast.makeText(context, "Playback", Toast.LENGTH_SHORT).show();
-//			break;
-//		default:
-//			break;
+		// case R.id.recordAudioButton:
+		// Toast.makeText(context, "Record", Toast.LENGTH_SHORT).show();
+		// break;
+		//
+		// case R.id.deleteAudioButton:
+		// Toast.makeText(context, "Delete", Toast.LENGTH_SHORT).show();
+		// break;
+		//
+		// case R.id.playbackAudioButton:
+		// Toast.makeText(context, "Playback", Toast.LENGTH_SHORT).show();
+		// break;
+		// default:
+		// break;
 		}
 	}
 
@@ -209,8 +221,10 @@ public class QuestionDetailFragment extends SherlockFragment implements
 	public Loader<Cursor> onCreateLoader(int id, Bundle arg1) {
 		Uri uri = ContentUris.withAppendedId(
 				Team16ContentProvider.QUESTION_URI, id);
-		return new CursorLoader(getActivity(), uri,
-				new String[] { QuestionTable.COLUMN_TITLE }, null, null, null);
+		return new CursorLoader(getActivity(), uri, new String[] {
+				QuestionTable.COLUMN_TITLE, QuestionTable.COLUMN_QUESTION_TEXT,
+				QuestionTable.COLUMN_QUESTION_AUDIBLE,
+				QuestionTable.COLUMN_ANSWER_TYPE }, null, null, null);
 	}
 
 	@Override
@@ -220,6 +234,12 @@ public class QuestionDetailFragment extends SherlockFragment implements
 			Log.d("com.appjam.team16", "More shit");
 			questionName.setText(arg1.getString(arg1
 					.getColumnIndexOrThrow(QuestionTable.COLUMN_TITLE)));
+			questionQuestion
+					.setText(arg1.getString(arg1
+							.getColumnIndexOrThrow(QuestionTable.COLUMN_QUESTION_TEXT)));
+			questionType
+					.setChecked(arg1.getInt(arg1
+							.getColumnIndexOrThrow(QuestionTable.COLUMN_ANSWER_TYPE)) == 0);
 		}
 	}
 
@@ -232,104 +252,100 @@ public class QuestionDetailFragment extends SherlockFragment implements
 		for (long l : ids)
 			this.ids.add(l);
 	}
-	
-// Event for record, play
-class onToggleClicked implements View.OnClickListener{
-		
+
+	// Event for record, play
+	class onToggleClicked implements View.OnClickListener {
+
 		@Override
 		public void onClick(View v) {
-			switch(v.getId()){
+			switch (v.getId()) {
 			case R.id.trecord:
-				try{
-					if(((ToggleButton) v).isChecked()){
+				try {
+					if (((ToggleButton) v).isChecked()) {
 						beginRecording();
-					}else{
+					} else {
 						stopRecording();
 					}
-						
-					
-				}catch(Exception e){
+
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 				break;
 			case R.id.tplay:
-				try{
-					if(((ToggleButton) v).isChecked()){
+				try {
+					if (((ToggleButton) v).isChecked()) {
 						playRecording();
-					}else{
+					} else {
 						stopPlayback();
 					}
-						
-					
-				}catch(Exception e){
+
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 				break;
-				
 
-				
 			}
 
 		}
 	}
+
 	private String getFilePath() {
-		 String filePath = Environment.getExternalStorageDirectory().getPath();
-		
-		
+		String filePath = Environment.getExternalStorageDirectory().getPath();
+
 		File file = new File(filePath, "MediaRecorderSample");
-		
-		if(!file.exists())
+
+		if (!file.exists())
 			file.mkdirs();
-		
-		return (file.getAbsolutePath() + "/" +System.currentTimeMillis() + ".3gpp" );
-	}
-	public void stopPlayback() {
-		if(play != null)
-			play.stop();
-		
+
+		return (file.getAbsolutePath() + "/" + System.currentTimeMillis() + ".3gpp");
 	}
 
-	public void playRecording() throws Exception{
+	public void stopPlayback() {
+		if (play != null)
+			play.stop();
+
+	}
+
+	public void playRecording() throws Exception {
 		releaseMediaPlayer();
 		play = new MediaPlayer();
 		play.setDataSource(fileName);
 		play.prepare();
 		play.start();
-		
+
 	}
 
 	public void releaseMediaPlayer() {
-		if(play != null)
-		{
-			try{
+		if (play != null) {
+			try {
 				play.release();
-			}catch(Exception e)
-			{
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		
+
 	}
 
-	public void stopRecording() throws IllegalStateException{
-		if(record != null){
+	public void stopRecording() throws IllegalStateException {
+		if (record != null) {
 			record.stop();
-		
+
 		}
-		
-		
+
 	}
 
-	public void beginRecording() throws Exception{
+	public void beginRecording() throws Exception {
 		releaseRecorder();
 		File outFile = new File(fileName);
-		if(outFile.exists())
+		if (outFile.exists())
 			outFile.delete();
-//		String state = Environment.getExternalStorageState();
-//		if(Environment.MEDIA_MOUNTED.equals(state))
-//		    mediaRecorder.setOutputFile(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/video.mp4");
-//		else
-//		    mediaRecorder.setOutputFile(getFilesDir().getAbsolutePath() + "/video.mp4");
+		// String state = Environment.getExternalStorageState();
+		// if(Environment.MEDIA_MOUNTED.equals(state))
+		// mediaRecorder.setOutputFile(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES)
+		// + "/video.mp4");
+		// else
+		// mediaRecorder.setOutputFile(getFilesDir().getAbsolutePath() +
+		// "/video.mp4");
 		record = new MediaRecorder();
 		record.setAudioSource(MediaRecorder.AudioSource.MIC);
 		record.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
@@ -338,15 +354,14 @@ class onToggleClicked implements View.OnClickListener{
 		record.setOutputFile(fileName);
 		record.prepare();
 		record.start();
-		
+
 	}
 
 	public void releaseRecorder() {
-		if(record != null){
+		if (record != null) {
 			record.release();
 		}
-		
+
 	}
-			
 
 }
