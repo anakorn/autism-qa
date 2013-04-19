@@ -69,8 +69,8 @@
         android:minHeight="40dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:thumb="@drawable/zthumb"
-        android:visibility="gone" />
+        android:progressDrawable="@drawable/styled_progress"
+        android:thumb="@drawable/zthumb" />
 
     <Button
         android:id="@+id/backButton"

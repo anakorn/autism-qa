@@ -329,8 +329,9 @@ public class QuestionDetailFragment extends SherlockFragment implements
 		fileName = getFilePath();
 		record.setOutputFile(fileName);
 		record.prepare();
+		Log.d("com.team16.appjam", "Recording start!");
 		record.start();
-
+		
 	}
 
 	public void releaseRecorder() {
