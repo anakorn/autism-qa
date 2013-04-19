@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.appjam.team16.R;
@@ -42,6 +43,7 @@ public class DisplayQuestionFragment extends SherlockFragment implements
 	private TextView questionTitle;
 	private SeekBar seekBar;
 	private long questionId;
+	//private ToggleButton toggleAudio;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,7 +75,23 @@ public class DisplayQuestionFragment extends SherlockFragment implements
 		buttonContainer = myView.findViewById(R.id.buttonContainer);
 		seekBar = (SeekBar) myView.findViewById(R.id.seekBar1);
 		questionTitle = (TextView) myView.findViewById(R.id.questionDisplay);
-
+		
+//		toggleAudio = (ToggleButton) myView.findViewById(R.id.toggleAudio);
+//		
+//		toggleAudio.setOnClickListener(new View.OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				if(toggleAudio.isChecked())
+//					//toggleAudio.setBackground(getResources().getDrawable(R.drawable.media_play));
+//					toggleAudio.setBackgroundDrawable(getResources().getDrawable(R.drawable.media_play));
+//					else {
+//				//	toggleAudio.setBackground(getResources().getDrawable(R.drawable.media_stop));
+//					toggleAudio.setBackgroundDrawable(getResources().getDrawable(R.drawable.media_play));
+//				}
+//			}
+//		});
 		return myView;
 	}
 
@@ -150,5 +168,4 @@ public class DisplayQuestionFragment extends SherlockFragment implements
 		// TODO Auto-generated method stub
 
 	}
-
 }

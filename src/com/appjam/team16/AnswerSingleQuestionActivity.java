@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -28,7 +29,8 @@ public class AnswerSingleQuestionActivity extends SherlockFragmentActivity
 	private SeekBar slider;
 	private TextView tv;
 	private Button audioButton;
-
+	
+	private ToggleButton toggleAudio;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,7 +46,23 @@ public class AnswerSingleQuestionActivity extends SherlockFragmentActivity
 		slider = (SeekBar) findViewById(R.id.seekBar1);
 		tv = (TextView) findViewById(R.id.questionDisplay);
 		audioButton = (Button) findViewById(R.id.audioButton);
-
+		
+		toggleAudio = (ToggleButton) findViewById(R.id.toggleAudio);
+		
+		toggleAudio.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if(toggleAudio.isChecked())
+					//toggleAudio.setBackground(getResources().getDrawable(R.drawable.media_play));
+					toggleAudio.setBackgroundDrawable(getResources().getDrawable(R.drawable.media_play));
+					else {
+				//	toggleAudio.setBackground(getResources().getDrawable(R.drawable.media_stop));
+					toggleAudio.setBackgroundDrawable(getResources().getDrawable(R.drawable.media_stop));
+				}
+			}
+		});
 	}
 
 	private void loadQuestion(long questionId) {
