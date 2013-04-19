@@ -149,7 +149,6 @@ public class AnswerSingleQuestionActivity extends SherlockFragmentActivity
 		releaseMediaPlayer();
 		play = new MediaPlayer();
 		try {
-			Log.d("com.team16.appjam", filePath);
 			play.setDataSource(filePath);
 			play.prepare();
 			play.start();

@@ -6,26 +6,25 @@
     tools:context=".AnswerQuestionActivity" >
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|top"
-        android:gravity="center_vertical"
-        android:orientation="horizontal" >
+        android:orientation="vertical" >
 
         <TextView
             android:id="@+id/questionDisplay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="center_horizontal"
             android:background="@android:color/transparent"
             android:textColor="#000000"
             android:textSize="28sp" />
-        
+
         <Button
             android:id="@+id/audioButton"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="center_horizontal"
             android:layout_margin="@dimen/standardPadding"
             android:background="@android:drawable/ic_media_play"
             android:visibility="gone" />
@@ -68,11 +67,11 @@
         android:layout_margin="10dp"
         android:indeterminate="false"
         android:maxHeight="40dp"
-        android:visibility="gone"
         android:minHeight="40dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:progressDrawable="@drawable/styled_progress"
-        android:thumb="@drawable/zthumb" />
+        android:thumb="@drawable/zthumb"
+        android:visibility="gone" />
 
 </FrameLayout>

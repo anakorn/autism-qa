@@ -129,6 +129,17 @@ public class QuestionDetailFragment extends SherlockFragment implements
 		Context context = getActivity();
 		switch (v.getId()) {
 		case R.id.save_question_bttn:
+			if (questionName.getText() == null || questionName.getText().toString().trim().equals(""))
+			{
+				Toast.makeText(getActivity(), "Must Have Question Name", Toast.LENGTH_SHORT).show();
+				return ;
+			}
+			if (questionQuestion.getText() == null || questionQuestion.getText().toString().trim().equals(""))
+			{
+				Toast.makeText(getActivity(), "Must Have Question Name", Toast.LENGTH_SHORT).show();
+				return ;
+			}
+			
 			int questionTypeInt = questionType.isChecked() ? 0 : 1;
 			if (editingQuestion) {
 				Uri uri = ContentUris.withAppendedId(
@@ -288,7 +299,6 @@ public class QuestionDetailFragment extends SherlockFragment implements
 	public void playRecording() throws Exception {
 		releaseMediaPlayer();
 		play = new MediaPlayer();
-		Toast.makeText(getActivity(), fileName, Toast.LENGTH_SHORT).show();
 		play.setDataSource(fileName);
 		play.prepare();
 		play.start();

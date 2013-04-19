@@ -10,5 +10,5 @@
 	<dimen name="standardTextSize">16dp</dimen>
 	<dimen name="standardPadding">8dp</dimen>
 	<dimen name="buttonWidth">144dp</dimen>
-	<dimen name="buttonHeight">96dp</dimen>
+	<dimen name="buttonHeight">84dp</dimen>
 </resources>

@@ -32,27 +32,38 @@
             android:name="com.appjam.team16.AnswerQuestionActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_answer_question"
+            android:screenOrientation="landscape"
             android:theme="@style/FullscreenTheme" >
         </activity>
         <activity
             android:name="com.appjam.team16.ListViewCheckboxesActivity"
-            android:label="Questions" >
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="Questions"
+            android:screenOrientation="landscape" >
         </activity>
         <activity
             android:name="com.appjam.team16.ViewQuizzesActivity"
-            android:label="@string/title_activity_view_quizzes" >
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_view_quizzes"
+            android:screenOrientation="landscape" >
         </activity>
         <activity
             android:name="com.appjam.team16.CreateQuizActivity"
-            android:label="@string/title_activity_create_quiz" >
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_create_quiz"
+            android:screenOrientation="landscape" >
         </activity>
         <activity
             android:name="com.appjam.team16.ViewQuestionsActivity"
-            android:label="@string/title_activity_view_questions" >
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_view_questions"
+            android:screenOrientation="landscape" >
         </activity>
         <activity
             android:name="com.appjam.team16.CreateQuestionActivity"
-            android:label="@string/title_activity_create_question" >
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_create_question"
+            android:screenOrientation="landscape" >
         </activity>
 
         <provider
@@ -62,7 +73,9 @@
 
         <activity
             android:name="com.appjam.team16.HomeActivity"
-            android:label="@string/title_activity_home" >
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_home"
+            android:screenOrientation="landscape" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -71,15 +84,21 @@
         </activity>
         <activity
             android:name="com.appjam.team16.AnswerSingleQuestionActivity"
-            android:label="@string/title_activity_answer_single_question" >
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_answer_single_question"
+            android:screenOrientation="landscape" >
         </activity>
         <activity
             android:name="com.appjam.team16.SeeAnswersActivity"
-            android:label="@string/title_activity_see_answers" >
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_see_answers"
+            android:screenOrientation="landscape" >
         </activity>
         <activity
             android:name="com.appjam.team16.DisplayQuestionAnswer"
-            android:label="@string/title_activity_display_question_answer" >
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_display_question_answer"
+            android:screenOrientation="landscape" >
         </activity>
     </application>
 

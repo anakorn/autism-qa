@@ -211,12 +211,9 @@ public class DisplayQuestionFragment extends SherlockFragment implements
 	}
 
 	private void playAudio() {
-		Toast.makeText(getActivity(), "Got into play audio", Toast.LENGTH_SHORT);
 		releaseMediaPlayer();
 		play = new MediaPlayer();
 		try {
-			Log.d("com.team16.appjam", filePath);
-			Toast.makeText(getActivity(), filePath, Toast.LENGTH_SHORT).show();
 			play.setDataSource(filePath);
 			play.prepare();
 			play.start();
