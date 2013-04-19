@@ -3,10 +3,10 @@
 
     <!-- ACTION BAR START -->
     <item
-        android:id="@+id/create_question_item"
+        android:id="@+id/create_quiz_item"
         android:icon="@drawable/ic_menu_add"
         android:showAsAction="withText"
-        android:title="@string/create_question"/>
+        android:title="@string/create_quiz"/>
     <item
         android:id="@+id/home"
         android:icon="@drawable/ic_menu_home"
@@ -14,12 +14,12 @@
         android:title="@string/home"/>
     <!-- ACTION BAR END -->
     <item
-        android:id="@+id/create_quiz_item"
+        android:id="@+id/create_question"
         android:showAsAction="never"
-        android:title="@string/create_quiz"/>
+        android:title="@string/create_question"/>
     <item
-        android:id="@+id/view_quizzes_item"
+        android:id="@+id/view_questions"
         android:showAsAction="never"
-        android:title="@string/view_quizzes"/>
+        android:title="@string/view_questions"/>
 
 </menu>

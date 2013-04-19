@@ -200,12 +200,13 @@ public class QuizDetailFragment extends SherlockFragment implements
 					QuestionTable.COLUMN_TITLE };
 			return new CursorLoader(getActivity(), uri, projection, selection,
 					selectionArgs, null);
-		} else {
-			String[] projection = new String[] { QuizTable.COLUMN_ID,
-					QuizTable.COLUMN_TITLE,
-					QuizQuestionTable.COLUMN_QUESTION_ID };
+		} else { // "id" is the quiz ID of a selected quiz (from quiz list)
 			Uri uri = ContentUris.withAppendedId(
 					Team16ContentProvider.QUESTION_QUIZZES_URI, id);
+			String[] projection = new String[] { QuizTable.COLUMN_ID,
+					QuizTable.COLUMN_TITLE,
+					QuizQuestionTable.COLUMN_QUESTION_ID,
+					QuestionTable.COLUMN_TITLE };
 			return new CursorLoader(getActivity(), uri, projection, null, null,
 					null);
 		}

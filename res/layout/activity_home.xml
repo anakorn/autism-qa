@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:thumbOffset="16dp" />
+        android:thumbOffset="16dp"
+        android:max="7" />
 
     <LinearLayout
         android:id="@+id/yesNoLayout"
