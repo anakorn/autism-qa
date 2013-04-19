@@ -65,14 +65,16 @@ public class QuizDetailFragment extends SherlockFragment implements
 		View quizView = inflater
 				.inflate(R.layout.quiz_detail, container, false);
 
-		questionsList = (DragSortListView) quizView.findViewById(R.id.quizQuestionList);
+		questionsList = (DragSortListView) quizView
+				.findViewById(R.id.quizQuestionList);
 		title = (EditText) quizView.findViewById(R.id.quizTitle);
 
-		DragSortController dragController = new DragSortController(questionsList);
+		DragSortController dragController = new DragSortController(
+				questionsList);
 		dragController.setBackgroundColor(Color.argb(64, 0, 0, 0));
 		dragController.setDragInitMode(DragSortController.ON_DOWN);
 		dragController.setDragHandleId(R.id.draggable_list_item_grip);
-		
+
 		String[] from = new String[] { QuestionTable.COLUMN_TITLE };
 		int[] to = new int[] { R.id.draggable_list_item_text };
 
@@ -101,6 +103,8 @@ public class QuizDetailFragment extends SherlockFragment implements
 		if (getArguments() != null
 				&& getArguments().containsKey(QuizTable.COLUMN_ID))
 			displayQuiz(getArguments().getLong(QuizTable.COLUMN_ID));
+		if (getArguments() != null && getArguments().containsKey(IDS_KEY))
+			addQuestions(getArguments().getLongArray(IDS_KEY));
 	}
 
 	@Override
@@ -138,10 +142,10 @@ public class QuizDetailFragment extends SherlockFragment implements
 
 	private void saveQuiz() {
 		if (!editingQuiz) {
-			if (ids.size() == 0)
-			{
-				Toast.makeText(getActivity(), "Must Add At Least 1 Questions", Toast.LENGTH_SHORT).show();
-				return ;
+			if (ids.size() == 0) {
+				Toast.makeText(getActivity(), "Must Add At Least 1 Questions",
+						Toast.LENGTH_SHORT).show();
+				return;
 			}
 			Log.d("com.team16.appjam", "saveQuiz!");
 			Uri uri = Team16ContentProvider.QUIZZES_URI;
