@@ -2,11 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <!-- ACTION BAR START -->
-    <item
-        android:id="@+id/home"
-        android:icon="@drawable/ic_menu_home"
-        android:showAsAction="ifRoom"
-        android:title="@string/home"/>
     <!-- ACTION BAR END -->
     <item
         android:id="@+id/view_questions_item"

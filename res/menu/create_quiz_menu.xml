@@ -12,11 +12,6 @@
         android:icon="@drawable/ic_menu_save"
         android:showAsAction="ifRoom"
         android:title="@string/save_quiz"/>
-    <item
-        android:id="@+id/home"
-        android:icon="@drawable/ic_menu_home"
-        android:showAsAction="ifRoom"
-        android:title="@string/home"/>
     <!-- ACTION BAR END -->
     <item
         android:id="@+id/view_quizzes_item"

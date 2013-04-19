@@ -100,9 +100,9 @@ public class QuestionDetailFragment extends SherlockFragment implements
 //				.findViewById(R.id.playbackAudioButton);
 
 		addQuestionButton.setOnClickListener(this);
-		recordAudioButton.setOnClickListener(this);
+//		recordAudioButton.setOnClickListener(this);
 		removeAudioButton.setOnClickListener(this);
-		playbackAudioButton.setOnClickListener(this);
+//		playbackAudioButton.setOnClickListener(this);
 		return questionView;
 	}
 

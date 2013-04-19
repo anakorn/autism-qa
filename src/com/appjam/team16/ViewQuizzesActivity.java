@@ -66,7 +66,7 @@ public class ViewQuizzesActivity extends SherlockFragmentActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent = null;
 		switch (item.getItemId()) {
-		case R.id.home:
+		case android.R.id.home:
 			intent = new Intent(this, HomeActivity.class);
 			startActivity(intent);
 			break;

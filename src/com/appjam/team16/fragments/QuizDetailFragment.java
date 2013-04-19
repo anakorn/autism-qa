@@ -147,7 +147,7 @@ public class QuizDetailFragment extends SherlockFragment implements
 						Toast.LENGTH_SHORT).show();
 				return;
 			}
-			if (title.getText().toString().isEmpty()) {
+			if (title.getText().toString() == null || title.getText().toString().trim().equals("")) {
 				Toast.makeText(getActivity(), "Must Specify Title",
 						Toast.LENGTH_SHORT).show();
 			}
@@ -241,11 +241,12 @@ public class QuizDetailFragment extends SherlockFragment implements
 		} else {
 			String[] projection = new String[] { QuizTable.COLUMN_TITLE,
 					QuizQuestionTable.COLUMN_QUESTION_ID + " as _id",
-					QuestionTable.COLUMN_TITLE };
+					QuestionTable.COLUMN_TITLE,
+					QuizQuestionTable.COLUMN_QUIZ_POSITION};
 			Uri uri = ContentUris.withAppendedId(
 					Team16ContentProvider.QUESTION_QUIZZES_URI, id);
 			return new CursorLoader(getActivity(), uri, projection, null, null,
-					null);
+					QuizQuestionTable.COLUMN_QUIZ_POSITION);
 		}
 	}
 
