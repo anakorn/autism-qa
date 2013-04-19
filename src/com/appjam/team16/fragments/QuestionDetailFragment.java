@@ -43,8 +43,6 @@ public class QuestionDetailFragment extends SherlockFragment implements
 
 	public QuestionCreatedListener mCallback;
 
-	private Button addToQuizButton;
-
 	private EditText questionName;
 	private EditText questionQuestion;
 	private ToggleButton questionType;
@@ -71,16 +69,6 @@ public class QuestionDetailFragment extends SherlockFragment implements
 		ids = new HashSet<Long>();
 		View questionView = inflater.inflate(R.layout.question_detail,
 				container, false);
-		// Start "Add to quiz" button
-		addToQuizButton = (Button) questionView
-				.findViewById(R.id.add_to_quiz_button);
-		addToQuizButton.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				addQuestionToQuiz();
-			}
-		});
 
 		questionType = (ToggleButton) questionView
 				.findViewById(R.id.questionType);
@@ -191,18 +179,6 @@ public class QuestionDetailFragment extends SherlockFragment implements
 		// default:
 		// break;
 		}
-	}
-
-	private void addQuestionToQuiz() {
-		long[] selectedIds = new long[ids.size()];
-		int counter = 0;
-		for (Long l : ids) {
-			selectedIds[counter++] = l;
-		}
-
-		SelectQuizzesDialogFragment select = SelectQuizzesDialogFragment
-				.newInstance(selectedIds);
-		select.show(getFragmentManager(), "dialog");
 	}
 
 	private boolean valuesFilledIn() {

@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -27,12 +28,11 @@ public class AnswerQuestionActivity extends SherlockFragmentActivity implements
 		QuestionButtonListener, LoaderCallbacks<Cursor> {
 
 	public static final String DISPLAY_QUIZ_ID = "dqd";
-	public static final String DISPLAY_QUESTION_PREV = "dqp";
-	public static final String DISPLAY_QUESTION_NEXT = "dqn";
 
 	private long quiz_id;
 	private List<Question> questions;
 	private DisplayQuestionFragment displayQuestionFragment;
+	private int currentPosition;
 
 	private static class Question {
 		public int answerValue;
@@ -109,14 +109,18 @@ public class AnswerQuestionActivity extends SherlockFragmentActivity implements
 
 	@Override
 	public void forwardButtonPressed() {
-		// TODO Auto-generated method stub
-
+		currentPosition++;
+		displayQuestion();
 	}
 
 	@Override
 	public void backButtonPressed() {
-		// TODO Auto-generated method stub
-
+		currentPosition--;
+		displayQuestion();
+	}
+	
+	public void finishButtonPressed() {
+		
 	}
 
 	@Override
@@ -135,19 +139,25 @@ public class AnswerQuestionActivity extends SherlockFragmentActivity implements
 	public void onLoadFinished(Loader<Cursor> arg0, Cursor arg1) {
 		if (arg1.moveToFirst()) {
 			for (int i = 0; i < arg1.getCount(); i++) {
+				arg1.moveToPosition(i);
 				Question question = new Question();
 				question.questionId = arg1.getInt(arg1
 						.getColumnIndexOrThrow(QuestionTable.COLUMN_ID));
+				Log.d("com.team16.appjam", "Adding" + question.questionId);
 				questions.add(question);
 			}
 		}
-		displayQuestion(0);
+		currentPosition = 0;
+		displayQuestion();
 	}
 
-	private void displayQuestion(int question)
+	private void displayQuestion()
 	{
-		int questionId = questions.get(question).questionId;
-		displayQuestionFragment.displayQuestion(questionId);
+		int questionId = questions.get(currentPosition).questionId;
+		Log.d("com.team16.appjam", "d: " + currentPosition);
+		boolean hasPrev = currentPosition > 0;
+		boolean hasNext = currentPosition+1 < questions.size();
+		displayQuestionFragment.displayQuestion(questionId, hasPrev, hasNext);
 		
 	}
 

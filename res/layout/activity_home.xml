@@ -39,9 +39,6 @@
             android:textAlignment="center"
             android:textColor="#000000"
             android:textSize="@dimen/textLarge" />
-
-        <Button>
-        </Button>
     </LinearLayout>
 
 </FrameLayout>
