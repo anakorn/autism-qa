@@ -30,6 +30,7 @@
             android:layout_margin="@dimen/standardPadding"
             android:background="@android:drawable/ic_media_play"
             android:visibility="gone" />
+
     </LinearLayout>
 
     <LinearLayout
