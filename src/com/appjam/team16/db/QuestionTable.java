@@ -5,7 +5,7 @@ public class QuestionTable {
 	public static final String TABLE_NAME = "Question";
 
 	public static final String COLUMN_ID = "_id";
-	public static final String COLUMN_TITLE = "title";
+	public static final String COLUMN_TITLE = "question_title";
 	public static final String COLUMN_ANSWER_TYPE = "answer_type";
 	public static final String COLUMN_QUESTION_TEXT = "question_text";
 	public static final String COLUMN_QUESTION_AUDIBLE = "question_audible";

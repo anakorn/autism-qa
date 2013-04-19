@@ -64,10 +64,12 @@ public class SelectQuestionsDialogFragment extends SherlockDialogFragment
 				R.layout.selectable_list_item, null, from, to);
 		getLoaderManager().initLoader(0, null, this);
 
-		ListView myView = (ListView) getActivity().getLayoutInflater().inflate(
+		View myView = (View) getActivity().getLayoutInflater().inflate(
 				R.layout.simple_listview, null);
-		myView.setOnItemClickListener(this);
-		myView.setAdapter(adapter);
+		
+		ListView lv = (ListView) myView.findViewById(R.id.simple_list);
+		lv.setOnItemClickListener(this);
+		lv.setAdapter(adapter);
 		
 		//Add the ids we've already selected
 		if (getArguments() != null) 
@@ -102,10 +104,6 @@ public class SelectQuestionsDialogFragment extends SherlockDialogFragment
 
 	private void negativeButtonClicked() {
 		Log.d("com.team16.appjam", "Negative clicked");
-	}
-
-	private void listButtonClicked() {
-		Log.d("com.team16.appjam", "List clicked");
 	}
 
 	@Override
@@ -173,7 +171,6 @@ public class SelectQuestionsDialogFragment extends SherlockDialogFragment
 				t_title = mCursor.getString(mCursor
 						.getColumnIndex(QuestionTable.COLUMN_TITLE));
 			}
-			final long id = t_id;
 			final String title = t_title;
 
 			ViewHolder holder = null;

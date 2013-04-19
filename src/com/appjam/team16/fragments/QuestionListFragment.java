@@ -57,7 +57,7 @@ public class QuestionListFragment extends SherlockListFragment implements
 
 		int layout = R.layout.action_list_item;
 		mAdapter = new ActionListCursorAdapter(getActivity(), layout, null,
-				new String[] { QuizTable.COLUMN_TITLE },
+				new String[] { QuestionTable.COLUMN_TITLE },
 				new int[] { R.id.action_list_text }, this);
 		setListAdapter(mAdapter);
 
@@ -108,12 +108,6 @@ public class QuestionListFragment extends SherlockListFragment implements
 	@Override
 	public void onLoadFinished(Loader<Cursor> arg0, Cursor arg1) {
 		Log.d("com.team16.appjam", "Loader done " + arg1.getCount());
-		while (arg1.moveToNext()) {
-			Log.d("com.team16.appjam",
-					""
-							+ arg1.getLong(arg1
-									.getColumnIndexOrThrow(QuestionTable.COLUMN_ID)));
-		}
 		mAdapter.swapCursor(arg1);
 	}
 
