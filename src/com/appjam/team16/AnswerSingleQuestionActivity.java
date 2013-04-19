@@ -1,8 +1,11 @@
 package com.appjam.team16;
 
+import java.io.IOException;
+
 import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -32,10 +35,12 @@ public class AnswerSingleQuestionActivity extends SherlockFragmentActivity
 	private SeekBar slider;
 	private TextView tv;
 	private String filePath;
+	private MediaPlayer play;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		play = new MediaPlayer();
 		getSupportActionBar().setHomeButtonEnabled(true);
 		setContentView(R.layout.answer_single_question_layout);
 		if (getIntent() != null && getIntent().getExtras() != null
@@ -141,7 +146,26 @@ public class AnswerSingleQuestionActivity extends SherlockFragmentActivity
 	}
 
 	private void playAudio() {
-		Log.d("com.team16.appjam", "Play audio");
+		releaseMediaPlayer();
+		play = new MediaPlayer();
+		try {
+			Log.d("com.team16.appjam", filePath);
+			play.setDataSource(filePath);
+			play.prepare();
+			play.start();
+		} catch (IOException e) {
+
+		}
+	}
+
+	private void releaseMediaPlayer() {
+		if (play != null) {
+			try {
+				play.release();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override
