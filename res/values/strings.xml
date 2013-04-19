@@ -39,5 +39,9 @@
     <string name="save_quiz">Save Quiz</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="capitalized_no">NO</string>
+    <string name="capitalized_yes">YES</string>
+    <string name="next_button_text">Next&gt;</string>
+    <string name="back_button_text">&lt;Back</string>
 
 </resources>

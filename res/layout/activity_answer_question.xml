@@ -5,27 +5,98 @@
     android:background="#0099cc"
     tools:context=".AnswerQuestionActivity" >
 
-    <ToggleButton
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|top"
-        android:textOff="Yes/No Button OFF"
-        android:textOn="Yes/No Button ON" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical" >
 
-    <SeekBar
-        android:id="@+id/seekBar1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:thumbOffset="16dp" />
+        <TextView
+            android:id="@+id/questionDisplay"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="20dp"
+            android:background="#FFFFFF"
+            android:height="150dp"
+            android:text="Text goes here"
+            android:textColor="#000000"
+            android:textSize="28sp" />
 
-    <Button
-        android:id="@+id/submitButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|bottom"
-        android:text="@string/submitQuestion"
-        android:textColor="#000000"
-        android:textSize="@dimen/textLarge" />
+        <Button
+            android:id="@+id/audioButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="@drawable/green_audio_icon" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/yesButton"
+                android:layout_width="70dp"
+                android:layout_height="50dp"
+                android:layout_gravity="left"
+                android:layout_weight="1"
+                android:background="#00FF00"
+                android:text="@string/capitalized_yes"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="@dimen/textLarge" />
+
+            <Button
+                android:id="@+id/noButton"
+                android:layout_width="70dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="#FF0000"
+                android:text="@string/capitalized_no"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="@dimen/textLarge" />
+        </LinearLayout>
+
+        <SeekBar
+            android:id="@+id/slider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|bottom"
+            android:background="#FFFFFF" />
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/backButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:background="#FFFFFF"
+                android:text="@string/back_button_text"
+                android:textColor="#000000"
+                android:textSize="22sp" />
+
+            <Button
+                android:id="@+id/nextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="#FFFFFF"
+                android:text="@string/next_button_text"
+                android:textColor="#000000"
+                android:textSize="22sp" />
+        </RelativeLayout>
+    </LinearLayout>
 
 </FrameLayout>
