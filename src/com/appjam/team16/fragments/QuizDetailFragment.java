@@ -1,7 +1,7 @@
 package com.appjam.team16.fragments;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.ContentUris;
@@ -49,7 +49,7 @@ public class QuizDetailFragment extends SherlockFragment implements
 	private SimpleDragSortCursorAdapter adapter;
 	private Button submitQuizButton;
 	private Button addQuestionButton;
-	private Set<Long> ids;
+	private List<Long> ids;
 	private boolean editingQuiz;
 
 	@Override
@@ -61,18 +61,20 @@ public class QuizDetailFragment extends SherlockFragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		ids = new HashSet<Long>();
+		ids = new ArrayList<Long>();
 		View quizView = inflater
 				.inflate(R.layout.quiz_detail, container, false);
 
-		questionsList = (DragSortListView) quizView.findViewById(R.id.quizQuestionList);
+		questionsList = (DragSortListView) quizView
+				.findViewById(R.id.quizQuestionList);
 		title = (EditText) quizView.findViewById(R.id.quizTitle);
 
-		DragSortController dragController = new DragSortController(questionsList);
+		DragSortController dragController = new DragSortController(
+				questionsList);
 		dragController.setBackgroundColor(Color.argb(64, 0, 0, 0));
 		dragController.setDragInitMode(DragSortController.ON_DOWN);
 		dragController.setDragHandleId(R.id.draggable_list_item_grip);
-		
+
 		String[] from = new String[] { QuestionTable.COLUMN_TITLE };
 		int[] to = new int[] { R.id.draggable_list_item_text };
 
@@ -101,6 +103,8 @@ public class QuizDetailFragment extends SherlockFragment implements
 		if (getArguments() != null
 				&& getArguments().containsKey(QuizTable.COLUMN_ID))
 			displayQuiz(getArguments().getLong(QuizTable.COLUMN_ID));
+		if (getArguments() != null && getArguments().containsKey(IDS_KEY))
+			addQuestions(getArguments().getLongArray(IDS_KEY));
 	}
 
 	@Override
@@ -138,10 +142,10 @@ public class QuizDetailFragment extends SherlockFragment implements
 
 	private void saveQuiz() {
 		if (!editingQuiz) {
-			if (ids.size() == 0)
-			{
-				Toast.makeText(getActivity(), "Must Add At Least 1 Questions", Toast.LENGTH_SHORT).show();
-				return ;
+			if (ids.size() == 0) {
+				Toast.makeText(getActivity(), "Must Add At Least 1 Questions",
+						Toast.LENGTH_SHORT).show();
+				return;
 			}
 			Log.d("com.team16.appjam", "saveQuiz!");
 			Uri uri = Team16ContentProvider.QUIZZES_URI;
@@ -232,6 +236,7 @@ public class QuizDetailFragment extends SherlockFragment implements
 	}
 
 	public void addQuestions(long[] newIds) {
+		ids.clear();
 		if (newIds.length > 0) {
 			for (long newId : newIds)
 				ids.add(newId);
@@ -243,7 +248,6 @@ public class QuizDetailFragment extends SherlockFragment implements
 			selectIds.putLongArray(IDS_KEY, idsArray);
 			getLoaderManager().restartLoader(0, selectIds, this);
 		} else {
-			ids.clear();
 			onLoaderReset(null);
 		}
 
