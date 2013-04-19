@@ -136,6 +136,8 @@ public class Team16ContentProvider extends ContentProvider {
 			String questionForiegnKey = uri.getPathSegments().get(1);
 			queryBuilder.appendWhereEscapeString(AnswerTable.COLUMN_QUESTION_ID
 					+ "=" + questionForiegnKey);
+		case ANSWER:
+			queryBuilder.setTables(AnswerTable.TABLE_NAME);
 		default:
 			break;
 		}
@@ -170,6 +172,7 @@ public class Team16ContentProvider extends ContentProvider {
 			tableName = AnswerTable.TABLE_NAME;
 			tableUri = ANSWERS_URI;
 			break;
+				
 		}
 
 		Log.d("com.team16.appjam", "Inserting into table " + tableName);
@@ -274,6 +277,7 @@ public class Team16ContentProvider extends ContentProvider {
 			tableName = AnswerTable.TABLE_NAME;
 			String answerId = uri.getPathSegments().get(1);
 			where = AnswerTable.COLUMN_ID + "=" + answerId;
+			break;
 		default:
 			break;
 		}

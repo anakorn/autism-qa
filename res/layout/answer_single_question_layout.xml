@@ -20,13 +20,6 @@
             android:background="@android:color/transparent"
             android:textColor="#000000"
             android:textSize="28sp" />
-		 <ToggleButton
-            android:id="@+id/toggleAudio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textOff=""
-            android:textOn="" 
-            android:background ="@drawable/media_play"/>
         
         <Button
             android:id="@+id/audioButton"

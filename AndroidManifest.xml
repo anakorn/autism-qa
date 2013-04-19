@@ -77,6 +77,10 @@
             android:name="com.appjam.team16.SeeAnswersActivity"
             android:label="@string/title_activity_see_answers" >
         </activity>
+        <activity
+            android:name="com.appjam.team16.DisplayQuestionAnswer"
+            android:label="@string/title_activity_display_question_answer" >
+        </activity>
     </application>
 
 </manifest>

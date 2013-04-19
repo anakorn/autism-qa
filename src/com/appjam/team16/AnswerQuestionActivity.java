@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.text.format.DateFormat;
 import android.util.Log;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -145,8 +146,10 @@ public class AnswerQuestionActivity extends SherlockFragmentActivity implements
 			cv.put(AnswerTable.COLUMN_ANSWER_VALUE, answerValue);
 			cv.put(AnswerTable.COLUMN_QUESTION_ID, questionId);
 			cv.put(AnswerTable.COLUMN_RESPONSE_TIME, formattedResponseTime);
-			cv.put(AnswerTable.COLUMN_CREATE_TIMESTAMP,
-					System.currentTimeMillis());
+			DateFormat df = new DateFormat();
+			String date = df.format("MM-dd hh:mm", new java.util.Date())
+					.toString();
+			cv.put(AnswerTable.COLUMN_CREATE_TIMESTAMP, date);
 			cv.put(AnswerTable.COLUMN_RESPONSE_TIME, System.currentTimeMillis());
 			getContentResolver().update(
 					ContentUris.withAppendedId(
@@ -162,8 +165,10 @@ public class AnswerQuestionActivity extends SherlockFragmentActivity implements
 			cv.put(AnswerTable.COLUMN_ANSWER_VALUE, answerValue);
 			cv.put(AnswerTable.COLUMN_QUESTION_ID, questionId);
 			cv.put(AnswerTable.COLUMN_RESPONSE_TIME, formattedResponseTime);
-			cv.put(AnswerTable.COLUMN_CREATE_TIMESTAMP,
-					System.currentTimeMillis());
+			DateFormat df = new DateFormat();
+			String date = df.format("yyyy-MM-dd hh:mm", new java.util.Date())
+					.toString();
+			cv.put(AnswerTable.COLUMN_CREATE_TIMESTAMP, date);
 			Uri uri = getContentResolver().insert(
 					Team16ContentProvider.ANSWERS_URI, cv);
 

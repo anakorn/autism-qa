@@ -9,6 +9,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
@@ -25,6 +26,7 @@ public class SeeAnswersActivity extends SherlockFragmentActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getSupportActionBar().setHomeButtonEnabled(true);
 		setContentView(R.layout.simple_listview);
 		ListView lv = (ListView) findViewById(R.id.simple_list);
 		adapter = new SimpleCursorAdapter(this,
@@ -45,16 +47,13 @@ public class SeeAnswersActivity extends SherlockFragmentActivity implements
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-
 		Intent intent = null;
-
 		switch (item.getItemId()) {
-
 		case android.R.id.home:
 			intent = new Intent(this, HomeActivity.class);
 			startActivity(intent);
 			return true;
-		case R.id.create_question_item:
+		case R.id.create_questions_item:
 			intent = new Intent(this, CreateQuestionActivity.class);
 			startActivity(intent);
 			return true;
@@ -96,8 +95,7 @@ public class SeeAnswersActivity extends SherlockFragmentActivity implements
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		// TODO Auto-generated method stub
-
+		Toast.makeText(this, "Not Yet Implented :(", Toast.LENGTH_SHORT).show();
 	}
 
 }
