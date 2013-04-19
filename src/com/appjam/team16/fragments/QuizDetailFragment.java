@@ -1,7 +1,7 @@
 package com.appjam.team16.fragments;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.ContentUris;
@@ -49,7 +49,7 @@ public class QuizDetailFragment extends SherlockFragment implements
 	private SimpleDragSortCursorAdapter adapter;
 	private Button submitQuizButton;
 	private Button addQuestionButton;
-	private Set<Long> ids;
+	private List<Long> ids;
 	private boolean editingQuiz;
 
 	@Override
@@ -61,7 +61,7 @@ public class QuizDetailFragment extends SherlockFragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		ids = new HashSet<Long>();
+		ids = new ArrayList<Long>();
 		View quizView = inflater
 				.inflate(R.layout.quiz_detail, container, false);
 
@@ -231,6 +231,7 @@ public class QuizDetailFragment extends SherlockFragment implements
 	}
 
 	public void addQuestions(long[] newIds) {
+		ids.clear();
 		if (newIds.length > 0) {
 			for (long newId : newIds)
 				ids.add(newId);
@@ -242,7 +243,6 @@ public class QuizDetailFragment extends SherlockFragment implements
 			selectIds.putLongArray(IDS_KEY, idsArray);
 			getLoaderManager().restartLoader(0, selectIds, this);
 		} else {
-			ids.clear();
 			onLoaderReset(null);
 		}
 
