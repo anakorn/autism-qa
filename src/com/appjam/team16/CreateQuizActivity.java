@@ -33,16 +33,20 @@ public class CreateQuizActivity extends SherlockFragmentActivity implements
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getSupportMenuInflater();
-		inflater.inflate(R.menu.main_menu, menu);
-		return super.onCreateOptionsMenu(menu);
+		inflater.inflate(R.menu.create_quiz_menu, menu);
+		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent = null;
 		switch (item.getItemId()) {
-		case android.R.id.home:
+		case R.id.home:
 			intent = new Intent(this, HomeActivity.class);
+			startActivity(intent);
+			break;
+		case R.id.view_quizzes_item:
+			intent = new Intent(this, ViewQuizzesActivity.class);
 			startActivity(intent);
 			break;
 		case R.id.create_question_item:
@@ -51,15 +55,6 @@ public class CreateQuizActivity extends SherlockFragmentActivity implements
 			break;
 		case R.id.view_questions_item:
 			intent = new Intent(this, ViewQuestionsActivity.class);
-			startActivity(intent);
-			break;
-		case R.id.create_quiz_item:
-			intent = new Intent(this, CreateQuizActivity.class);
-			startActivity(intent);
-			finish();
-			break;
-		case R.id.view_quizzes_item:
-			intent = new Intent(this, ViewQuizzesActivity.class);
 			startActivity(intent);
 			break;
 		default:

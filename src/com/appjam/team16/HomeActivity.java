@@ -59,7 +59,7 @@ public class HomeActivity extends SherlockActivity implements
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getSupportMenuInflater().inflate(R.menu.main_menu, menu);
+		getSupportMenuInflater().inflate(R.menu.home_menu, menu);
 		return true;
 	}
 
@@ -67,10 +67,6 @@ public class HomeActivity extends SherlockActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent = null;
 		switch (item.getItemId()) {
-		case android.R.id.home:
-			intent = new Intent(this, HomeActivity.class);
-			startActivity(intent);
-			break;
 		case R.id.create_question_item:
 			intent = new Intent(this, CreateQuestionActivity.class);
 			startActivity(intent);

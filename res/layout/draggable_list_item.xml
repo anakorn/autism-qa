@@ -20,7 +20,7 @@
         android:layout_height="fill_parent"
         android:layout_gravity="center_vertical"
         android:layout_weight="0"
-        android:background="@drawable/grip"
+        android:background="@drawable/ic_grip"
         android:focusable="false"
         android:focusableInTouchMode="false" />
 

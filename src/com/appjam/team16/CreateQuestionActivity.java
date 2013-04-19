@@ -31,9 +31,8 @@ public class CreateQuestionActivity extends SherlockFragmentActivity implements
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
 		MenuInflater inflater = getSupportMenuInflater();
-		inflater.inflate(R.menu.main_menu, menu);
+		inflater.inflate(R.menu.create_question_menu, menu);
 		return true;
 	}
 
@@ -41,12 +40,8 @@ public class CreateQuestionActivity extends SherlockFragmentActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent = null;
 		switch (item.getItemId()) {
-		case android.R.id.home:
+		case R.id.home:
 			intent = new Intent(this, HomeActivity.class);
-			startActivity(intent);
-			break;
-		case R.id.create_question_item:
-			intent = new Intent(this, CreateQuestionActivity.class);
 			startActivity(intent);
 			break;
 		case R.id.view_questions_item:

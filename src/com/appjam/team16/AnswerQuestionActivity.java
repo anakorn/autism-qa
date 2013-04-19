@@ -27,15 +27,15 @@ public class AnswerQuestionActivity extends SherlockActivity implements
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getSupportMenuInflater();
-		inflater.inflate(R.menu.main_menu, menu);
-		return super.onCreateOptionsMenu(menu);
+		inflater.inflate(R.menu.answer_question_menu, menu);
+		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent = null;
 		switch (item.getItemId()) {
-		case android.R.id.home:
+		case R.id.home:
 			intent = new Intent(this, HomeActivity.class);
 			startActivity(intent);
 			break;
