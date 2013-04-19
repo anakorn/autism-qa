@@ -1,7 +1,12 @@
 package com.appjam.team16;
 
+
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
@@ -10,31 +15,98 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
+import com.appjam.team16.R;
+
 public class AnswerQuestionActivity extends SherlockActivity implements OnSeekBarChangeListener {
 
 	private static final int SEEKBAR_MAX = 84;
+
 	private SeekBar seekBar;
+	private Button noButton = null;
+	private Button yesButton = null;
+	private Button backButton = null;
+	private Button nextButton = null;
+	private Button audioButton = null;
+	
+	private Answers answer = null;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_answer_question);
+
+		noButton = (Button) findViewById(R.id.noButton);
+		yesButton = (Button) findViewById(R.id.yesButton);
+		backButton = (Button) findViewById(R.id.backButton);
+		nextButton = (Button) findViewById(R.id.nextButton);
+		audioButton = (Button) findViewById(R.id.audioButton);
+		SeekBar slider = (SeekBar) findViewById(R.id.seekBar1);
+		
+		answer = new Answers();
+
 		seekBar = (SeekBar) findViewById (R.id.seekBar1);
 		seekBar.setOnSeekBarChangeListener(this);
 		seekBar.setMax(SEEKBAR_MAX);
+		
+		answer.setStartTime(System.currentTimeMillis());
+		
+		
+		noButton.setOnClickListener(
+				new OnClickListener() 
+				{
+					public void onClick(View v) 
+					{
+						answer.isYesNo(false);
+					}
+				});
+		
+		yesButton.setOnClickListener(
+				new OnClickListener() 
+				{
+					public void onClick(View v) 
+					{
+						answer.isYesNo(true);
+					}
+				});
+		
+		nextButton.setOnClickListener(
+				new OnClickListener() 
+				{
+					public void onClick(View v) 
+					{
+						answer.setEndTime(System.currentTimeMillis());
+					}
+				});	
+		
+		backButton.setOnClickListener(
+				new OnClickListener() 
+				{
+					public void onClick(View v) 
+					{
+						answer.setEndTime(System.currentTimeMillis());
+					}
+				});	
 	}
-
+	
+	protected void onPause() {
+		answer.setPauseStart(System.currentTimeMillis());
+	}
+	
+	protected void onResume() {
+		answer.setPauseEnd(System.currentTimeMillis());
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getSupportMenuInflater();
-		inflater.inflate(R.menu.answer_question_menu, menu);
-		return true;
+		inflater.inflate(R.menu.main_menu, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent = null;
 		switch (item.getItemId()) {
-		case R.id.home:
+		case android.R.id.home:
 			intent = new Intent(this, HomeActivity.class);
 			startActivity(intent);
 			break;
@@ -91,6 +163,7 @@ public class AnswerQuestionActivity extends SherlockActivity implements OnSeekBa
 			seekBar.setProgress(14);
 		else
 			seekBar.setProgress(0);
+		
+		answer.setSeekBarValue(seekBar.getProgress());
 	}
-
 }
