@@ -142,6 +142,7 @@ public class QuestionDetailFragment extends SherlockFragment implements
 				values.put(QuestionTable.COLUMN_ANSWER_TYPE, questionTypeInt);
 				values.put(QuestionTable.COLUMN_MODIFY_TIMESTAMP,
 						System.currentTimeMillis());
+				values.put(QuestionTable.COLUMN_QUESTION_AUDIBLE, fileName);
 				cr.update(uri, values, "", null);
 				mCallback.questionCreated();
 			} else {
@@ -159,6 +160,7 @@ public class QuestionDetailFragment extends SherlockFragment implements
 						System.currentTimeMillis());
 				values.put(QuestionTable.COLUMN_MODIFY_TIMESTAMP,
 						System.currentTimeMillis());
+				values.put(QuestionTable.COLUMN_QUESTION_AUDIBLE, fileName);
 				Uri uri = cr.insert(Team16ContentProvider.QUESTION_URI, values);
 				Log.d("com.team16.appjam", uri.toString());
 				mCallback.questionCreated();
@@ -216,6 +218,7 @@ public class QuestionDetailFragment extends SherlockFragment implements
 			questionType
 					.setChecked(arg1.getInt(arg1
 							.getColumnIndexOrThrow(QuestionTable.COLUMN_ANSWER_TYPE)) == 0);
+			fileName = arg1.getString(arg1.getColumnIndexOrThrow(QuestionTable.COLUMN_QUESTION_AUDIBLE));
 		}
 	}
 
@@ -285,6 +288,7 @@ public class QuestionDetailFragment extends SherlockFragment implements
 	public void playRecording() throws Exception {
 		releaseMediaPlayer();
 		play = new MediaPlayer();
+		Toast.makeText(getActivity(), fileName, Toast.LENGTH_SHORT).show();
 		play.setDataSource(fileName);
 		play.prepare();
 		play.start();
@@ -331,7 +335,7 @@ public class QuestionDetailFragment extends SherlockFragment implements
 		record.prepare();
 		Log.d("com.team16.appjam", "Recording start!");
 		record.start();
-		
+
 	}
 
 	public void releaseRecorder() {

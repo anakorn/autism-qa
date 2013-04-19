@@ -6,6 +6,6 @@
         android:drawable="@drawable/bgbar"/>
     <item
         android:id="@+android:id/progress"
-        android:drawable="@drawable/pgbar"/>
+        android:drawable="@drawable/pgbar_orange"/>
 
 </layer-list>

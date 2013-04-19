@@ -1,9 +1,12 @@
 package com.appjam.team16;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -18,6 +21,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.appjam.team16.db.AnswerTable;
 import com.appjam.team16.db.QuestionTable;
 import com.appjam.team16.db.QuizQuestionTable;
 import com.appjam.team16.db.QuizTable;
@@ -33,6 +37,11 @@ public class AnswerQuestionActivity extends SherlockFragmentActivity implements
 	private List<Question> questions;
 	private DisplayQuestionFragment displayQuestionFragment;
 	private int currentPosition;
+	private Map<Integer, Integer> answerIds; // map from question id to the uri
+												// of
+												// the answer if it has already
+												// been
+												// inserted
 
 	private static class Question {
 		public int answerValue;
@@ -43,8 +52,9 @@ public class AnswerQuestionActivity extends SherlockFragmentActivity implements
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		answerIds = new HashMap<Integer, Integer>();
 		setContentView(R.layout.display_question_layout);
-		
+		getSupportActionBar().setHomeButtonEnabled(true);
 		questions = new ArrayList<AnswerQuestionActivity.Question>();
 		if (getIntent() != null && getIntent().getExtras() != null
 				&& getIntent().getExtras().containsKey(DISPLAY_QUIZ_ID)) {
@@ -54,7 +64,8 @@ public class AnswerQuestionActivity extends SherlockFragmentActivity implements
 		displayQuestionFragment = new DisplayQuestionFragment();
 		FragmentTransaction transaction = getSupportFragmentManager()
 				.beginTransaction();
-		transaction.replace(R.id.displayQuestionHolder, displayQuestionFragment);
+		transaction
+				.replace(R.id.displayQuestionHolder, displayQuestionFragment);
 		transaction.commit();
 
 	}
@@ -98,29 +109,63 @@ public class AnswerQuestionActivity extends SherlockFragmentActivity implements
 	}
 
 	public void displayQuiz(long quizId) {
-		String[] projection = new String[] { QuizTable.COLUMN_TITLE,
-				QuizQuestionTable.COLUMN_QUESTION_ID + " as _id",
-				QuestionTable.COLUMN_TITLE,
-				QuizQuestionTable.COLUMN_QUIZ_POSITION };
-		Uri uri = ContentUris.withAppendedId(
-				Team16ContentProvider.QUESTION_QUIZZES_URI, quizId);
 		getSupportLoaderManager().initLoader((int) quizId, null, this);
 	}
 
 	@Override
-	public void forwardButtonPressed() {
+	public void forwardButtonPressed(Answers answer) {
 		currentPosition++;
 		displayQuestion();
+		storeAnswer(answer);
 	}
 
 	@Override
-	public void backButtonPressed() {
+	public void backButtonPressed(Answers answer) {
 		currentPosition--;
 		displayQuestion();
+		storeAnswer(answer);
 	}
-	
-	public void finishButtonPressed() {
-		
+
+	public void finishButtonPressed(Answers answer) {
+		storeAnswer(answer);
+	}
+
+	private void storeAnswer(Answers answer) {
+		if (answerIds.containsKey(answer.getQuestionId())) {
+			int answerId = answerIds.get(answer.getQuestionId());
+			int questionId = (int) answer.getQuestionId();
+			int answerValue = answer.isSliderQuestion() ? answer
+					.getSeekBarValue() : answer.getYesNo();
+			String formattedResponseTime = answer.getTotalTime();
+			ContentValues cv = new ContentValues();
+			cv.put(AnswerTable.COLUMN_ANSWER_VALUE, answerValue);
+			cv.put(AnswerTable.COLUMN_QUESTION_ID, questionId);
+			cv.put(AnswerTable.COLUMN_RESPONSE_TIME, formattedResponseTime);
+			cv.put(AnswerTable.COLUMN_CREATE_TIMESTAMP,
+					System.currentTimeMillis());
+			cv.put(AnswerTable.COLUMN_RESPONSE_TIME, System.currentTimeMillis());
+			getContentResolver().update(
+					ContentUris.withAppendedId(
+							Team16ContentProvider.ANSWERS_URI, answerId), cv,
+					null, null);
+		} else {
+			Log.d("com.team16.appjam", "Is answer null " + (answer == null));
+			int questionId = (int) answer.getQuestionId();
+			int answerValue = answer.isSliderQuestion() ? answer
+					.getSeekBarValue() : answer.getYesNo();
+			String formattedResponseTime = answer.getTotalTime();
+			ContentValues cv = new ContentValues();
+			cv.put(AnswerTable.COLUMN_ANSWER_VALUE, answerValue);
+			cv.put(AnswerTable.COLUMN_QUESTION_ID, questionId);
+			cv.put(AnswerTable.COLUMN_RESPONSE_TIME, formattedResponseTime);
+			cv.put(AnswerTable.COLUMN_CREATE_TIMESTAMP,
+					System.currentTimeMillis());
+			Uri uri = getContentResolver().insert(
+					Team16ContentProvider.ANSWERS_URI, cv);
+
+			answerIds.put((int) answer.getQuestionId(),
+					Integer.parseInt(uri.getPathSegments().get(1)));
+		}
 	}
 
 	@Override
@@ -151,14 +196,13 @@ public class AnswerQuestionActivity extends SherlockFragmentActivity implements
 		displayQuestion();
 	}
 
-	private void displayQuestion()
-	{
+	private void displayQuestion() {
 		int questionId = questions.get(currentPosition).questionId;
 		Log.d("com.team16.appjam", "d: " + currentPosition);
 		boolean hasPrev = currentPosition > 0;
-		boolean hasNext = currentPosition+1 < questions.size();
+		boolean hasNext = currentPosition + 1 < questions.size();
 		displayQuestionFragment.displayQuestion(questionId, hasPrev, hasNext);
-		
+
 	}
 
 	@Override

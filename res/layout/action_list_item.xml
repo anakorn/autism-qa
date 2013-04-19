@@ -8,25 +8,27 @@
     <CheckBox
         android:id="@+id/action_list_checkbox"
         android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:layout_height="match_parent" />
+        android:focusableInTouchMode="false" />
 
     <TextView
         android:id="@+id/action_list_text"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:gravity="center_vertical" />
+        android:gravity="center_vertical"
+        android:textSize="@dimen/standardTextSize" />
 
     <Button
         android:id="@+id/action_list_button"
-        android:layout_width="@dimen/default_listitem_button"
-        android:layout_height="@dimen/default_listitem_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_gravity="center_vertical"
+        android:layout_marginRight="@dimen/standardPadding"
+        android:background="@android:drawable/ic_menu_edit"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:background="@android:drawable/ic_menu_edit"
         android:padding="@dimen/default_button_padding" />
 
 </LinearLayout>

@@ -32,10 +32,11 @@ import com.appjam.team16.db.QuizQuestionTable;
 import com.appjam.team16.db.QuizTable;
 import com.mobeta.android.dslv.DragSortController;
 import com.mobeta.android.dslv.DragSortListView;
+import com.mobeta.android.dslv.DragSortListView.DropListener;
 import com.mobeta.android.dslv.SimpleDragSortCursorAdapter;
 
 public class QuizDetailFragment extends SherlockFragment implements
-		LoaderCallbacks<Cursor> {
+		LoaderCallbacks<Cursor>, DropListener {
 
 	public static final String IDS_KEY = "ids_key";
 
@@ -82,6 +83,7 @@ public class QuizDetailFragment extends SherlockFragment implements
 		questionsList.setFloatViewManager(dragController);
 		questionsList.setOnTouchListener(dragController);
 		questionsList.setDragEnabled(true);
+		questionsList.setDropListener(this);
 
 		return quizView;
 	}
@@ -312,6 +314,12 @@ public class QuizDetailFragment extends SherlockFragment implements
 		editingQuiz = true;
 		this.quizId = id;
 		getLoaderManager().initLoader((int) id, null, this);
+	}
+
+	@Override
+	public void drop(int from, int to) {
+		ids.add(to, ids.remove(from));
+		Log.d("com.team16.android", ids.toString());
 	}
 
 }

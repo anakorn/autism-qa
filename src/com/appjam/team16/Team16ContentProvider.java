@@ -38,7 +38,8 @@ public class Team16ContentProvider extends ContentProvider {
 	private static final int QUESTION_QUIZZES = 5;
 	private static final int QUESTION_QUIZ_ID = 6;
 	private static final int ANSWER_ID = 7;
-
+	private static final int ANSWER = 8;
+	
 	private static final UriMatcher uriMatcher;
 
 	static {
@@ -50,6 +51,7 @@ public class Team16ContentProvider extends ContentProvider {
 		uriMatcher.addURI(AUTHORITY, "questionQuiz", QUESTION_QUIZZES);
 		uriMatcher.addURI(AUTHORITY, "questionQuiz/#", QUESTION_QUIZ_ID);
 		uriMatcher.addURI(AUTHORITY, "answers/#", ANSWER_ID);
+		uriMatcher.addURI(AUTHORITY, "answers", ANSWER);
 
 	}
 
@@ -163,7 +165,8 @@ public class Team16ContentProvider extends ContentProvider {
 			tableName = QuizQuestionTable.TABLE_NAME;
 			tableUri = QUESTION_QUIZZES_URI;
 			break;
-		case ANSWER_ID:
+		case ANSWER:
+			Log.d("com.team16.appjam", "Fell into AnswerTable");
 			tableName = AnswerTable.TABLE_NAME;
 			tableUri = ANSWERS_URI;
 			break;
@@ -269,8 +272,8 @@ public class Team16ContentProvider extends ContentProvider {
 			break;
 		case ANSWER_ID:
 			tableName = AnswerTable.TABLE_NAME;
-			String questionForiegnKey = uri.getPathSegments().get(1);
-			where = AnswerTable.COLUMN_QUESTION_ID + "=" + questionForiegnKey;
+			String answerId = uri.getPathSegments().get(1);
+			where = AnswerTable.COLUMN_ID + "=" + answerId;
 		default:
 			break;
 		}

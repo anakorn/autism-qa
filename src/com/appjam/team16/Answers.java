@@ -15,8 +15,10 @@ public class Answers {
 	private int yesNoAnswer;
 	private int seekBarValue;
 	private boolean seen;
+	private boolean isSliderQuestion;
+	private long questionId;
 
-	public Answers() {
+	public Answers(long questionId) {
 		totalPauseTime = 0;
 		startTime = 0;
 		endTime = 0;
@@ -26,16 +28,21 @@ public class Answers {
 		yesNoAnswer = 0;
 		seekBarValue = 0;
 		seen = false;
+		isSliderQuestion = false;
+		this.questionId = questionId;
+	}
+	
+	public long getQuestionId() {
+		return questionId;
 	}
 
 	// if the user pressed yes, returns 1 for true, else returns 0 for false
-	public int isYesNo(boolean answer) {
-		seen = true;
-		if (answer) {
-			return 1;
-		} else {
-			return 0;
-		}
+	public void setYesNo(boolean answer) {
+		this.yesNoAnswer = answer ? 1 : 0;
+	}
+	
+	public int getYesNo() {
+		return yesNoAnswer;
 	}
 
 	// returns whether the question was seen already
@@ -84,6 +91,14 @@ public class Answers {
 
 	public void setSeekBarValue(int seekValue) {
 		seekBarValue = seekValue;
+	}
+	
+	public boolean isSliderQuestion() {
+		return isSliderQuestion;
+	}
+	
+	public void setIsSliderQuestion(boolean isSlider) {
+		this.isSliderQuestion = isSlider;
 	}
 
 }
