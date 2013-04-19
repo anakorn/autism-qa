@@ -46,5 +46,6 @@
     <string name="stop">Stop</string>
     <string name="play">Play</string>
     <string name="title_activity_answer_single_question">AnswerSingleQuestionActivity</string>
+    <string name="see_answers">View Answers</string>
 
 </resources>
