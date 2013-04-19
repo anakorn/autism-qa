@@ -81,20 +81,19 @@ public class ActionListCursorAdapter extends SimpleCursorAdapter {
 					}
 				}
 			});
-			holder.editButton
-					.setOnClickListener(new View.OnClickListener() {
+			holder.editButton.setOnClickListener(new View.OnClickListener() {
 
-						@Override
-						public void onClick(View v) {
-							listener.editButtonClicked(id);
-						}
-					});
+				@Override
+				public void onClick(View v) {
+					listener.editButtonClicked(id);
+				}
+			});
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		
+
 		holder.text.setText(title);
 		return convertView;
 	}
-	
+
 }

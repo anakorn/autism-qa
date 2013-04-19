@@ -114,7 +114,7 @@ public class SelectQuizzesDialogFragment extends SherlockDialogFragment
 			callback = (QuizzesSelectedListener) a;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(a.toString()
-					+ " must implement QuestionSelectedListener");
+					+ " must implement QuizSelectedListener");
 		}
 	}
 

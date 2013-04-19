@@ -5,6 +5,7 @@ import java.util.Set;
 
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,10 +24,10 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.appjam.team16.ActionListCursorAdapter;
 import com.appjam.team16.ActionListCursorAdapter.CursorAdapterListener;
+import com.appjam.team16.CreateQuizActivity;
 import com.appjam.team16.R;
 import com.appjam.team16.Team16ContentProvider;
 import com.appjam.team16.db.QuestionTable;
-import com.appjam.team16.db.QuizTable;
 
 public class QuestionListFragment extends SherlockListFragment implements
 		LoaderCallbacks<Cursor>, CursorAdapterListener {
@@ -160,6 +161,16 @@ public class QuestionListFragment extends SherlockListFragment implements
 	}
 
 	private void createQuiz() {
+		long [] longIds = new long[selectedIds.size()];
+		int counter = 0;
+		for (Long l: selectedIds)
+			longIds[counter++] = l;
+		Intent intent = new Intent(getActivity(), CreateQuizActivity.class);
+		Bundle extras = new Bundle();
+		extras.putLongArray(QuizDetailFragment.IDS_KEY, longIds);
+		intent.putExtras(extras);
+		startActivity(intent);
+		getActivity().finish();
 		
 	}
 

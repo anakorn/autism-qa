@@ -46,6 +46,7 @@ public class QuestionDetailFragment extends SherlockFragment implements
 	private Button playbackAudioButton;
 
 	private boolean editingQuestion;
+	private long id;
 
 	private Set<Long> ids;
 
@@ -111,25 +112,38 @@ public class QuestionDetailFragment extends SherlockFragment implements
 		switch (v.getId()) {
 		case R.id.save_question_bttn:
 			if (editingQuestion) {
-				Toast.makeText(context, "Editing!", Toast.LENGTH_SHORT).show();
-				break;
+				Uri uri = ContentUris.withAppendedId(
+						Team16ContentProvider.QUESTION_URI, this.id);
+				ContentResolver cr = getActivity().getContentResolver();
+				ContentValues values = new ContentValues();
+				values.put(QuestionTable.COLUMN_TITLE, questionName.getText()
+						.toString());
+				values.put(QuestionTable.COLUMN_QUESTION_TEXT, questionQuestion
+						.getText().toString());
+				values.put(QuestionTable.COLUMN_ANSWER_TYPE, 0);
+				values.put(QuestionTable.COLUMN_MODIFY_TIMESTAMP,
+						System.currentTimeMillis());
+				cr.update(uri, values, "", null);
+				mCallback.questionCreated();
+			} else {
+				if (valuesFilledIn())
+					Toast.makeText(context, "Submit", Toast.LENGTH_SHORT)
+							.show();
+				ContentResolver cr = getActivity().getContentResolver();
+				ContentValues values = new ContentValues();
+				values.put(QuestionTable.COLUMN_TITLE, questionName.getText()
+						.toString());
+				values.put(QuestionTable.COLUMN_QUESTION_TEXT, questionQuestion
+						.getText().toString());
+				values.put(QuestionTable.COLUMN_ANSWER_TYPE, 0);
+				values.put(QuestionTable.COLUMN_CREATE_TIMESTAMP,
+						System.currentTimeMillis());
+				values.put(QuestionTable.COLUMN_MODIFY_TIMESTAMP,
+						System.currentTimeMillis());
+				Uri uri = cr.insert(Team16ContentProvider.QUESTION_URI, values);
+				Log.d("com.team16.appjam", uri.toString());
+				mCallback.questionCreated();
 			}
-			if (valuesFilledIn())
-				Toast.makeText(context, "Submit", Toast.LENGTH_SHORT).show();
-			ContentResolver cr = getActivity().getContentResolver();
-			ContentValues values = new ContentValues();
-			values.put(QuestionTable.COLUMN_TITLE, questionName.getText()
-					.toString());
-			values.put(QuestionTable.COLUMN_QUESTION_TEXT, questionQuestion
-					.getText().toString());
-			values.put(QuestionTable.COLUMN_ANSWER_TYPE, 0);
-			values.put(QuestionTable.COLUMN_CREATE_TIMESTAMP,
-					System.currentTimeMillis());
-			values.put(QuestionTable.COLUMN_MODIFY_TIMESTAMP,
-					System.currentTimeMillis());
-			Uri uri = cr.insert(Team16ContentProvider.QUESTION_URI, values);
-			Log.d("com.team16.appjam", uri.toString());
-			mCallback.questionCreated();
 			break;
 
 		case R.id.recordAudioButton:
@@ -166,6 +180,7 @@ public class QuestionDetailFragment extends SherlockFragment implements
 
 	public void displayQuestion(long id) {
 		editingQuestion = true;
+		this.id = id;
 		Log.d("com.team16.appjam", "Got called!");
 		getLoaderManager().initLoader((int) id, null, this);
 		this.onCreateLoader((int) id, null);
@@ -195,7 +210,7 @@ public class QuestionDetailFragment extends SherlockFragment implements
 	}
 
 	public void addQuizzes(long[] ids) {
-		for (long l: ids)
+		for (long l : ids)
 			this.ids.add(l);
 	}
 

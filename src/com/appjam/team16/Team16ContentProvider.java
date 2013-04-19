@@ -95,7 +95,6 @@ public class Team16ContentProvider extends ContentProvider {
 		String having = null;
 
 		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-
 		switch (uriMatcher.match(uri)) {
 		case QUESTION_ID:
 			queryBuilder.setTables(QuestionTable.TABLE_NAME);
@@ -116,15 +115,19 @@ public class Team16ContentProvider extends ContentProvider {
 			break;
 		case QUESTION_QUIZ_ID:
 			Log.d("com.team16.appjam", "In QUESTION_QUIZ_ID");
-			queryBuilder.setTables(QuizQuestionTable.TABLE_NAME + " natural join "
-					+ QuizTable.TABLE_NAME);
+			queryBuilder
+					.setTables("("
+							+ QuizQuestionTable.TABLE_NAME
+							+ " natural join "
+							+ QuizTable.TABLE_NAME
+							+ ") JOIN Question ON Question._id=QuizQuestion.question_id");
 			String quizForiegnKey = uri.getPathSegments().get(1);
-			queryBuilder.appendWhere(QuizQuestionTable.COLUMN_ID + "="
-					+ quizForiegnKey);
+			queryBuilder.appendWhere(QuizQuestionTable.TABLE_NAME + "."
+					+ QuizQuestionTable.COLUMN_ID + "=" + quizForiegnKey);
 			break;
 		case QUESTION_QUIZZES:
-			queryBuilder.setTables(QuizQuestionTable.TABLE_NAME + " natural join "
-					+ QuizTable.TABLE_NAME);
+			queryBuilder.setTables(QuizQuestionTable.TABLE_NAME
+					+ " natural join " + QuizTable.TABLE_NAME);
 			break;
 		case ANSWER_ID:
 			queryBuilder.setTables(AnswerTable.TABLE_NAME);
@@ -168,7 +171,7 @@ public class Team16ContentProvider extends ContentProvider {
 
 		Log.d("com.team16.appjam", "Inserting into table " + tableName);
 		long id = db.insert(tableName, nullColumnHack, contentValues);
-		Log.d("com.appjam.team16", ""+id);
+		Log.d("com.appjam.team16", "" + id);
 		if (id > -1) {
 			Uri insertedId = ContentUris.withAppendedId(tableUri, id);
 			getContext().getContentResolver().notifyChange(tableUri, null);
@@ -205,8 +208,7 @@ public class Team16ContentProvider extends ContentProvider {
 			query = "1=1";
 			break;
 		case QUESTION_QUIZ_ID:
-			tableName = QuizQuestionTable.TABLE_NAME + ", "
-					+ QuizTable.TABLE_NAME;
+			tableName = QuizQuestionTable.TABLE_NAME;
 			String questionForiegnKey = uri.getPathSegments().get(1);
 			query = QuestionTable.COLUMN_ID + "=" + questionForiegnKey;
 			break;
@@ -230,9 +232,49 @@ public class Team16ContentProvider extends ContentProvider {
 	}
 
 	@Override
-	public int update(Uri url, ContentValues contentValues, String where,
+	public int update(Uri uri, ContentValues contentValues, String where,
 			String[] whereArgs) {
-		return 0;
+		SQLiteDatabase db = myOpenHelper.getWritableDatabase();
+		String tableName = "";
+		where = "";
+		String groupBy = null;
+		String having = null;
+
+		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+		switch (uriMatcher.match(uri)) {
+		case QUESTION_ID:
+			tableName = QuestionTable.TABLE_NAME;
+			String questionId = uri.getPathSegments().get(1);
+			where = QuestionTable.COLUMN_ID + "=" + questionId;
+			break;
+		case QUESTIONS:
+			tableName = QuestionTable.TABLE_NAME;
+			break;
+		case QUIZ_ID:
+			tableName = QuizTable.TABLE_NAME;
+			String quizId = uri.getPathSegments().get(1);
+			where = QuizTable.COLUMN_ID + "=" + quizId;
+			break;
+		case QUIZZES:
+			tableName = QuizTable.TABLE_NAME;
+			break;
+		case QUESTION_QUIZ_ID:
+			tableName = QuizQuestionTable.TABLE_NAME;
+			String quizForiegnKey = uri.getPathSegments().get(1);
+			where = QuizQuestionTable.TABLE_NAME + "."
+					+ QuizQuestionTable.COLUMN_ID + "=" + quizForiegnKey;
+			break;
+		case QUESTION_QUIZZES:
+			tableName = QuizQuestionTable.TABLE_NAME;
+			break;
+		case ANSWER_ID:
+			tableName = AnswerTable.TABLE_NAME;
+			String questionForiegnKey = uri.getPathSegments().get(1);
+			where = AnswerTable.COLUMN_QUESTION_ID + "=" + questionForiegnKey;
+		default:
+			break;
+		}
+		return db.update(tableName, contentValues, where, whereArgs);
 	}
 
 	private static class QADatabaseHelper extends SQLiteOpenHelper {

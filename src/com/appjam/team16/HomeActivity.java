@@ -129,21 +129,17 @@ public class HomeActivity extends SherlockActivity implements
 	@Override
 	public void onCheckedChanged(RadioGroup arg0, int arg1) {
 		Log.d("com.team16.appjam", "Check changed");
-		if (arg1 == R.id.yes_no_radio)
-		{
+		if (arg1 == R.id.yes_no_radio) {
 			seekBar.setVisibility(View.GONE);
 			yesNoLayout.setVisibility(View.VISIBLE);
-		}
-		else
-		{
+		} else {
 			seekBar.setVisibility(View.VISIBLE);
 			yesNoLayout.setVisibility(View.GONE);
 		}
 	}
-	
+
 	@Override
-	public void onClick (View view)
-	{
+	public void onClick(View view) {
 	}
 
 }

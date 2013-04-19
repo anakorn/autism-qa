@@ -13,11 +13,14 @@ import com.appjam.team16.fragments.QuestionDetailFragment;
 import com.appjam.team16.fragments.QuestionDetailFragment.QuestionCreatedListener;
 import com.appjam.team16.fragments.QuestionListFragment;
 import com.appjam.team16.fragments.QuestionListFragment.OnQuestionSelectedListener;
+import com.appjam.team16.fragments.SelectQuizzesDialogFragment.QuizzesSelectedListener;
 
 public class ViewQuestionsActivity extends SherlockFragmentActivity implements
-		OnQuestionSelectedListener, QuestionCreatedListener {
+		OnQuestionSelectedListener, QuestionCreatedListener,
+		QuizzesSelectedListener {
 
-	public QuestionListFragment questionList;
+	private QuestionListFragment questionList;
+	private QuestionDetailFragment detailFragment;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -104,7 +107,7 @@ public class ViewQuestionsActivity extends SherlockFragmentActivity implements
 		} else {
 			// If the frag is not available, we're in the one-pane layout and
 			// must swap frags...
-			QuestionDetailFragment detailFragment = new QuestionDetailFragment();
+			detailFragment = new QuestionDetailFragment();
 			Bundle extras = new Bundle();
 			extras.putLong(QuestionTable.COLUMN_ID, id);
 			detailFragment.setArguments(extras);
@@ -120,7 +123,14 @@ public class ViewQuestionsActivity extends SherlockFragmentActivity implements
 
 	@Override
 	public void questionCreated() {
-		questionList.refreshQuestions();
+		Intent viewQuestions = new Intent(this, ViewQuestionsActivity.class);
+		startActivity(viewQuestions);
+		finish();
+	}
+
+	@Override
+	public void quizzesSelected(long[] ids) {
+		detailFragment.addQuizzes(ids);
 	}
 
 }

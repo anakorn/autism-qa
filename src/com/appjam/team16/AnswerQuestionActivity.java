@@ -10,15 +10,16 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class AnswerQuestionActivity extends SherlockActivity implements OnSeekBarChangeListener {
+public class AnswerQuestionActivity extends SherlockActivity implements
+		OnSeekBarChangeListener {
 
 	private static final int SEEKBAR_MAX = 84;
 	private SeekBar seekBar;
-	
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_answer_question);
-		seekBar = (SeekBar) findViewById (R.id.seekBar1);
+		seekBar = (SeekBar) findViewById(R.id.seekBar1);
 		seekBar.setOnSeekBarChangeListener(this);
 		seekBar.setMax(SEEKBAR_MAX);
 	}
@@ -65,13 +66,13 @@ public class AnswerQuestionActivity extends SherlockActivity implements OnSeekBa
 	public void onProgressChanged(SeekBar seekBar, int progress,
 			boolean fromUser) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onStartTrackingTouch(SeekBar seekBar) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

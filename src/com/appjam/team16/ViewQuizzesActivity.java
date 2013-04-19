@@ -23,6 +23,7 @@ public class ViewQuizzesActivity extends SherlockFragmentActivity implements
 		QuestionsSelectedListener {
 
 	public QuizListFragment quizList;
+	private QuizDetailFragment detailFragment;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -95,8 +96,9 @@ public class ViewQuizzesActivity extends SherlockFragmentActivity implements
 
 	@Override
 	public void onQuizCreated() {
-		// TODO Auto-generated method stub
-
+		Intent intent = new Intent(this, ViewQuizzesActivity.class);
+		startActivity(intent);
+		finish();
 	}
 
 	@Override
@@ -114,7 +116,7 @@ public class ViewQuizzesActivity extends SherlockFragmentActivity implements
 		} else {
 			// If the frag is not available, we're in the one-pane layout and
 			// must swap frags...
-			QuizDetailFragment detailFragment = new QuizDetailFragment();
+			detailFragment = new QuizDetailFragment();
 			Bundle extras = new Bundle();
 			extras.putLong(QuizTable.COLUMN_ID, id);
 			detailFragment.setArguments(extras);
@@ -130,7 +132,7 @@ public class ViewQuizzesActivity extends SherlockFragmentActivity implements
 
 	@Override
 	public void questionsSelected(long[] ids) {
-		//TODO: Set this up for tablet layouts
+		detailFragment.addQuestions(ids);
 	}
 
 }

@@ -23,6 +23,7 @@ public class CreateQuizActivity extends SherlockFragmentActivity implements
 		setContentView(R.layout.activity_create_quiz);
 		getSupportActionBar().setHomeButtonEnabled(true);
 		quizDetailFragment = new QuizDetailFragment();
+		quizDetailFragment.setArguments(getIntent().getExtras());
 		FragmentTransaction transcation = getSupportFragmentManager()
 				.beginTransaction();
 		transcation.add(R.id.createQuizFragmentContainer, quizDetailFragment);
@@ -69,8 +70,7 @@ public class CreateQuizActivity extends SherlockFragmentActivity implements
 	}
 
 	@Override
-	public void questionsSelected(long[] ids) 
-	{
+	public void questionsSelected(long[] ids) {
 		quizDetailFragment.addQuestions(ids);
 	}
 
@@ -79,6 +79,6 @@ public class CreateQuizActivity extends SherlockFragmentActivity implements
 		Intent intent = new Intent(this, ViewQuizzesActivity.class);
 		startActivity(intent);
 		finish();
-		
+
 	}
 }
