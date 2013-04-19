@@ -1,105 +1,69 @@
 package com.appjam.team16;
 
+import java.util.ArrayList;
+import java.util.List;
 
-
+import android.content.ContentUris;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.util.Log;
 
-import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.appjam.team16.db.QuestionTable;
+import com.appjam.team16.db.QuizQuestionTable;
+import com.appjam.team16.db.QuizTable;
+import com.appjam.team16.fragments.DisplayQuestionFragment;
+import com.appjam.team16.fragments.DisplayQuestionFragment.QuestionButtonListener;
 
-import com.appjam.team16.R;
+public class AnswerQuestionActivity extends SherlockFragmentActivity implements
+		QuestionButtonListener, LoaderCallbacks<Cursor> {
 
-public class AnswerQuestionActivity extends SherlockActivity implements OnSeekBarChangeListener {
+	public static final String DISPLAY_QUIZ_ID = "dqd";
 
-	private static final int SEEKBAR_MAX = 84;
+	private long quiz_id;
+	private List<Question> questions;
+	private DisplayQuestionFragment displayQuestionFragment;
+	private int currentPosition;
 
-	private SeekBar seekBar;
-	private Button noButton = null;
-	private Button yesButton = null;
-	private Button backButton = null;
-	private Button nextButton = null;
-	private Button audioButton = null;
-	
-	private Answers answer = null;
-	
+	private static class Question {
+		public int answerValue;
+		public int timeOn;
+		public int questionId;
+
+	}
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_answer_question);
+		setContentView(R.layout.display_question_layout);
+		
+		questions = new ArrayList<AnswerQuestionActivity.Question>();
+		if (getIntent() != null && getIntent().getExtras() != null
+				&& getIntent().getExtras().containsKey(DISPLAY_QUIZ_ID)) {
+			quiz_id = getIntent().getExtras().getLong(DISPLAY_QUIZ_ID);
+			displayQuiz(quiz_id);
+		}
+		displayQuestionFragment = new DisplayQuestionFragment();
+		FragmentTransaction transaction = getSupportFragmentManager()
+				.beginTransaction();
+		transaction.replace(R.id.displayQuestionHolder, displayQuestionFragment);
+		transaction.commit();
 
-		noButton = (Button) findViewById(R.id.noButton);
-		yesButton = (Button) findViewById(R.id.yesButton);
-		backButton = (Button) findViewById(R.id.backButton);
-		nextButton = (Button) findViewById(R.id.nextButton);
-		audioButton = (Button) findViewById(R.id.audioButton);
-		SeekBar slider = (SeekBar) findViewById(R.id.seekBar1);
-		
-		answer = new Answers();
+	}
 
-		seekBar = (SeekBar) findViewById (R.id.seekBar1);
-		seekBar.setOnSeekBarChangeListener(this);
-		seekBar.setMax(SEEKBAR_MAX);
-		
-		answer.setStartTime(System.currentTimeMillis());
-		
-		
-		noButton.setOnClickListener(
-				new OnClickListener() 
-				{
-					public void onClick(View v) 
-					{
-						answer.isYesNo(false);
-					}
-				});
-		
-		yesButton.setOnClickListener(
-				new OnClickListener() 
-				{
-					public void onClick(View v) 
-					{
-						answer.isYesNo(true);
-					}
-				});
-		
-		nextButton.setOnClickListener(
-				new OnClickListener() 
-				{
-					public void onClick(View v) 
-					{
-						answer.setEndTime(System.currentTimeMillis());
-					}
-				});	
-		
-		backButton.setOnClickListener(
-				new OnClickListener() 
-				{
-					public void onClick(View v) 
-					{
-						answer.setEndTime(System.currentTimeMillis());
-					}
-				});	
-	}
-	
-	protected void onPause() {
-		answer.setPauseStart(System.currentTimeMillis());
-	}
-	
-	protected void onResume() {
-		answer.setPauseEnd(System.currentTimeMillis());
-	}
-	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getSupportMenuInflater();
-		inflater.inflate(R.menu.main_menu, menu);
-		return super.onCreateOptionsMenu(menu);
+		inflater.inflate(R.menu.answer_question_menu, menu);
+		return true;
 	}
 
 	@Override
@@ -133,37 +97,73 @@ public class AnswerQuestionActivity extends SherlockActivity implements OnSeekBa
 		return false;
 	}
 
+	public void displayQuiz(long quizId) {
+		String[] projection = new String[] { QuizTable.COLUMN_TITLE,
+				QuizQuestionTable.COLUMN_QUESTION_ID + " as _id",
+				QuestionTable.COLUMN_TITLE,
+				QuizQuestionTable.COLUMN_QUIZ_POSITION };
+		Uri uri = ContentUris.withAppendedId(
+				Team16ContentProvider.QUESTION_QUIZZES_URI, quizId);
+		getSupportLoaderManager().initLoader((int) quizId, null, this);
+	}
+
 	@Override
-	public void onProgressChanged(SeekBar seekBar, int progress,
-			boolean fromUser) {
-		// TODO Auto-generated method stub
+	public void forwardButtonPressed() {
+		currentPosition++;
+		displayQuestion();
+	}
+
+	@Override
+	public void backButtonPressed() {
+		currentPosition--;
+		displayQuestion();
+	}
+	
+	public void finishButtonPressed() {
 		
 	}
 
 	@Override
-	public void onStartTrackingTouch(SeekBar seekBar) {
-		// TODO Auto-generated method stub
+	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
+		String[] projection = new String[] { QuizTable.COLUMN_TITLE,
+				QuizQuestionTable.COLUMN_QUESTION_ID + " as _id",
+				QuestionTable.COLUMN_TITLE,
+				QuizQuestionTable.COLUMN_QUIZ_POSITION };
+		Uri uri = ContentUris.withAppendedId(
+				Team16ContentProvider.QUESTION_QUIZZES_URI, arg0);
+		return new CursorLoader(this, uri, projection, null, null,
+				QuizQuestionTable.COLUMN_QUIZ_POSITION);
+	}
+
+	@Override
+	public void onLoadFinished(Loader<Cursor> arg0, Cursor arg1) {
+		if (arg1.moveToFirst()) {
+			for (int i = 0; i < arg1.getCount(); i++) {
+				arg1.moveToPosition(i);
+				Question question = new Question();
+				question.questionId = arg1.getInt(arg1
+						.getColumnIndexOrThrow(QuestionTable.COLUMN_ID));
+				Log.d("com.team16.appjam", "Adding" + question.questionId);
+				questions.add(question);
+			}
+		}
+		currentPosition = 0;
+		displayQuestion();
+	}
+
+	private void displayQuestion()
+	{
+		int questionId = questions.get(currentPosition).questionId;
+		Log.d("com.team16.appjam", "d: " + currentPosition);
+		boolean hasPrev = currentPosition > 0;
+		boolean hasNext = currentPosition+1 < questions.size();
+		displayQuestionFragment.displayQuestion(questionId, hasPrev, hasNext);
 		
 	}
 
 	@Override
-	public void onStopTrackingTouch(SeekBar seekBar) {
-		int progress = seekBar.getProgress();
-		if (progress >= 77)
-			seekBar.setProgress(84);
-		else if (progress >= 63)
-			seekBar.setProgress(70);
-		else if (progress >= 49)
-			seekBar.setProgress(56);
-		else if (progress >= 35)
-			seekBar.setProgress(42);
-		else if (progress >= 21)
-			seekBar.setProgress(28);
-		else if (progress >= 7)
-			seekBar.setProgress(14);
-		else
-			seekBar.setProgress(0);
-		
-		answer.setSeekBarValue(seekBar.getProgress());
+	public void onLoaderReset(Loader<Cursor> arg0) {
+
 	}
+
 }
